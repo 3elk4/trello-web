@@ -23,24 +23,29 @@ class LoginForm extends React.Component {
 
   handleSubmit = (event) => {
     const requestData = {
-      "studentIndex": 215927,
-      "firstName": this.state.username,
-      "lastName": this.state.password
+      "username": this.state.username,
+      "password": this.state.password
     };
     const requestOps = {
       method: 'POST',
-      headers: { "content-type": "application/json; charset=UTF-8" },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify(requestData),
-      mode: "cors"
     };
-    fetch('//localhost:8080/api/v1/student/add', requestOps)
+    fetch('authenticate', requestOps)
       .then(response => {
         if (response.ok) {
-          console.log("GIT");
-        } else {
-          console.log("fetch error");
-          console.log(requestOps.body);
+          return response.json();
         }
+        else {
+          return {
+            token: "Unauthorized",
+          };
+        }
+      })
+      .then(data => {
+        this.setState({
+          message: "Token: " + data.token,
+        });
       });
     event.preventDefault();
   }
