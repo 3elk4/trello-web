@@ -1,9 +1,10 @@
 import React from "react";
 import Create from "./Board/Create";
+import Fetch from "./Board/Fetch";
 import { Link } from "react-router-dom";
 
 function Home(props) {
-  if (!props.isLoggedIn) {
+  if (props.token === null) {
     return (
       <div>
         <Link to="/login">Log In</Link>
@@ -12,11 +13,12 @@ function Home(props) {
   } else {
     return (
       <div>
-        <h2>You are successfully logged</h2>
+        <h2>Your boards:</h2>
+        <Fetch userToken={props.token} />
         <br />
         <br />
         <button onClick={props.handleLogout}>Log Out</button>
-        <Create></Create>
+        <Create userToken={props.token}></Create>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import React from "react";
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    this.loginEndpoint = "/authenticate";
     this.state = {
       username: "",
       password: "",
@@ -30,7 +31,7 @@ class Login extends React.Component {
       body: JSON.stringify(user),
     };
 
-    fetch("authenticate", requestOps)
+    fetch(this.loginEndpoint, requestOps)
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {

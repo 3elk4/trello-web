@@ -7,8 +7,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      token: {},
+      token: localStorage.getItem("authToken"),
+      isLoggedIn: localStorage.getItem("authToken") !== null ? true : false,
     };
   }
 
@@ -17,13 +17,15 @@ class App extends React.Component {
       isLoggedIn: true,
       token: data.token,
     });
+    localStorage.setItem("authToken", data.token);
   };
 
   handleLogout = () => {
     this.setState({
       isLoggedIn: false,
-      token: {},
+      token: null,
     });
+    localStorage.removeItem("authToken");
   };
 
   render() {
