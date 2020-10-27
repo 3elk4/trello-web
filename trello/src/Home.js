@@ -1,4 +1,5 @@
 import React from "react";
+import Create from "./Board/Create"
 import { Link } from "react-router-dom";
 
 function Home(props) {
@@ -15,6 +16,7 @@ function Home(props) {
         <br />
         <br />
         <button onClick={props.handleLogout}>Log Out</button>
+        <Create></Create>
       </div>
     );
   }
