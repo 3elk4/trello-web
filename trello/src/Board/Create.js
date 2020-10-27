@@ -1,28 +1,33 @@
-import React from 'react';
-import Form from './Form';
+import React from "react";
+import BoardForm from "./BoardForm";
 
-class Create extends React.Component { 
-    constructor(props){
-      super(props)
-      this.state = {isShow: false}
-    }
-    
-    handleShow = () => {
-      this.setState({isShow: true})
-    }
+class Create extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isShow: false };
+  }
 
-    handleClose = () => {
-      this.setState({isShow: false})
-    }
+  handleShow = () => {
+    this.setState({ isShow: true });
+  };
 
-      render() {
-        return (
-          <div>
-            <button className="createListButton" onClick={this.handleShow}>Create new board</button>
-            <Form isShow={this.state.isShow} handleClose={this.handleClose}></Form>
-          </div>
-        );
-      }
+  handleClose = () => {
+    this.setState({ isShow: false });
+  };
+
+  render() {
+    return (
+      <div>
+        <button className="createListButton" onClick={this.handleShow}>
+          Create new board
+        </button>
+        <BoardForm
+          isShow={this.state.isShow}
+          handleClose={this.handleClose}
+        ></BoardForm>
+      </div>
+    );
+  }
 }
 
 export default Create;
