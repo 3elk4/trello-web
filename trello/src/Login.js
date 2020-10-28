@@ -59,24 +59,34 @@ class Login extends React.Component {
   render() {
     const { username, password } = this.state;
     return (
-      <div>
-        <h1>Log In</h1>
+      <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center border col-sm-3 p-1 shadow-lg rounded">
         <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder="Username"
-            type="text"
-            name="username"
-            value={username}
-            onChange={this.handleChange}
-          />
-          <input
-            placeholder="Password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <button placeholder="Submit" type="submit">
+          <h3 className="mb-4">Login page</h3>
+          <div className="form-group">
+            <input
+              className="form-control"
+              placeholder="Username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              className="form-control"
+              placeholder="Password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </div>
+          <button
+            className="btn btn-success"
+            placeholder="Submit"
+            type="submit"
+          >
             Log In
           </button>
         </form>

@@ -1,27 +1,21 @@
 import React from "react";
-import Create from "./Board/Create";
 import Fetch from "./Board/Fetch";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
-function Home(props) {
+const Home = (props) => {
   if (props.token === null) {
-    return (
-      <div>
-        <Link to="/login">Log In</Link>
-      </div>
-    );
+    return <Redirect to="/login" />;
   } else {
     return (
-      <div>
+      <div className="border shadow rounded p-4">
         <h2>Your boards:</h2>
         <Fetch userToken={props.token} />
-        <br />
-        <br />
-        <button onClick={props.handleLogout}>Log Out</button>
-        <Create userToken={props.token}></Create>
+        <button className="btn btn-dark mt-2" onClick={props.handleLogout}>
+          Log Out
+        </button>
       </div>
     );
   }
-}
+};
 
 export default Home;

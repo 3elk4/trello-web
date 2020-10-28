@@ -1,5 +1,6 @@
 import React from "react";
 import Board from "./Board";
+import Create from "./Create";
 
 class Fetch extends React.Component {
   constructor(props) {
@@ -7,10 +8,50 @@ class Fetch extends React.Component {
     this.state = {
       boards: [],
     };
+    this.createBoardEndpoint = "/create_board";
     this.fetchBoardEndpoint = "/index";
+    this.deleteBoardEndpoint = "/delete_board";
   }
 
-  componentDidMount = () => {
+  createBoard = (params) => {
+    let requestOps = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        Authorization: this.props.userToken,
+      },
+      body: JSON.stringify(params),
+    };
+
+    fetch(this.createBoardEndpoint, requestOps)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        this.refreshBoards();
+      });
+  };
+
+  deleteBoard = (event) => {
+    const boardId = event.target.id;
+    const requestOps = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.userToken,
+      },
+      body: JSON.stringify({
+        id: boardId,
+      }),
+    };
+    fetch(this.deleteBoardEndpoint, requestOps)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        this.refreshBoards();
+      });
+  };
+
+  refreshBoards = () => {
     const requestOps = {
       method: "GET",
       headers: { Authorization: this.props.userToken },
@@ -24,17 +65,33 @@ class Fetch extends React.Component {
           boardsArray.push(
             <Board
               key={key}
+              id={boardInfo.id}
               boardname={boardInfo.name}
               is_public={boardInfo.is_public}
+              deleteBoard={this.deleteBoard}
             />
           );
         }
         this.setState({ boards: boardsArray });
-      });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  componentDidMount = () => {
+    this.refreshBoards();
   };
 
   render() {
-    return <div>{this.state.boards}</div>;
+    return (
+      <div>
+        <div className="row">{this.state.boards}</div>
+        <Create
+          handleConfirm={this.createBoard}
+          refreshBoards={this.refreshBoards}
+          userToken={this.props.userToken}
+        ></Create>
+      </div>
+    );
   }
 }
 

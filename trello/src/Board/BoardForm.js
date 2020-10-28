@@ -19,7 +19,6 @@ class BoardForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let params = {
-      user_id: 1,
       name: this.state.boardname,
       is_public: this.state.is_public,
     };
@@ -35,37 +34,44 @@ class BoardForm extends React.Component {
 
         <Modal.Body>
           <form onSubmit={(event) => event.preventDefault()}>
-            <input type="hidden" value={this.props.userToken} />
-            <label>
-              Board name:&nbsp;&nbsp;&nbsp;
+            <div className="form-group">
+              <label htmlFor="boardname">Board name:</label>
               <input
                 type="text"
+                className="form-control mb-3"
+                id="boardname"
                 name="boardname"
                 onChange={this.handleChange}
               />
-            </label>
-            <br />
-            <label>
-              Type:
-              <br />
-              <input
-                type="radio"
-                id="public_board"
-                name="is_public"
-                value="true"
-                onChange={this.handleChange}
-              />
-              <label htmlFor="public_board">Public</label>
-              <br />
-              <input
-                type="radio"
-                id="private_board"
-                name="is_public"
-                value="false"
-                onChange={this.handleChange}
-              />
-              <label htmlFor="private_board">Private</label>
-            </label>
+              <label>Board type:</label>
+              <div className="custom-control custom-radio">
+                <input
+                  defaultChecked
+                  type="radio"
+                  className="custom-control-input"
+                  id="public_board"
+                  name="is_public"
+                  value="true"
+                  onChange={this.handleChange}
+                />
+                <label className="custom-control-label" htmlFor="public_board">
+                  Public
+                </label>
+              </div>
+              <div className="custom-control custom-radio">
+                <input
+                  type="radio"
+                  className="custom-control-input"
+                  id="private_board"
+                  name="is_public"
+                  value="false"
+                  onChange={this.handleChange}
+                />
+                <label className="custom-control-label" htmlFor="private_board">
+                  Private
+                </label>
+              </div>
+            </div>
           </form>
         </Modal.Body>
 
