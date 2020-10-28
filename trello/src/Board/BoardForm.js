@@ -29,7 +29,7 @@ class BoardForm extends React.Component {
     return (
       <Modal show={this.props.isShow} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Board Data</Modal.Title>
+          <Modal.Title>{this.props.formTitle}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

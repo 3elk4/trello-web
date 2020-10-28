@@ -11,7 +11,11 @@ const Board = (props) => {
         </div>
         <div className="card-footer pl-0 pr-0 pb-0">
           {props.is_public ? "Public" : "Private"}
-          <Delete deleteBoard={props.deleteBoard} id={props.id} />
+          <Delete
+            deleteBoard={props.deleteBoard}
+            id={props.id}
+            boardname={props.boardname}
+          />
         </div>
       </div>
     </div>

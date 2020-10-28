@@ -25,6 +25,7 @@ class Create extends React.Component {
           isShow={this.state.isShow}
           handleClose={this.handleClose}
           handleConfirm={this.props.handleConfirm}
+          formTitle="Create new board"
         ></BoardForm>
       </div>
     );

@@ -31,8 +31,8 @@ class Fetch extends React.Component {
       });
   };
 
-  deleteBoard = (event) => {
-    const boardId = event.target.id;
+  deleteBoard = (id) => {
+    const boardId = id;
     const requestOps = {
       method: "POST",
       headers: {
