@@ -60,8 +60,8 @@ class Fetch extends React.Component {
     fetch(this.fetchBoardEndpoint, requestOps)
       .then((response) => response.json())
       .then((data) => {
-        for (let key in data.tables) {
-          const boardInfo = JSON.parse(data.tables[key]);
+        for (let key in data.boards) {
+          const boardInfo = JSON.parse(data.boards[key]);
           boardsArray.push(
             <Board
               key={key}
