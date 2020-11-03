@@ -2,7 +2,7 @@ import React from "react";
 import Board from "./Board";
 import Create from "./Create";
 
-// test
+// test2
 
 class Fetch extends React.Component {
   constructor(props) {
