@@ -7,9 +7,31 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: localStorage.getItem("authToken"),
       isLoggedIn: false,
-      token: {},
     };
+  }
+
+  isLogged = () => {
+    if (this.state.token === null)
+      return;
+    const requestOps = {
+      method: "GET",
+      headers: { Authorization: this.state.token },
+    };
+    fetch("/index", requestOps)
+      .then((response) => {
+        if(response.ok) {
+          this.setState({isLoggedIn: true});
+        } else {
+          this.setState({isLoggedIn: false, token: null})
+          localStorage.removeItem("authToken");
+        }
+      })
+  }
+
+  componentDidMount = () => {
+    this.isLogged()
   }
 
   handleLogin = (data) => {
@@ -17,18 +39,20 @@ class App extends React.Component {
       isLoggedIn: true,
       token: data.token,
     });
+    localStorage.setItem("authToken", data.token);
   };
 
   handleLogout = () => {
     this.setState({
       isLoggedIn: false,
-      token: {},
+      token: null,
     });
+    localStorage.removeItem("authToken");
   };
 
   render() {
     return (
-      <div>
+      <div className="container">
         <BrowserRouter>
           <Switch>
             <Route
