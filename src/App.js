@@ -8,8 +8,30 @@ class App extends React.Component {
     super(props);
     this.state = {
       token: localStorage.getItem("authToken"),
-      isLoggedIn: localStorage.getItem("authToken") !== null ? true : false,
+      isLoggedIn: false,
     };
+  }
+
+  isLogged = () => {
+    if (this.state.token === null)
+      return;
+    const requestOps = {
+      method: "GET",
+      headers: { Authorization: this.state.token },
+    };
+    fetch("/index", requestOps)
+      .then((response) => {
+        if(response.ok) {
+          this.setState({isLoggedIn: true});
+        } else {
+          this.setState({isLoggedIn: false, token: null})
+          localStorage.removeItem("authToken");
+        }
+      })
+  }
+
+  componentDidMount = () => {
+    this.isLogged()
   }
 
   handleLogin = (data) => {
