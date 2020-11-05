@@ -1,9 +1,9 @@
 import React from "react";
+import * as Constants from "./Constants"
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.loginEndpoint = "/authenticate";
     this.state = {
       username: "",
       password: "",
@@ -31,7 +31,7 @@ class Login extends React.Component {
       body: JSON.stringify(user),
     };
 
-    fetch(this.loginEndpoint, requestOps)
+    fetch(Constants.AUTH_URL, requestOps)
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {
