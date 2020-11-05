@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
+import * as Constants from "./Constants"
 
 class App extends React.Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class App extends React.Component {
       method: "GET",
       headers: { Authorization: this.state.token },
     };
-    fetch("/index", requestOps)
+    fetch(Constants.GET_BOARDS_URL, requestOps)
       .then((response) => {
         if(response.ok) {
           this.setState({isLoggedIn: true});
@@ -66,7 +67,7 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route exact path="/login">
+            <Route exact path={Constants.LOGIN_URL}>
               {this.state.isLoggedIn ? (
                 <Redirect to="/" />
               ) : (

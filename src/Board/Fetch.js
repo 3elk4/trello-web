@@ -1,18 +1,15 @@
 import React from "react";
 import Board from "./Board";
 import Create from "./Create";
-
-// test2
+import * as Constants from "../Constants"
 
 class Fetch extends React.Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
       boards: [],
     };
-    this.createBoardEndpoint = "/create_board";
-    this.fetchBoardEndpoint = "/index";
-    this.deleteBoardEndpoint = "/delete_board";
   }
 
   createBoard = (params) => {
@@ -25,7 +22,7 @@ class Fetch extends React.Component {
       body: JSON.stringify(params),
     };
 
-    fetch(this.createBoardEndpoint, requestOps)
+    fetch(Constants.CREATE_BOARD_URL, requestOps)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -45,7 +42,7 @@ class Fetch extends React.Component {
         id: boardId,
       }),
     };
-    fetch(this.deleteBoardEndpoint, requestOps)
+    fetch(Constants.DELETE_BOARD_URL, requestOps)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -59,7 +56,7 @@ class Fetch extends React.Component {
       headers: { Authorization: this.props.userToken },
     };
     const boardsArray = [];
-    fetch(this.fetchBoardEndpoint, requestOps)
+    fetch(Constants.GET_BOARDS_URL, requestOps)
       .then((response) => response.json())
       .then((data) => {
         for (let key in data.boards) {
@@ -74,14 +71,19 @@ class Fetch extends React.Component {
             />
           );
         }
-        this.setState({ boards: boardsArray });
+        if (this._isMounted)
+          this.setState({ boards: boardsArray });
       })
       .catch((error) => console.log(error));
   };
 
   componentDidMount = () => {
+    this._isMounted = true;
     this.refreshBoards();
   };
+
+  componentWillUnmount = () => this._isMounted = false;
+  
 
   render() {
     return (

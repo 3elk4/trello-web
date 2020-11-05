@@ -1,10 +1,11 @@
 import React from "react";
 import Fetch from "./Board/Fetch";
 import { Redirect } from "react-router-dom";
+import * as Constants from "./Constants"
 
 const Home = (props) => {
   if (props.token === null) {
-    return <Redirect to="/login" />;
+    return <Redirect to={Constants.LOGIN_URL} />;
   } else {
     return (
       <div className="border shadow rounded p-4">
