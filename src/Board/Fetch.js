@@ -50,6 +50,26 @@ class Fetch extends React.Component {
       });
   };
 
+  archiveBoard = (id) => {
+    const boardId = id;
+    const requestOps = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.userToken,
+      },
+      body: JSON.stringify({
+        id: boardId,
+      }),
+    };
+    fetch(Constants.ARCHIVE_BOARD_URL, requestOps)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        this.refreshBoards();
+      });
+  }
+
   refreshBoards = () => {
     const requestOps = {
       method: "GET",
@@ -68,6 +88,8 @@ class Fetch extends React.Component {
               boardname={boardInfo.name}
               is_public={boardInfo.is_public}
               deleteBoard={this.deleteBoard}
+              archiveBoard={this.archiveBoard}
+              archiveDate={boardInfo.archiving_date}
             />
           );
         }

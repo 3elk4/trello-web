@@ -6,3 +6,4 @@ export const LOGIN_URL = "/login";
 export const AUTH_URL = API_ROOT + "/authenticate";
 export const CREATE_BOARD_URL = API_ROOT + "/create_board"
 export const DELETE_BOARD_URL = API_ROOT + "/delete_board"
+export const ARCHIVE_BOARD_URL = API_ROOT + "/archive_board"

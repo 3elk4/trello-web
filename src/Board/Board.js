@@ -1,5 +1,6 @@
 import React from "react";
 import Delete from "./Delete";
+import Archive from "./Archive";
 
 const Board = (props) => {
   return (
@@ -11,11 +12,18 @@ const Board = (props) => {
         </div>
         <div className="card-footer pl-0 pr-0 pb-0">
           {props.is_public ? "Public" : "Private"}
-          <Delete
-            deleteBoard={props.deleteBoard}
-            id={props.id}
-            boardname={props.boardname}
-          />
+          {props.archiveDate === null ? 
+            (<Archive 
+              archiveBoard={props.archiveBoard}
+              id={props.id}
+              boardname={props.boardname} 
+            />) : 
+            (<Delete
+              deleteBoard={props.deleteBoard}
+              id={props.id}
+              boardname={props.boardname}
+            />)
+          }
         </div>
       </div>
     </div>
