@@ -2,41 +2,41 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import ConfirmationModal from "../ConfirmationModal";
 
-class Delete extends React.Component {
+class Archive extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showdDeleteConfirm: false,
+      showArchiveConfirm: false,
     };
   }
 
-  showDeleteConfirm = () => {
+  showArchiveConfirm = () => {
     this.setState({
-      showdDeleteConfirm: true,
+      showArchiveConfirm: true,
     });
   };
 
-  hideDeleteConfirm = () => {
+  hideArchiveConfirm = () => {
     this.setState({
-      showdDeleteConfirm: false,
+      showArchiveConfirm: false,
     });
   };
 
   render() {
     return (
       <div className="d-flex justify-content-end w-100 rounded-bottom border-top mt-3 p-1 border-dark">
-        <button className="btn btn-danger" onClick={this.showDeleteConfirm}>
-          Delete
+        <button className="btn btn-danger" onClick={this.showArchiveConfirm}>
+          Archive
         </button>
         <ConfirmationModal
-          isShow={this.state.showdDeleteConfirm}
+          isShow={this.state.showArchiveConfirm}
           confirmMessage={
-            'Are you sure you want to delete the "' +
+            'Are you sure you want to archive the "' +
             this.props.boardname +
             '" board?'
           }
-          handleClose={this.hideDeleteConfirm}
-          success={this.props.deleteBoard}
+          handleClose={this.hideArchiveConfirm}
+          success={this.props.archiveBoard}
           boardId={this.props.id}
         />
       </div>
@@ -44,4 +44,4 @@ class Delete extends React.Component {
   }
 }
 
-export default Delete;
+export default Archive;
