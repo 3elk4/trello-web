@@ -4,6 +4,7 @@ import Home from "./Home";
 import Login from "./Login";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
+import BoardView from "./Board/BoardView";
 
 class App extends React.Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class App extends React.Component {
                 <Login handleLogin={this.handleLogin} />
               )}
             </Route>
+            <Route exact path="/board/:boardId" component={BoardView} />
           </Switch>
         </BrowserRouter>
       </div>

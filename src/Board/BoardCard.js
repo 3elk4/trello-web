@@ -18,7 +18,9 @@ const BoardCard = (props) => {
   return (
     <div className="col-sm-3 mb-4">
       <div className="card text-center bg-secondary text-white rounded-top">
-        <div className="card-header">{boardDetails.name}</div>
+        <div className="card-header">
+          <a href={`/board/${boardDetails.id}`}>{boardDetails.name}</a>
+        </div>
         <div className="card-body">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </div>

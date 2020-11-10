@@ -17,17 +17,17 @@ export async function getUserBoards(token) {
     method: "GET",
     headers: { Authorization: token },
   };
-  const boardsDetailsArray = [];
+  const boardsDetails = [];
   await fetch(Constants.GET_BOARDS_URL, requestOps)
     .then((response) => response.json())
     .then((data) => {
       for (let key in data.boards) {
-        const boardDetails = JSON.parse(data.boards[key]);
-        boardsDetailsArray.push(boardDetails);
+        const record = JSON.parse(data.boards[key]);
+        boardsDetails.push(record);
       }
     })
     .catch((error) => console.log(error));
-  return boardsDetailsArray;
+  return boardsDetails;
 }
 
 export async function deleteBoard(token, id) {
@@ -79,4 +79,22 @@ export async function createBoard(token, params) {
   fetch(Constants.CREATE_BOARD_URL, requestOps).then((response) => {
     return response.ok;
   });
+}
+
+export async function getBoardLists(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: { Authorization: token },
+  };
+  const listsDetails = [];
+  await fetch(Constants.GET_LISTS_URL(boardId), requestOps)
+    .then((response) => response.json())
+    .then((data) => {
+      for (let key in data.lists) {
+        const record = JSON.parse(data.lists[key]);
+        listsDetails.push(record);
+      }
+    })
+    .catch((error) => console.log(error));
+  return listsDetails;
 }
