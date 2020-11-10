@@ -16,8 +16,8 @@ const BoardCard = (props) => {
   };
 
   return (
-    <div className="col-sm-3 mb-4">
-      <div className="card text-center bg-secondary text-white rounded-top">
+    <div className="col-sm-3 p-1 mb-4 d-flex">
+      <div className="card text-center bg-secondary text-white rounded-top w-100">
         <div className="card-header">
           <a
             href={`/board/${boardDetails.id}`}

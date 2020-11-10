@@ -61,9 +61,11 @@ export async function archiveBoard(token, id) {
       id: boardId,
     }),
   };
-  await fetch(Constants.ARCHIVE_BOARD_URL, requestOps).then((response) => {
-    return response.ok;
-  });
+  return await fetch(Constants.ARCHIVE_BOARD_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
 }
 
 export async function createBoard(token, params) {
@@ -76,9 +78,11 @@ export async function createBoard(token, params) {
     body: JSON.stringify(params),
   };
 
-  fetch(Constants.CREATE_BOARD_URL, requestOps).then((response) => {
-    return response.ok;
-  });
+  return await fetch(Constants.CREATE_BOARD_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
 }
 
 export async function getBoardLists(token, boardId) {
@@ -97,4 +101,38 @@ export async function getBoardLists(token, boardId) {
     })
     .catch((error) => console.log(error));
   return listsDetails;
+}
+
+export async function getBoardNameById(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+  const boardDetails = await fetch(
+    `${Constants.GET_BOARD_URL}?id=${boardId}`,
+    requestOps
+  )
+    .then((response) => response.json())
+    .then((data) => JSON.parse(data.board));
+  return boardDetails.name;
+}
+
+export async function createList(token, boardId, listName) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      name: listName,
+    }),
+  };
+
+  return await fetch(Constants.CREATE_LIST_URL, requestOps).then((response) => {
+    return response.ok;
+  });
 }

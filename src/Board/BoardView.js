@@ -13,23 +13,34 @@ class BoardView extends React.Component {
     };
   }
 
-  getBoardName = async () => {
-    const requestOps = {
-      method: "GET",
-      headers: {
-        Authorization: this.state.token,
-      },
-    };
-    const boardDetails = await fetch(
-      `${Constants.GET_BOARD_URL}?id=${this.state.boardId}`,
-      requestOps
-    )
-      .then((response) => response.json())
-      .then((data) => JSON.parse(data.board));
-    const boardname = boardDetails.name;
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    const newListName = this.state.new_list_name;
+    if (newListName !== null && newListName !== "") {
+      if (
+        await Helpers.createList(
+          this.state.token,
+          this.state.boardId,
+          newListName
+        )
+      )
+        this.refreshLists();
+    }
+  };
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
     this.setState({
-      boardName: boardname,
+      [name]: value,
     });
+  };
+
+  getBoardName = async () => {
+    const boardName = await Helpers.getBoardNameById(
+      this.state.token,
+      this.state.boardId
+    );
+    this.setState({ boardName: boardName });
   };
 
   refreshLists = async () => {
@@ -55,7 +66,23 @@ class BoardView extends React.Component {
       <>
         <div className="border shadow rounded p-4 mt-5">
           <h2 className="mb-5">{this.state.boardName}</h2>
-          <div className="row">{this.state.lists}</div>
+          <div className="row">
+            {this.state.lists}
+            <div className="col">
+              <form className="form-inline" onSubmit={this.handleSubmit}>
+                <input
+                  type="text"
+                  className="form-control form-control-sm"
+                  name="new_list_name"
+                  placeholder="Input list name"
+                  onChange={this.handleChange}
+                />
+                <button type="submit" className="btn btn-sm btn-success ml-1">
+                  Create
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </>
     );
