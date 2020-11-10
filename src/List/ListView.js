@@ -11,8 +11,13 @@ class ListView extends React.Component {
 
   render() {
     return (
-      <div>
-        <p>{this.props.name}</p>
+      <div className="col-sm-3 mb-4">
+        <div className="card text-center bg-secondary text-white rounded-top">
+          <div className="card-header">{this.props.name}</div>
+          <div className="card-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </div>
+        </div>
       </div>
     );
   }

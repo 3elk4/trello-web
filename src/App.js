@@ -5,6 +5,7 @@ import Login from "./Login";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
 import BoardView from "./Board/BoardView";
+import home_icon from "./assets/home_icon.png";
 
 class App extends React.Component {
   constructor(props) {
@@ -35,6 +36,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
+        <nav className="navbar navbar-light bg-dark fixed-top">
+          <a className="navbar-brand" href="/">
+            <img src={home_icon} width="40em" height="40em" />
+          </a>
+        </nav>
         <BrowserRouter>
           <Switch>
             <Route

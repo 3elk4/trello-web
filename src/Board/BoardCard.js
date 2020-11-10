@@ -19,10 +19,12 @@ const BoardCard = (props) => {
     <div className="col-sm-3 mb-4">
       <div className="card text-center bg-secondary text-white rounded-top">
         <div className="card-header">
-          <a href={`/board/${boardDetails.id}`}>{boardDetails.name}</a>
-        </div>
-        <div className="card-body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          <a
+            href={`/board/${boardDetails.id}`}
+            className="alert-link text-white"
+          >
+            {boardDetails.name}
+          </a>
         </div>
         <div className="card-footer pl-0 pr-0 pb-0">
           {boardDetails.is_public ? "Public" : "Private"}
