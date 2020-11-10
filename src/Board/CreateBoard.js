@@ -1,7 +1,7 @@
 import React from "react";
 import BoardForm from "./BoardForm";
 
-class Create extends React.Component {
+class CreateBoard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isShow: false };
@@ -32,4 +32,4 @@ class Create extends React.Component {
   }
 }
 
-export default Create;
+export default CreateBoard;
