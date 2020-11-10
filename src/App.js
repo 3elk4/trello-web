@@ -15,10 +15,10 @@ class App extends React.Component {
 
   async componentDidMount() {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
-      this.setState({ isLogged: true });
+      this.setState({ isLoggedIn: true });
     } else {
       sessionStorage.removeItem("authToken");
-      this.setState({ isLogged: false });
+      this.setState({ isLoggedIn: false });
     }
   }
 

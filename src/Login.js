@@ -60,10 +60,10 @@ class Login extends React.Component {
 
   async componentDidMount() {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
-      this.setState({ isLogged: true });
+      this.setState({ isLoggedIn: true });
     } else {
       sessionStorage.removeItem("authToken");
-      this.setState({ isLogged: false });
+      this.setState({ isLoggedIn: false });
     }
   }
 
@@ -71,7 +71,7 @@ class Login extends React.Component {
     const { username, password } = this.state;
     return (
       <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center border col-sm-3 p-1 shadow-lg rounded">
-        {this.state.isLogged ? <Redirect to="/" /> : null}
+        {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4">Login page</h3>
           <div className="form-group">
