@@ -17,8 +17,7 @@ class App extends React.Component {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
       this.setState({ isLoggedIn: true });
     } else {
-      sessionStorage.removeItem("authToken");
-      this.setState({ isLoggedIn: false });
+      this.handleLogout();
     }
   }
 

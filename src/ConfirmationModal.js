@@ -19,7 +19,7 @@ class ConfirmationModal extends React.Component {
           <Button
             variant="primary"
             onClick={() => {
-              this.props.onConfirm(this.props.boardId);
+              this.props.onConfirm(this.props.id);
               this.props.handleClose();
             }}
             className="pl-5 pr-5"

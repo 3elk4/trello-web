@@ -31,7 +31,7 @@ class ActionButton extends React.Component {
           {this.props.actionType}
         </button>
         <ConfirmationModal
-          boardId={this.props.boardId}
+          id={this.props.boardId}
           confirmMessage={this.props.confirmMessage}
           onConfirm={this.props.onConfirm}
           isShow={this.state.showConfirm}
