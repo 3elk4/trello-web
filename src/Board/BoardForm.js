@@ -1,13 +1,28 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
+import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 class BoardForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { boardname: "" };
+
+    this.initialState = {
+      boardname: null,
+      is_public: true,
+    };
+
+    this.state = this.initialState;
   }
+
+  handleClose = () => {
+    this.props.handleClose();
+  };
+
+  handleRadioChange = (value) => {
+    this.setState({ is_public: value });
+  };
 
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -18,16 +33,18 @@ class BoardForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    let params = {
-      name: this.state.boardname,
-      is_public: this.state.is_public,
-    };
-    this.props.handleConfirm(params);
+    if (this.state.boardname !== null && this.state.boardname !== "") {
+      let params = {
+        name: this.state.boardname,
+        is_public: this.state.is_public,
+      };
+      this.props.handleConfirm(params);
+    }
   };
 
   render() {
     return (
-      <Modal show={this.props.isShow} onHide={this.props.handleClose}>
+      <Modal show={this.props.isShow} onHide={this.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{this.props.formTitle}</Modal.Title>
         </Modal.Header>
@@ -37,6 +54,7 @@ class BoardForm extends React.Component {
             <div className="form-group">
               <label htmlFor="boardname">Board name:</label>
               <input
+                required
                 type="text"
                 className="form-control mb-3"
                 id="boardname"
@@ -44,46 +62,31 @@ class BoardForm extends React.Component {
                 onChange={this.handleChange}
               />
               <label>Board type:</label>
-              <div className="custom-control custom-radio">
-                <input
-                  defaultChecked
-                  type="radio"
-                  className="custom-control-input"
-                  id="public_board"
-                  name="is_public"
-                  value="true"
-                  onChange={this.handleChange}
-                />
-                <label className="custom-control-label" htmlFor="public_board">
-                  Public
-                </label>
-              </div>
-              <div className="custom-control custom-radio">
-                <input
-                  type="radio"
-                  className="custom-control-input"
-                  id="private_board"
-                  name="is_public"
-                  value="false"
-                  onChange={this.handleChange}
-                />
-                <label className="custom-control-label" htmlFor="private_board">
-                  Private
-                </label>
-              </div>
+              <br />
+              <ToggleButtonGroup
+                type="radio"
+                name="is_public"
+                defaultValue={true}
+                onChange={this.handleRadioChange}
+              >
+                <ToggleButton value={true}>Public</ToggleButton>
+                <br />
+                <ToggleButton value={false}>Private</ToggleButton>
+              </ToggleButtonGroup>
             </div>
           </form>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={this.props.handleClose}>
+          <Button variant="secondary" onClick={this.handleClose}>
             Cancel
           </Button>
           <Button
+            type="submit"
             variant="primary"
             onClick={(event) => {
               this.handleSubmit(event);
-              this.props.handleClose();
+              this.handleClose();
             }}
           >
             Save changes

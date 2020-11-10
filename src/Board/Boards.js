@@ -1,7 +1,7 @@
 import React from "react";
 import BoardCard from "./BoardCard";
 import CreateBoard from "./CreateBoard";
-import * as Constants from "../Constants";
+import * as Helpers from "../Helpers";
 
 class Boards extends React.Component {
   _isMounted = false;
@@ -13,87 +13,37 @@ class Boards extends React.Component {
     };
   }
 
-  createBoard = (params) => {
-    let requestOps = {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: this.state.token,
-      },
-      body: JSON.stringify(params),
-    };
-
-    fetch(Constants.CREATE_BOARD_URL, requestOps)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.refreshBoards();
-      });
+  createBoard = async (params) => {
+    await Helpers.createBoard(this.state.token, params);
+    this.refreshBoards();
   };
 
-  deleteBoard = (id) => {
-    const boardId = id;
-    const requestOps = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.state.token,
-      },
-      body: JSON.stringify({
-        id: boardId,
-      }),
-    };
-    fetch(Constants.DELETE_BOARD_URL, requestOps)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.refreshBoards();
-      });
+  deleteBoard = async (id) => {
+    await Helpers.deleteBoard(this.state.token, id);
+    this.refreshBoards();
   };
 
-  archiveBoard = (id) => {
-    const boardId = id;
-    const requestOps = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.state.token,
-      },
-      body: JSON.stringify({
-        id: boardId,
-      }),
-    };
-    fetch(Constants.ARCHIVE_BOARD_URL, requestOps)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.refreshBoards();
-      });
+  archiveBoard = async (id) => {
+    await Helpers.archiveBoard(this.state.token, id);
+    this.refreshBoards();
   };
 
-  refreshBoards = () => {
-    const requestOps = {
-      method: "GET",
-      headers: { Authorization: this.state.token },
-    };
-    const boardsArray = [];
-    fetch(Constants.GET_BOARDS_URL, requestOps)
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data.boards) {
-          const boardDetails = JSON.parse(data.boards[key]);
-          boardsArray.push(
-            <BoardCard
-              key={key}
-              boardDetails={boardDetails}
-              deleteBoard={this.deleteBoard}
-              archiveBoard={this.archiveBoard}
-            />
-          );
-        }
-        if (this._isMounted) this.setState({ boards: boardsArray });
-      })
-      .catch((error) => console.log(error));
+  refreshBoards = async () => {
+    const boardsDetails = await Helpers.getUserBoards(this.state.token);
+    const boards = [];
+    for (let key in boardsDetails) {
+      boards.push(
+        <BoardCard
+          key={key}
+          boardDetails={boardsDetails[key]}
+          deleteBoard={this.deleteBoard}
+          archiveBoard={this.archiveBoard}
+        />
+      );
+    }
+    if (this._isMounted) {
+      this.setState({ boards: boards });
+    }
   };
 
   componentDidMount = () => {
