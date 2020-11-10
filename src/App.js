@@ -2,53 +2,34 @@ import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
-import * as Constants from "./Constants"
+import * as Constants from "./Constants";
+import * as Helpers from "./Helpers";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: localStorage.getItem("authToken"),
       isLoggedIn: false,
     };
   }
 
-  isLogged = () => {
-    if (this.state.token === null)
-      return;
-    const requestOps = {
-      method: "GET",
-      headers: { Authorization: this.state.token },
-    };
-    fetch(Constants.GET_BOARDS_URL, requestOps)
-      .then((response) => {
-        if(response.ok) {
-          this.setState({isLoggedIn: true});
-        } else {
-          this.setState({isLoggedIn: false, token: null})
-          localStorage.removeItem("authToken");
-        }
-      })
-  }
-
-  componentDidMount = () => {
-    this.isLogged()
+  async componentDidMount() {
+    if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
+      this.setState({ isLogged: true });
+    } else {
+      sessionStorage.removeItem("authToken");
+      this.setState({ isLogged: false });
+    }
   }
 
   handleLogin = (data) => {
-    this.setState({
-      isLoggedIn: true,
-      token: data.token,
-    });
-    localStorage.setItem("authToken", data.token);
+    sessionStorage.setItem("authToken", data.token);
+    this.setState({ isLoggedIn: true });
   };
 
   handleLogout = () => {
-    this.setState({
-      isLoggedIn: false,
-      token: null,
-    });
-    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+    this.setState({ isLoggedIn: false });
   };
 
   render() {
@@ -59,22 +40,13 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              component={() => (
-                <Home
-                  handleLogout={this.handleLogout}
-                  isLoggedIn={this.state.isLoggedIn}
-                  token={this.state.token}
-                />
-              )}
+              component={() => <Home handleLogout={this.handleLogout} />}
             />
             <Route exact path={Constants.LOGIN_URL}>
               {this.state.isLoggedIn ? (
                 <Redirect to="/" />
               ) : (
-                <Login
-                  handleLogin={this.handleLogin}
-                  isLoggedIn={this.state.isLoggedIn}
-                />
+                <Login handleLogin={this.handleLogin} />
               )}
             </Route>
           </Switch>

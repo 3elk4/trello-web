@@ -1,13 +1,14 @@
 import React from "react";
-import Board from "./Board";
-import Create from "./Create";
-import * as Constants from "../Constants"
+import BoardCard from "./BoardCard";
+import CreateBoard from "./CreateBoard";
+import * as Constants from "../Constants";
 
-class Fetch extends React.Component {
+class Boards extends React.Component {
   _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
+      token: sessionStorage.getItem("authToken"),
       boards: [],
     };
   }
@@ -17,7 +18,7 @@ class Fetch extends React.Component {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        Authorization: this.props.userToken,
+        Authorization: this.state.token,
       },
       body: JSON.stringify(params),
     };
@@ -36,7 +37,7 @@ class Fetch extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: this.props.userToken,
+        Authorization: this.state.token,
       },
       body: JSON.stringify({
         id: boardId,
@@ -56,7 +57,7 @@ class Fetch extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: this.props.userToken,
+        Authorization: this.state.token,
       },
       body: JSON.stringify({
         id: boardId,
@@ -68,33 +69,29 @@ class Fetch extends React.Component {
         console.log(data);
         this.refreshBoards();
       });
-  }
+  };
 
   refreshBoards = () => {
     const requestOps = {
       method: "GET",
-      headers: { Authorization: this.props.userToken },
+      headers: { Authorization: this.state.token },
     };
     const boardsArray = [];
     fetch(Constants.GET_BOARDS_URL, requestOps)
       .then((response) => response.json())
       .then((data) => {
         for (let key in data.boards) {
-          const boardInfo = JSON.parse(data.boards[key]);
+          const boardDetails = JSON.parse(data.boards[key]);
           boardsArray.push(
-            <Board
+            <BoardCard
               key={key}
-              id={boardInfo.id}
-              boardname={boardInfo.name}
-              is_public={boardInfo.is_public}
+              boardDetails={boardDetails}
               deleteBoard={this.deleteBoard}
               archiveBoard={this.archiveBoard}
-              archiveDate={boardInfo.archiving_date}
             />
           );
         }
-        if (this._isMounted)
-          this.setState({ boards: boardsArray });
+        if (this._isMounted) this.setState({ boards: boardsArray });
       })
       .catch((error) => console.log(error));
   };
@@ -104,21 +101,19 @@ class Fetch extends React.Component {
     this.refreshBoards();
   };
 
-  componentWillUnmount = () => this._isMounted = false;
-  
+  componentWillUnmount = () => (this._isMounted = false);
 
   render() {
     return (
       <div>
         <div className="row">{this.state.boards}</div>
-        <Create
+        <CreateBoard
           handleConfirm={this.createBoard}
           refreshBoards={this.refreshBoards}
-          userToken={this.props.userToken}
-        ></Create>
+        />
       </div>
     );
   }
 }
 
-export default Fetch;
+export default Boards;

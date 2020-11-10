@@ -1,5 +1,7 @@
 import React from "react";
-import * as Constants from "./Constants"
+import { Redirect } from "react-router";
+import * as Constants from "./Constants";
+import * as Helpers from "./Helpers";
 
 class Login extends React.Component {
   constructor(props) {
@@ -56,10 +58,20 @@ class Login extends React.Component {
     );
   };
 
+  async componentDidMount() {
+    if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
+      this.setState({ isLogged: true });
+    } else {
+      sessionStorage.removeItem("authToken");
+      this.setState({ isLogged: false });
+    }
+  }
+
   render() {
     const { username, password } = this.state;
     return (
       <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center border col-sm-3 p-1 shadow-lg rounded">
+        {this.state.isLogged ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4">Login page</h3>
           <div className="form-group">
