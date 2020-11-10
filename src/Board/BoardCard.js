@@ -3,14 +3,15 @@ import ActionButton from "./ActionButton";
 
 const BoardCard = (props) => {
   const boardDetails = props.boardDetails;
-  const actionType = boardDetails.archiving_date != null ? "archive" : "delete";
+  const actionType =
+    boardDetails.archiving_date === null ? "archive" : "delete";
   const confirmMessage = `Are you sure you want to ${actionType} the ${boardDetails.name} board?`;
 
   const onConfirm = (boardId) => {
-    if (boardDetails.archiving_date != null) {
-      return props.archive_board(boardId);
+    if (boardDetails.archiving_date === null) {
+      props.archiveBoard(boardId);
     } else {
-      return props.delet_board(boardId);
+      props.deleteBoard(boardId);
     }
   };
 
