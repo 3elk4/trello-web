@@ -15,16 +15,16 @@ class BoardView extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const newListName = this.state.new_list_name;
-    if (newListName != null && newListName != "") {
-      if (
-        await Helpers.createList(
-          this.state.token,
-          this.state.boardId,
-          newListName
-        )
-      )
-        this.refreshLists();
-    }
+    if (
+      newListName != null &&
+      newListName !== "" &&
+      (await Helpers.createList(
+        this.state.token,
+        this.state.boardId,
+        newListName
+      ))
+    )
+      this.refreshLists();
   };
 
   handleChange = (event) => {

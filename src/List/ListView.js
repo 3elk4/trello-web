@@ -40,12 +40,15 @@ class ListView extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    const newCardName = this.state.new_card_name;
     if (
-      await Helpers.createCard(
+      newCardName != null &&
+      newCardName !== "" &&
+      (await Helpers.createCard(
         this.state.token,
         this.listDetails.id,
-        this.state.new_card_name
-      )
+        newCardName
+      ))
     ) {
       this.refreshCards();
     }
