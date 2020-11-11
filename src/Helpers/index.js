@@ -1,5 +1,4 @@
 import * as Constants from "../Constants";
-import BoardCard from "../Board/BoardCard";
 
 export async function isLogged(token) {
   if (token === null) return false;
@@ -133,6 +132,24 @@ export async function createList(token, boardId, listName) {
   };
 
   return await fetch(Constants.CREATE_LIST_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
+export async function deleteList(token, boardId, listId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+    }),
+  };
+
+  return await fetch(Constants.DELETE_LIST_URL, requestOps).then((response) => {
     return response.ok;
   });
 }

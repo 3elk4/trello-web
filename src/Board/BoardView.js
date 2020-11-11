@@ -1,7 +1,6 @@
 import React from "react";
 import ListView from "../List/ListView";
 import * as Helpers from "../Helpers";
-import * as Constants from "../Constants";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -43,6 +42,12 @@ class BoardView extends React.Component {
     this.setState({ boardName: boardName });
   };
 
+  deleteList = async (id) => {
+    if (await Helpers.deleteList(this.state.token, this.state.boardId, id)) {
+      this.refreshLists();
+    }
+  };
+
   refreshLists = async () => {
     const listsDetails = await Helpers.getBoardLists(
       this.state.token,
@@ -51,7 +56,9 @@ class BoardView extends React.Component {
     const lists = [];
     for (let key in listsDetails) {
       const record = listsDetails[key];
-      lists.push(<ListView key={key} name={record.name} />);
+      lists.push(
+        <ListView key={key} listDetails={record} deleteList={this.deleteList} />
+      );
     }
     this.setState({ lists: lists });
   };
@@ -64,7 +71,7 @@ class BoardView extends React.Component {
   render() {
     return (
       <>
-        <div className="border shadow rounded p-4 mt-5">
+        <div className="border shadow rounded p-4">
           <h2 className="mb-5">{this.state.boardName}</h2>
           <div className="row">
             {this.state.lists}
