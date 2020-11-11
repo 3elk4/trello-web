@@ -153,3 +153,41 @@ export async function deleteList(token, boardId, listId) {
     return response.ok;
   });
 }
+
+export async function getBoardListCards(token, boardId, listId) {
+  const requestOps = {
+    method: "GET",
+    headers: { Authorization: token },
+  };
+
+  const cardsDetails = [];
+  await fetch(Constants.GET_CARDS_URL(boardId, listId), requestOps)
+    .then((response) => response.json())
+    .then((data) => {
+      for (let key in data.cards) {
+        const record = JSON.parse(data.cards[key]);
+        cardsDetails.push(record);
+      }
+    })
+    .catch((error) => console.log(error));
+
+  return cardsDetails;
+}
+
+export async function createCard(token, listId, cardName) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      list_id: listId,
+      name: cardName,
+    }),
+  };
+
+  return await fetch(Constants.CREATE_CARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}

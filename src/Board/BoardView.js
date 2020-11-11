@@ -75,18 +75,24 @@ class BoardView extends React.Component {
           <h2 className="mb-5">{this.state.boardName}</h2>
           <div className="row">
             {this.state.lists}
-            <div className="col">
-              <form className="form-inline" onSubmit={this.handleSubmit}>
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  name="new_list_name"
-                  placeholder="Input list name"
-                  onChange={this.handleChange}
-                />
-                <button type="submit" className="btn btn-sm btn-success ml-1">
-                  Create
-                </button>
+            <div className="col-lg-3 col-sm-12">
+              <form className="form" onSubmit={this.handleSubmit}>
+                <div className="form-row">
+                  <div className="form-group col-9">
+                    <input
+                      type="text"
+                      className="form-control form-control-sm"
+                      name="new_list_name"
+                      placeholder="Input list name"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="form-group col-3">
+                    <button type="submit" className="btn btn-sm btn-success">
+                      Create
+                    </button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
