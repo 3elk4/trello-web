@@ -1,5 +1,5 @@
 import React from "react";
-import ConfirmationModal from "../ConfirmationModal";
+import ConfirmationModal from "./ConfirmationModal";
 
 class ActionButton extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class ActionButton extends React.Component {
 
   render() {
     return (
-      <div className="d-flex justify-content-end w-100 rounded-bottom border-top mt-3 p-1 border-dark">
+      <div className="d-flex justify-content-end w-100 p-1">
         <button
           className={`btn ${this.getButtonColor(this.props.actionType)}`}
           onClick={this.showConfirm}
@@ -31,7 +31,7 @@ class ActionButton extends React.Component {
           {this.props.actionType}
         </button>
         <ConfirmationModal
-          id={this.props.boardId}
+          id={this.props.id}
           confirmMessage={this.props.confirmMessage}
           onConfirm={this.props.onConfirm}
           isShow={this.state.showConfirm}

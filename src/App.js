@@ -4,6 +4,8 @@ import Home from "./Home";
 import Login from "./Login";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
+import BoardView from "./Board/BoardView";
+import home_icon from "./assets/home_icon.png";
 
 class App extends React.Component {
   constructor(props) {
@@ -33,7 +35,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container mt-5 pt-5">
+        <nav className="navbar navbar-light bg-dark fixed-top">
+          <a className="navbar-brand" href="/">
+            <img src={home_icon} alt="Home page" width="40em" height="40em" />
+          </a>
+        </nav>
         <BrowserRouter>
           <Switch>
             <Route
@@ -48,6 +55,7 @@ class App extends React.Component {
                 <Login handleLogin={this.handleLogin} />
               )}
             </Route>
+            <Route exact path="/board/:boardId" component={BoardView} />
           </Switch>
         </BrowserRouter>
       </div>
