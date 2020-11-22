@@ -118,6 +118,25 @@ export async function getBoardNameById(token, boardId) {
   return boardDetails.name;
 }
 
+export async function changeBoardName(token, id, name) {
+  const boardId = id;
+  const boardName = name;
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: boardId,
+      name: boardName,
+    }),
+  };
+  return await fetch(Constants.EDIT_BOARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
 export async function createList(token, boardId, listName) {
   const requestOps = {
     method: "POST",
@@ -132,6 +151,25 @@ export async function createList(token, boardId, listName) {
   };
 
   return await fetch(Constants.CREATE_LIST_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
+export async function changeListName(token, boardId, listId, name) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+      name: name,
+    }),
+  };
+
+  return await fetch(Constants.EDIT_LIST_URL, requestOps).then((response) => {
     return response.ok;
   });
 }

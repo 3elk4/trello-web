@@ -1,16 +1,19 @@
-import React from "react";
+import React, { createRef } from "react";
 import Card from "../Card/Card";
 import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
+import Editable from "../Editable";
 
 class ListView extends React.Component {
   constructor(props) {
     super(props);
-    this.listDetails = this.props.listDetails;
-    this.confirmMessage = `Are you sure you want to delete the "${this.listDetails.name}" list?`;
+    this.confirmMessage = `Are you sure you want to delete the "${props.listDetails.name}" list?`;
     this.state = {
       token: sessionStorage.getItem("authToken"),
+      listName: props.listDetails.name,
+      listDetails: props.listDetails,
     };
+    this.listNameInputRef = createRef();
   }
 
   onConfirm = (listId) => {
@@ -27,8 +30,8 @@ class ListView extends React.Component {
   refreshCards = async () => {
     const cardsDetails = await Helpers.getBoardListCards(
       this.state.token,
-      this.listDetails.board_id,
-      this.listDetails.id
+      this.state.listDetails.board_id,
+      this.state.listDetails.id
     );
     const cards = [];
     for (let key in cardsDetails) {
@@ -36,6 +39,15 @@ class ListView extends React.Component {
       cards.push(<Card key={key} name={cardsDetails[key].name} />);
     }
     this.setState({ cards: cards });
+  };
+
+  changeListName = async () => {
+    await Helpers.changeListName(
+      this.state.token,
+      this.state.listDetails.board_id,
+      this.state.listDetails.id,
+      this.state.listName
+    );
   };
 
   handleSubmit = async (event) => {
@@ -62,7 +74,22 @@ class ListView extends React.Component {
     return (
       <div className="col-lg-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
         <div className="card text-center bg-secondary text-white rounded-top w-100">
-          <div className="card-header">{this.props.listDetails.name}</div>
+          <div className="card-header">
+            <Editable
+              text={this.state.listName}
+              type="input"
+              onConfirm={this.changeListName}
+              childRef={this.listNameInputRef}
+            >
+              <input
+                ref={this.listNameInputRef}
+                type="text"
+                name="listName"
+                value={this.state.listName}
+                onChange={this.handleChange}
+              />
+            </Editable>
+          </div>
           <div className="card-body">
             {this.state.cards}
             <form className="form" onSubmit={this.handleSubmit}>
@@ -86,7 +113,7 @@ class ListView extends React.Component {
           </div>
           <div className="card-footer p-1">
             <ActionButton
-              id={this.listDetails.id}
+              id={this.state.listDetails.id}
               confirmMessage={this.confirmMessage}
               onConfirm={this.onConfirm}
               actionType={"delete"}

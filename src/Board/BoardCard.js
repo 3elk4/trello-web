@@ -8,7 +8,7 @@ const BoardCard = (props) => {
   const confirmMessage = `Are you sure you want to ${actionType} the "${boardDetails.name}" board?`;
 
   const onConfirm = (boardId) => {
-    if (boardDetails.archiving_date === null) {
+    if (actionType === "archive") {
       props.archiveBoard(boardId);
     } else {
       props.deleteBoard(boardId);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { createRef } from "react";
 import ListView from "../List/ListView";
 import * as Helpers from "../Helpers";
+import Editable from "../Editable";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class BoardView extends React.Component {
       boardId: this.props.match.params.boardId,
       lists: null,
     };
+    this.boardNameInputRef = createRef();
   }
 
   handleSubmit = async (event) => {
@@ -42,6 +44,14 @@ class BoardView extends React.Component {
     this.setState({ boardName: boardName });
   };
 
+  changeBoardName = async () => {
+    await Helpers.changeBoardName(
+      this.state.token,
+      this.state.boardId,
+      this.state.boardName
+    );
+  };
+
   deleteList = async (id) => {
     if (await Helpers.deleteList(this.state.token, this.state.boardId, id)) {
       this.refreshLists();
@@ -72,7 +82,22 @@ class BoardView extends React.Component {
     return (
       <>
         <div className="border shadow rounded p-4">
-          <h2 className="mb-5">{this.state.boardName}</h2>
+          <h2 className="mb-5">
+            <Editable
+              text={this.state.boardName}
+              type="input"
+              onConfirm={this.changeBoardName}
+              childRef={this.boardNameInputRef}
+            >
+              <input
+                ref={this.boardNameInputRef}
+                type="text"
+                name="boardName"
+                value={this.state.boardName}
+                onChange={this.handleChange}
+              />
+            </Editable>
+          </h2>
           <div className="row">
             {this.state.lists}
             <div className="col-lg-3 col-sm-12">
