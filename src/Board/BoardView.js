@@ -41,15 +41,17 @@ class BoardView extends React.Component {
       this.state.token,
       this.state.boardId
     );
-    this.setState({ boardName: boardName });
+    this.setState({ currBoardName: boardName, boardName: boardName });
   };
 
   changeBoardName = async () => {
-    await Helpers.changeBoardName(
-      this.state.token,
-      this.state.boardId,
-      this.state.boardName
-    );
+    if (this.state.currBoardName !== this.state.boardName) {
+      await Helpers.changeBoardName(
+        this.state.token,
+        this.state.boardId,
+        this.state.boardName
+      );
+    }
   };
 
   deleteList = async (id) => {
@@ -81,7 +83,7 @@ class BoardView extends React.Component {
   render() {
     return (
       <>
-        <div className="border shadow rounded p-4">
+        <div className="border shadow rounded p-4 bg-dark text-white">
           <h2 className="mb-5">
             <Editable
               text={this.state.boardName}
@@ -90,6 +92,7 @@ class BoardView extends React.Component {
               childRef={this.boardNameInputRef}
             >
               <input
+                className="w-75"
                 ref={this.boardNameInputRef}
                 type="text"
                 name="boardName"
@@ -100,10 +103,10 @@ class BoardView extends React.Component {
           </h2>
           <div className="row">
             {this.state.lists}
-            <div className="col-lg-3 col-sm-12">
+            <div className="col-lg-2 col-md-3 col-sm-12">
               <form className="form" onSubmit={this.handleSubmit}>
-                <div className="form-row">
-                  <div className="form-group col-9">
+                <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary">
+                  <div className="form-group col-9 m-0 p-0">
                     <input
                       type="text"
                       className="form-control form-control-sm"
@@ -112,9 +115,12 @@ class BoardView extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
-                  <div className="form-group col-3">
-                    <button type="submit" className="btn btn-sm btn-success">
-                      Create
+                  <div className="form-group col-2 m-0 p-0">
+                    <button
+                      type="submit"
+                      className="btn btn-sm btn-success float-right"
+                    >
+                      +
                     </button>
                   </div>
                 </div>

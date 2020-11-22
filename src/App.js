@@ -35,7 +35,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container mt-5 pt-5">
+      <div className="container-fluid mt-5 pt-5">
         <nav className="navbar navbar-light bg-dark fixed-top">
           <a className="navbar-brand" href="/">
             <img src={home_icon} alt="Home page" width="40em" height="40em" />

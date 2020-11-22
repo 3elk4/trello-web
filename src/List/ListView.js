@@ -3,6 +3,7 @@ import Card from "../Card/Card";
 import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
 import Editable from "../Editable";
+import ListActions from "./ListActions";
 
 class ListView extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class ListView extends React.Component {
     this.confirmMessage = `Are you sure you want to delete the "${props.listDetails.name}" list?`;
     this.state = {
       token: sessionStorage.getItem("authToken"),
+      currListName: props.listDetails.name,
       listName: props.listDetails.name,
       listDetails: props.listDetails,
     };
@@ -35,19 +37,20 @@ class ListView extends React.Component {
     );
     const cards = [];
     for (let key in cardsDetails) {
-      console.log(cardsDetails[key].name);
       cards.push(<Card key={key} name={cardsDetails[key].name} />);
     }
     this.setState({ cards: cards });
   };
 
   changeListName = async () => {
-    await Helpers.changeListName(
-      this.state.token,
-      this.state.listDetails.board_id,
-      this.state.listDetails.id,
-      this.state.listName
-    );
+    if (this.state.listName !== this.state.currListName) {
+      await Helpers.changeListName(
+        this.state.token,
+        this.state.listDetails.board_id,
+        this.state.listDetails.id,
+        this.state.listName
+      );
+    }
   };
 
   handleSubmit = async (event) => {
@@ -58,7 +61,7 @@ class ListView extends React.Component {
       newCardName !== "" &&
       (await Helpers.createCard(
         this.state.token,
-        this.listDetails.id,
+        this.state.listDetails.id,
         newCardName
       ))
     ) {
@@ -72,29 +75,34 @@ class ListView extends React.Component {
 
   render() {
     return (
-      <div className="col-lg-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
-        <div className="card text-center bg-secondary text-white rounded-top w-100">
-          <div className="card-header">
-            <Editable
-              text={this.state.listName}
-              type="input"
-              onConfirm={this.changeListName}
-              childRef={this.listNameInputRef}
-            >
-              <input
-                ref={this.listNameInputRef}
-                type="text"
-                name="listName"
-                value={this.state.listName}
-                onChange={this.handleChange}
-              />
-            </Editable>
+      <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
+        <div className="card bg-secondary text-white rounded-top w-100">
+          <div className="card-header row m-0 d-flex justify-content-between pl-0">
+            <div className="col-10 pr-0 mr-0 pt-1">
+              <Editable
+                text={this.state.listName}
+                type="input"
+                onConfirm={this.changeListName}
+                childRef={this.listNameInputRef}
+              >
+                <input
+                  ref={this.listNameInputRef}
+                  type="text"
+                  name="listName"
+                  value={this.state.listName}
+                  onChange={this.handleChange}
+                />
+              </Editable>
+            </div>
+            <div className="col-1 ml-0 pl-0">
+              <ListActions />
+            </div>
           </div>
-          <div className="card-body">
+          <div className="card-body pl-1 pr-1">
             {this.state.cards}
             <form className="form" onSubmit={this.handleSubmit}>
-              <div className="form-row">
-                <div className="form-group col-10">
+              <div className="form-row d-flex justify-content-between">
+                <div className="form-group col-9">
                   <input
                     type="text"
                     className="form-control form-control-sm"
@@ -104,8 +112,11 @@ class ListView extends React.Component {
                   />
                 </div>
                 <div className="from-group col-2">
-                  <button type="submit" className="btn btn-sm btn-success">
-                    Add
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-success float-right"
+                  >
+                    +
                   </button>
                 </div>
               </div>
