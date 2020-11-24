@@ -10,7 +10,10 @@ const ListView = (props) => {
   const [listName, setListName] = useState(props.listDetails.name);
   const [listDetails, setLsitDetails] = useState(props.listDetails);
   const [cards, setCards] = useState();
-  const [formData, setFormData] = useState();
+  const [newCardData, setNewCardData] = useState();
+  const [newListData, setNewListData] = useState({
+    listName: listName,
+  });
 
   const listNameInputRef = useRef();
   const actionType =
@@ -25,9 +28,16 @@ const ListView = (props) => {
     }
   };
 
-  const handleChange = (event) => {
+  const handleNewCardChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
+    setNewCardData({
+      [name]: value,
+    });
+  };
+
+  const handleListNameChange = (event) => {
+    const { name, value } = event.target;
+    setNewListData({
       [name]: value,
     });
   };
@@ -46,12 +56,12 @@ const ListView = (props) => {
   };
 
   const changeListName = async () => {
-    if (listName !== formData.listName) {
+    if (listName !== newListData.listName) {
       await Helpers.changeListName(
         token,
         listDetails.board_id,
         listDetails.id,
-        formData.listName
+        newListData.listName
       );
     }
   };
@@ -59,9 +69,13 @@ const ListView = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
-      formData.new_card_name != null &&
-      formData.new_card_name !== "" &&
-      (await Helpers.createCard(token, listDetails.id, formData.new_card_name))
+      newCardData.new_card_name != null &&
+      newCardData.new_card_name !== "" &&
+      (await Helpers.createCard(
+        token,
+        listDetails.id,
+        newCardData.new_card_name
+      ))
     ) {
       refreshCards();
     }
@@ -77,7 +91,7 @@ const ListView = (props) => {
         <div className="card-header row m-0 d-flex justify-content-between pl-0">
           <div className="col-10 pr-0 mr-0 pt-1">
             <Editable
-              text={listName}
+              text={newListData.listName}
               type="input"
               onConfirm={changeListName}
               childRef={listNameInputRef}
@@ -86,8 +100,8 @@ const ListView = (props) => {
                 ref={listNameInputRef}
                 type="text"
                 name="listName"
-                value={listName}
-                onChange={handleChange}
+                value={newListData.listName}
+                onChange={handleListNameChange}
               />
             </Editable>
           </div>
@@ -105,7 +119,7 @@ const ListView = (props) => {
                   className="form-control form-control-sm"
                   name="new_card_name"
                   placeholder="Input card name"
-                  onChange={handleChange}
+                  onChange={handleNewCardChange}
                 />
               </div>
               <div className="from-group col-2">
