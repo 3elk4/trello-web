@@ -60,6 +60,12 @@ class BoardView extends React.Component {
     }
   };
 
+  archiveList = async (id) => {
+    if (await Helpers.archiveList(this.state.token, this.state.boardId, id)) {
+      this.refreshLists();
+    }
+  };
+
   refreshLists = async () => {
     const listsDetails = await Helpers.getBoardLists(
       this.state.token,
@@ -69,7 +75,12 @@ class BoardView extends React.Component {
     for (let key in listsDetails) {
       const record = listsDetails[key];
       lists.push(
-        <ListView key={key} listDetails={record} deleteList={this.deleteList} />
+        <ListView
+          key={key}
+          listDetails={record}
+          deleteList={this.deleteList}
+          archiveList={this.archiveList}
+        />
       );
     }
     this.setState({ lists: lists });

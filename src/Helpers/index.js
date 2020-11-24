@@ -174,6 +174,26 @@ export async function changeListName(token, boardId, listId, name) {
   });
 }
 
+export async function archiveList(token, boardId, listId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+    }),
+  };
+
+  return await fetch(Constants.ARCHIVE_LIST_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
+}
+
 export async function deleteList(token, boardId, listId) {
   const requestOps = {
     method: "POST",
