@@ -229,3 +229,22 @@ export async function createCard(token, listId, cardName) {
     return response.ok;
   });
 }
+
+export async function createUser(userName, password) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: userName,
+      password: password,
+    }),
+  };
+
+  return await fetch(Constants.REGISTER_USER_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
+}

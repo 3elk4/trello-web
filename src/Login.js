@@ -102,6 +102,10 @@ class Login extends React.Component {
             Log In
           </button>
         </form>
+        <div className="row">
+          If you don't have an account,&nbsp;
+          <a href="/register">register now</a>.
+        </div>
       </div>
     );
   }

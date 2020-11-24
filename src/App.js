@@ -6,6 +6,7 @@ import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
 import BoardView from "./Board/BoardView";
 import home_icon from "./assets/home_icon.png";
+import Register from "./Register";
 
 class App extends React.Component {
   constructor(props) {
@@ -55,6 +56,7 @@ class App extends React.Component {
                 <Login handleLogin={this.handleLogin} />
               )}
             </Route>
+            <Route exact path="/register" component={() => <Register />} />
             <Route exact path="/board/:boardId" component={BoardView} />
           </Switch>
         </BrowserRouter>
