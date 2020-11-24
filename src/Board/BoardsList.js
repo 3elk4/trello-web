@@ -38,7 +38,9 @@ const BoardList = (props) => {
       <Modal.Header closeButton>
         <Modal.Title>Choose board</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{listOfBoards}</Modal.Body>
+      <Modal.Body>
+        <div className="list-group">{listOfBoards}</div>
+      </Modal.Body>
     </Modal>
   );
 };

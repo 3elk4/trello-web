@@ -21,8 +21,7 @@ export async function getUserBoards(token) {
     .then((response) => response.json())
     .then((data) => {
       for (let key in data.boards) {
-        const record = JSON.parse(data.boards[key]);
-        boardsDetails.push(record);
+        boardsDetails.push(data.boards[key]);
       }
     })
     .catch((error) => console.log(error));
@@ -265,6 +264,34 @@ export async function createCard(token, listId, cardName) {
   };
 
   return await fetch(Constants.CREATE_CARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
+export async function changeCardDescription(
+  token,
+  cardId,
+  listId,
+  boardId,
+  newDescription
+) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+      description: newDescription,
+    }),
+  };
+
+  console.log(requestOps.body);
+
+  return await fetch(Constants.EDIT_CARD_URL, requestOps).then((response) => {
     return response.ok;
   });
 }

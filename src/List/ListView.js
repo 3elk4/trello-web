@@ -52,7 +52,16 @@ const ListView = (props) => {
     );
     const cards = [];
     for (let key in cardsDetails) {
-      cards.push(<Card key={key} name={cardsDetails[key].name} />);
+      cards.push(
+        <Card
+          key={key}
+          id={cardsDetails[key].id}
+          boardId={listDetails.board_id}
+          listId={listDetails.id}
+          name={cardsDetails[key].name}
+          description={cardsDetails[key].description}
+        />
+      );
     }
     setCards(cards);
   };

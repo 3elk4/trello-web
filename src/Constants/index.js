@@ -19,4 +19,5 @@ export const DELETE_LIST_URL = `${API_ROOT}/delete_list`;
 export const GET_CARDS_URL = (boardId, listId) =>
   `${API_ROOT}/get_card/${boardId}/${listId}`;
 export const CREATE_CARD_URL = `${API_ROOT}/create_card`;
+export const EDIT_CARD_URL = `${API_ROOT}/edit_card`;
 export const REGISTER_USER_URL = `${API_ROOT}/create_user`;

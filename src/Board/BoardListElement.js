@@ -6,11 +6,13 @@ const BoardListElement = (props) => {
   };
 
   return (
-    <p>
-      <a href="#" onClick={moveList}>
-        {props.name}
-      </a>
-    </p>
+    <a
+      className="list-group-item list-group-item-action"
+      style={{ cursor: "pointer" }}
+      onClick={moveList}
+    >
+      {props.name}
+    </a>
   );
 };
 
