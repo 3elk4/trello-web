@@ -1,101 +1,149 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Card from "../Card/Card";
 import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
+import Editable from "../Editable";
+import ListActions from "./ListActions";
 
-class ListView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.listDetails = this.props.listDetails;
-    this.confirmMessage = `Are you sure you want to delete the "${this.listDetails.name}" list?`;
-    this.state = {
-      token: sessionStorage.getItem("authToken"),
-    };
-  }
+const ListView = (props) => {
+  const [token, setToken] = useState(sessionStorage.getItem("authToken"));
+  const [listName, setListName] = useState(props.listDetails.name);
+  const [listDetails, setLsitDetails] = useState(props.listDetails);
+  const [cards, setCards] = useState();
+  const [newCardData, setNewCardData] = useState();
+  const [newListData, setNewListData] = useState({
+    listName: listName,
+  });
 
-  onConfirm = (listId) => {
-    this.props.deleteList(listId);
+  const listNameInputRef = useRef();
+  const actionType =
+    props.listDetails.archiving_date === null ? "archive" : "delete";
+  const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
+
+  const onConfirm = (listId) => {
+    if (actionType === "archive") {
+      props.archiveList(listId);
+    } else if (actionType === "delete") {
+      props.deleteList(listId);
+    }
   };
 
-  handleChange = (event) => {
+  const handleNewCardChange = (event) => {
     const { name, value } = event.target;
-    this.setState({
+    setNewCardData({
       [name]: value,
     });
   };
 
-  refreshCards = async () => {
+  const handleListNameChange = (event) => {
+    const { name, value } = event.target;
+    setNewListData({
+      [name]: value,
+    });
+  };
+
+  const refreshCards = async () => {
     const cardsDetails = await Helpers.getBoardListCards(
-      this.state.token,
-      this.listDetails.board_id,
-      this.listDetails.id
+      token,
+      listDetails.board_id,
+      listDetails.id
     );
     const cards = [];
     for (let key in cardsDetails) {
-      console.log(cardsDetails[key].name);
       cards.push(<Card key={key} name={cardsDetails[key].name} />);
     }
-    this.setState({ cards: cards });
+    setCards(cards);
   };
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const newCardName = this.state.new_card_name;
-    if (
-      newCardName != null &&
-      newCardName !== "" &&
-      (await Helpers.createCard(
-        this.state.token,
-        this.listDetails.id,
-        newCardName
-      ))
-    ) {
-      this.refreshCards();
+  const changeListName = async () => {
+    if (listName !== newListData.listName) {
+      await Helpers.changeListName(
+        token,
+        listDetails.board_id,
+        listDetails.id,
+        newListData.listName
+      );
     }
   };
 
-  componentDidMount = () => {
-    this.refreshCards();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (
+      newCardData.new_card_name != null &&
+      newCardData.new_card_name !== "" &&
+      (await Helpers.createCard(
+        token,
+        listDetails.id,
+        newCardData.new_card_name
+      ))
+    ) {
+      refreshCards();
+    }
   };
 
-  render() {
-    return (
-      <div className="col-lg-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
-        <div className="card text-center bg-secondary text-white rounded-top w-100">
-          <div className="card-header">{this.props.listDetails.name}</div>
-          <div className="card-body">
-            {this.state.cards}
-            <form className="form" onSubmit={this.handleSubmit}>
-              <div className="form-row">
-                <div className="form-group col-10">
-                  <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    name="new_card_name"
-                    placeholder="Input card name"
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="from-group col-2">
-                  <button type="submit" className="btn btn-sm btn-success">
-                    Add
-                  </button>
-                </div>
-              </div>
-            </form>
+  useEffect(() => {
+    refreshCards();
+  }, []);
+
+  return (
+    <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
+      <div className="card bg-secondary text-white rounded-top w-100">
+        <div className="card-header row m-0 d-flex justify-content-between pl-0">
+          <div className="col-10 pr-0 mr-0 pt-1">
+            <Editable
+              text={newListData.listName}
+              type="input"
+              onConfirm={changeListName}
+              childRef={listNameInputRef}
+            >
+              <input
+                ref={listNameInputRef}
+                type="text"
+                name="listName"
+                value={newListData.listName}
+                onChange={handleListNameChange}
+              />
+            </Editable>
           </div>
-          <div className="card-footer p-1">
-            <ActionButton
-              id={this.listDetails.id}
-              confirmMessage={this.confirmMessage}
-              onConfirm={this.onConfirm}
-              actionType={"delete"}
-            />
+          <div className="col-1 ml-0 pl-0">
+            <ListActions />
           </div>
         </div>
+        <div className="card-body pl-1 pr-1">
+          {cards}
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="form-row d-flex justify-content-between">
+              <div className="form-group col-9">
+                <input
+                  type="text"
+                  className="form-control form-control-sm"
+                  name="new_card_name"
+                  placeholder="Input card name"
+                  onChange={handleNewCardChange}
+                />
+              </div>
+              <div className="from-group col-2">
+                <button
+                  type="submit"
+                  className="btn btn-sm btn-success float-right"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div className="card-footer p-1">
+          <ActionButton
+            id={listDetails.id}
+            confirmMessage={confirmMessage}
+            onConfirm={onConfirm}
+            actionType={actionType}
+          />
+        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default ListView;

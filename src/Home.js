@@ -8,10 +8,10 @@ const Home = (props) => {
     return <Redirect to={Constants.LOGIN_URL} />;
   } else {
     return (
-      <div className="border shadow rounded p-4">
+      <div className="border shadow rounded p-4 bg-dark text-white">
         <h2 className="mb-5">Your boards:</h2>
         <Boards />
-        <button className="btn btn-dark mt-2" onClick={props.handleLogout}>
+        <button className="btn btn-secondary mt-2" onClick={props.handleLogout}>
           Log Out
         </button>
       </div>

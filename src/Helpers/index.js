@@ -118,6 +118,25 @@ export async function getBoardNameById(token, boardId) {
   return boardDetails.name;
 }
 
+export async function changeBoardName(token, id, name) {
+  const boardId = id;
+  const boardName = name;
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: boardId,
+      name: boardName,
+    }),
+  };
+  return await fetch(Constants.EDIT_BOARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
 export async function createList(token, boardId, listName) {
   const requestOps = {
     method: "POST",
@@ -134,6 +153,45 @@ export async function createList(token, boardId, listName) {
   return await fetch(Constants.CREATE_LIST_URL, requestOps).then((response) => {
     return response.ok;
   });
+}
+
+export async function changeListName(token, boardId, listId, name) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+      name: name,
+    }),
+  };
+
+  return await fetch(Constants.EDIT_LIST_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
+export async function archiveList(token, boardId, listId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+    }),
+  };
+
+  return await fetch(Constants.ARCHIVE_LIST_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
 }
 
 export async function deleteList(token, boardId, listId) {
@@ -190,4 +248,23 @@ export async function createCard(token, listId, cardName) {
   return await fetch(Constants.CREATE_CARD_URL, requestOps).then((response) => {
     return response.ok;
   });
+}
+
+export async function createUser(userName, password) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: userName,
+      password: password,
+    }),
+  };
+
+  return await fetch(Constants.REGISTER_USER_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
 }

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { createRef } from "react";
 import ListView from "../List/ListView";
 import * as Helpers from "../Helpers";
+import Editable from "../Editable";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class BoardView extends React.Component {
       boardId: this.props.match.params.boardId,
       lists: null,
     };
+    this.boardNameInputRef = createRef();
   }
 
   handleSubmit = async (event) => {
@@ -39,11 +41,27 @@ class BoardView extends React.Component {
       this.state.token,
       this.state.boardId
     );
-    this.setState({ boardName: boardName });
+    this.setState({ currBoardName: boardName, boardName: boardName });
+  };
+
+  changeBoardName = async () => {
+    if (this.state.currBoardName !== this.state.boardName) {
+      await Helpers.changeBoardName(
+        this.state.token,
+        this.state.boardId,
+        this.state.boardName
+      );
+    }
   };
 
   deleteList = async (id) => {
     if (await Helpers.deleteList(this.state.token, this.state.boardId, id)) {
+      this.refreshLists();
+    }
+  };
+
+  archiveList = async (id) => {
+    if (await Helpers.archiveList(this.state.token, this.state.boardId, id)) {
       this.refreshLists();
     }
   };
@@ -57,7 +75,12 @@ class BoardView extends React.Component {
     for (let key in listsDetails) {
       const record = listsDetails[key];
       lists.push(
-        <ListView key={key} listDetails={record} deleteList={this.deleteList} />
+        <ListView
+          key={key}
+          listDetails={record}
+          deleteList={this.deleteList}
+          archiveList={this.archiveList}
+        />
       );
     }
     this.setState({ lists: lists });
@@ -71,14 +94,30 @@ class BoardView extends React.Component {
   render() {
     return (
       <>
-        <div className="border shadow rounded p-4">
-          <h2 className="mb-5">{this.state.boardName}</h2>
+        <div className="border shadow rounded p-4 bg-dark text-white">
+          <h2 className="mb-5">
+            <Editable
+              text={this.state.boardName}
+              type="input"
+              onConfirm={this.changeBoardName}
+              childRef={this.boardNameInputRef}
+            >
+              <input
+                className="w-75"
+                ref={this.boardNameInputRef}
+                type="text"
+                name="boardName"
+                value={this.state.boardName}
+                onChange={this.handleChange}
+              />
+            </Editable>
+          </h2>
           <div className="row">
             {this.state.lists}
-            <div className="col-lg-3 col-sm-12">
+            <div className="col-lg-2 col-md-3 col-sm-12">
               <form className="form" onSubmit={this.handleSubmit}>
-                <div className="form-row">
-                  <div className="form-group col-9">
+                <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary">
+                  <div className="form-group col-9 m-0 p-0">
                     <input
                       type="text"
                       className="form-control form-control-sm"
@@ -87,9 +126,12 @@ class BoardView extends React.Component {
                       onChange={this.handleChange}
                     />
                   </div>
-                  <div className="form-group col-3">
-                    <button type="submit" className="btn btn-sm btn-success">
-                      Create
+                  <div className="form-group col-2 m-0 p-0">
+                    <button
+                      type="submit"
+                      className="btn btn-sm btn-success float-right"
+                    >
+                      +
                     </button>
                   </div>
                 </div>

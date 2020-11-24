@@ -2,9 +2,8 @@ import React from "react";
 
 const Card = (props) => {
   return (
-    <div className="card bg-dark mb-1 mt-1">
-      <div className="card-header">{props.name}</div>
-      <div className="card-body">LoremIpsum</div>
+    <div className="bg-dark p-2 mt-2 mb-1">
+      <span style={{ cursor: "pointer" }}>{props.name}</span>
     </div>
   );
 };

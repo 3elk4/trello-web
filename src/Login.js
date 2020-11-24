@@ -70,7 +70,7 @@ class Login extends React.Component {
   render() {
     const { username, password } = this.state;
     return (
-      <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center border col-sm-3 p-1 shadow-lg rounded">
+      <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center border col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4">Login page</h3>
@@ -102,6 +102,10 @@ class Login extends React.Component {
             Log In
           </button>
         </form>
+        <div className="row">
+          If you don't have an account,&nbsp;
+          <a href="/register">register now</a>.
+        </div>
       </div>
     );
   }
