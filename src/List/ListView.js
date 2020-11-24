@@ -4,16 +4,18 @@ import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
 import Editable from "../Editable";
 import ListActions from "./ListActions";
+import BoardList from "../Board/BoardsList";
 
 const ListView = (props) => {
-  const [token, setToken] = useState(sessionStorage.getItem("authToken"));
-  const [listName, setListName] = useState(props.listDetails.name);
-  const [listDetails, setLsitDetails] = useState(props.listDetails);
+  const [token] = useState(sessionStorage.getItem("authToken"));
+  const [listName] = useState(props.listDetails.name);
+  const [listDetails] = useState(props.listDetails);
   const [cards, setCards] = useState();
   const [newCardData, setNewCardData] = useState();
   const [newListData, setNewListData] = useState({
     listName: listName,
   });
+  const [isBoardListModalShown, setBoardListModalShown] = useState(false);
 
   const listNameInputRef = useRef();
   const actionType =
@@ -66,6 +68,20 @@ const ListView = (props) => {
     }
   };
 
+  const moveList = async (newBoardId) => {
+    if (
+      await Helpers.moveList(
+        token,
+        listDetails.board_id,
+        listDetails.id,
+        newBoardId
+      )
+    ) {
+      hideBoardListModal();
+      props.refreshLists();
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -79,6 +95,14 @@ const ListView = (props) => {
     ) {
       refreshCards();
     }
+  };
+
+  const hideBoardListModal = () => {
+    setBoardListModalShown(false);
+  };
+
+  const showBoardListModal = () => {
+    setBoardListModalShown(true);
   };
 
   useEffect(() => {
@@ -106,7 +130,7 @@ const ListView = (props) => {
             </Editable>
           </div>
           <div className="col-1 ml-0 pl-0">
-            <ListActions />
+            <ListActions showBoardListModal={showBoardListModal} />
           </div>
         </div>
         <div className="card-body pl-1 pr-1">
@@ -142,6 +166,13 @@ const ListView = (props) => {
           />
         </div>
       </div>
+      <BoardList
+        token={token}
+        isShow={isBoardListModalShown}
+        handleClose={hideBoardListModal}
+        boardId={listDetails.board_id}
+        moveList={moveList}
+      />
     </div>
   );
 };

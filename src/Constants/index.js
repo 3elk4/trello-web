@@ -13,6 +13,7 @@ export const GET_LISTS_URL = (id) => `${API_ROOT}/get_list/${id}`;
 export const GET_BOARD_URL = `${API_ROOT}/get_board`;
 export const CREATE_LIST_URL = `${API_ROOT}/create_list`;
 export const EDIT_LIST_URL = `${API_ROOT}/edit_list`;
+export const MOVE_LIST_URL = `${API_ROOT}/move_list`;
 export const ARCHIVE_LIST_URL = `${API_ROOT}/archive_list`;
 export const DELETE_LIST_URL = `${API_ROOT}/delete_list`;
 export const GET_CARDS_URL = (boardId, listId) =>

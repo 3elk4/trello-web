@@ -212,6 +212,25 @@ export async function deleteList(token, boardId, listId) {
   });
 }
 
+export async function moveList(token, currentBoardId, listId, newBoardId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: listId,
+      board_id: currentBoardId,
+      new_board_id: newBoardId,
+    }),
+  };
+
+  return await fetch(Constants.MOVE_LIST_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
 export async function getBoardListCards(token, boardId, listId) {
   const requestOps = {
     method: "GET",
