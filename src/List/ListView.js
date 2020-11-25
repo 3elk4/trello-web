@@ -11,7 +11,7 @@ const ListView = (props) => {
   const [listName] = useState(props.listDetails.name);
   const [listDetails] = useState(props.listDetails);
   const [cards, setCards] = useState();
-  const [newCardData, setNewCardData] = useState();
+  const [newCardData, setNewCardData] = useState({ new_card_name: "" });
   const [newListData, setNewListData] = useState({
     listName: listName,
   });
@@ -52,16 +52,17 @@ const ListView = (props) => {
     );
     const cards = [];
     for (let key in cardsDetails) {
-      cards.push(
-        <Card
-          key={key}
-          id={cardsDetails[key].id}
-          boardId={listDetails.board_id}
-          listId={listDetails.id}
-          name={cardsDetails[key].name}
-          description={cardsDetails[key].description}
-        />
-      );
+      if (cardsDetails[key].archiving_date === null) {
+        cards.push(
+          <Card
+            key={key}
+            boardId={listDetails.board_id}
+            cardDetails={cardsDetails[key]}
+            refreshCards={refreshCards}
+            refreshArchivedElements={props.refreshArchivedElements}
+          />
+        );
+      }
     }
     setCards(cards);
   };

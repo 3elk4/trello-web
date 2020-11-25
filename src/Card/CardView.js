@@ -1,11 +1,19 @@
 import React, { useState, useRef } from "react";
 import { Modal } from "react-bootstrap";
+import ActionButton from "../ActionButton";
 import Editable from "../Editable";
 
 const CardView = (props) => {
-  const [cardDescription, setCardDescription] = useState(props.description);
+  const [cardDescription, setCardDescription] = useState(
+    props.cardDetails.description
+  );
+  const [cardDetails] = useState(props.cardDetails);
 
   const cardDescriptionRef = useRef();
+
+  const actionType =
+    props.cardDetails.archiving_date === null ? "archive" : "delete";
+  const confirmMessage = `Are you sure you want to ${actionType} the "${cardDetails.name}" card?`;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -15,15 +23,24 @@ const CardView = (props) => {
   };
 
   const changeCardDescription = () => {
-    if (cardDescription !== props.description) {
+    if (cardDescription !== cardDetails.description) {
       props.changeCardDescription(cardDescription);
     }
+  };
+
+  const onConfirm = (cardId) => {
+    if (actionType === "archive") {
+      props.archiveCard(cardId, cardDetails.list_id);
+    } else {
+      props.deleteCard(cardId, cardDetails.list_id);
+    }
+    props.handleClose();
   };
 
   return (
     <>
       <Modal show={props.isShow} onHide={props.handleClose}>
-        <Modal.Header>{props.name}</Modal.Header>
+        <Modal.Header>{cardDetails.name}</Modal.Header>
         <Modal.Body>
           <pre>
             <Editable
@@ -31,7 +48,7 @@ const CardView = (props) => {
               type="textarea"
               placeholder="Enter card description..."
               childRef={cardDescriptionRef}
-              originalText={props.description}
+              originalText={cardDetails.description}
               onConfirm={changeCardDescription}
             >
               <textarea
@@ -45,6 +62,14 @@ const CardView = (props) => {
             </Editable>
           </pre>
         </Modal.Body>
+        <Modal.Footer>
+          <ActionButton
+            id={cardDetails.id}
+            confirmMessage={confirmMessage}
+            onConfirm={onConfirm}
+            actionType={actionType}
+          />
+        </Modal.Footer>
       </Modal>
     </>
   );

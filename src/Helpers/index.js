@@ -211,6 +211,26 @@ export async function deleteList(token, boardId, listId) {
   });
 }
 
+export async function restoreList(token, boardId, listId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      id: listId,
+    }),
+  };
+
+  return await fetch(Constants.RESTORE_LIST_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
+}
+
 export async function moveList(token, currentBoardId, listId, newBoardId) {
   const requestOps = {
     method: "POST",
@@ -238,6 +258,26 @@ export async function getBoardListCards(token, boardId, listId) {
 
   const cardsDetails = [];
   await fetch(Constants.GET_CARDS_URL(boardId, listId), requestOps)
+    .then((response) => response.json())
+    .then((data) => {
+      for (let key in data.cards) {
+        const record = JSON.parse(data.cards[key]);
+        cardsDetails.push(record);
+      }
+    })
+    .catch((error) => console.log(error));
+
+  return cardsDetails;
+}
+
+export async function getBoardCards(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: { Authorization: token },
+  };
+
+  const cardsDetails = [];
+  await fetch(Constants.GET_BOARD_CARDS_URL(boardId), requestOps)
     .then((response) => response.json())
     .then((data) => {
       for (let key in data.cards) {
@@ -289,11 +329,70 @@ export async function changeCardDescription(
     }),
   };
 
-  console.log(requestOps.body);
-
   return await fetch(Constants.EDIT_CARD_URL, requestOps).then((response) => {
     return response.ok;
   });
+}
+
+export async function archiveCard(token, cardId, listId, boardId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+    }),
+  };
+
+  return await fetch(Constants.ARCHIVE_CARD_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
+}
+
+export async function deleteCard(token, cardId, listId, boardId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+    }),
+  };
+
+  return await fetch(Constants.DELETE_CARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
+}
+
+export async function restoreCard(token, cardId, listId, boardId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+    }),
+  };
+
+  return await fetch(Constants.RESTORE_CARD_URL, requestOps).then(
+    (response) => {
+      return response.ok;
+    }
+  );
 }
 
 export async function createUser(userName, password) {
@@ -313,4 +412,14 @@ export async function createUser(userName, password) {
       return response.ok;
     }
   );
+}
+
+export async function getArchivedLists(token, boardId) {
+  const dd = await getBoardLists(token, boardId);
+  return dd.filter((e) => e.archiving_date != null);
+}
+
+export async function getArchivedCards(token, boardId) {
+  const dd = await getBoardCards(token, boardId);
+  return dd.filter((e) => e.archiving_date != null);
 }

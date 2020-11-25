@@ -17,26 +17,41 @@ const Card = (props) => {
   const changeCardDescription = (newDescription) => {
     Helpers.changeCardDescription(
       token,
-      props.id,
-      props.listId,
+      props.cardDetails.id,
+      props.cardDetails.list_id,
       props.boardId,
       newDescription
     );
+  };
+
+  const archiveCard = async (cardId, listId) => {
+    if (await Helpers.archiveCard(token, cardId, listId, props.boardId)) {
+      props.refreshCards();
+      props.refreshArchivedElements();
+    }
+  };
+
+  const deleteCard = async (cardId, listId) => {
+    if (await Helpers.deleteCard(token, cardId, listId, props.boardId)) {
+      props.refreshCards();
+      props.refreshArchivedElements();
+    }
   };
 
   return (
     <>
       <div className="bg-dark p-2 mt-2 mb-1">
         <span style={{ cursor: "pointer" }} onClick={handleShow}>
-          {props.name}
+          {props.cardDetails.name}
         </span>
       </div>
       <CardView
         isShow={isShow}
         handleClose={handleClose}
-        name={props.name}
-        description={props.description}
         changeCardDescription={changeCardDescription}
+        cardDetails={props.cardDetails}
+        archiveCard={archiveCard}
+        deleteCard={deleteCard}
       />
     </>
   );
