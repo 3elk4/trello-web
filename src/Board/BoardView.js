@@ -105,10 +105,10 @@ class BoardView extends React.Component {
       this.state.token,
       this.state.boardId
     );
-    const archivedElemetns = [];
+    const archivedElements = [];
     for (let key in archivedListsDetails) {
       const record = archivedListsDetails[key];
-      archivedElemetns.push(
+      archivedElements.push(
         <ArchivedElement key={counter} refreshLists={this.refreshLists}>
           <ArchivedList details={record} />
         </ArchivedElement>
@@ -117,7 +117,7 @@ class BoardView extends React.Component {
     }
     for (let key in archivedCardsDetails) {
       const record = archivedCardsDetails[key];
-      archivedElemetns.push(
+      archivedElements.push(
         <ArchivedElement key={counter} refreshLists={this.refreshLists}>
           <ArchivedCard details={record} boardId={this.state.boardId} />
         </ArchivedElement>
@@ -125,7 +125,7 @@ class BoardView extends React.Component {
       counter++;
     }
 
-    this.setState({ archivedElements: archivedElemetns });
+    this.setState({ archivedElements: archivedElements });
   };
 
   componentDidMount = () => {
