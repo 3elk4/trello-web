@@ -109,7 +109,7 @@ export async function getBoardNameById(token, boardId) {
     },
   };
   const boardDetails = await fetch(
-    `${Constants.GET_BOARD_URL}?id=${boardId}`,
+    `${Constants.GET_BOARD_URL(boardId)}`,
     requestOps
   )
     .then((response) => response.json())

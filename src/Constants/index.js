@@ -10,7 +10,7 @@ export const EDIT_BOARD_URL = `${API_ROOT}/edit_board`;
 export const DELETE_BOARD_URL = `${API_ROOT}/delete_board`;
 export const ARCHIVE_BOARD_URL = `${API_ROOT}/archive_board`;
 export const GET_LISTS_URL = (id) => `${API_ROOT}/get_list/${id}`;
-export const GET_BOARD_URL = `${API_ROOT}/get_board`;
+export const GET_BOARD_URL = (id) => `${API_ROOT}/get_board/${id}`;
 export const CREATE_LIST_URL = `${API_ROOT}/create_list`;
 export const EDIT_LIST_URL = `${API_ROOT}/edit_list`;
 export const MOVE_LIST_URL = `${API_ROOT}/move_list`;

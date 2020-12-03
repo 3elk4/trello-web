@@ -6,13 +6,13 @@ const BoardListElement = (props) => {
   };
 
   return (
-    <a
+    <button
       className="list-group-item list-group-item-action"
       style={{ cursor: "pointer" }}
       onClick={moveList}
     >
       {props.name}
-    </a>
+    </button>
   );
 };
 
