@@ -12,7 +12,7 @@ const ListActions = (props) => {
         <Dropdown.Item onClick={() => props.showBoardListModal()}>
           Move
         </Dropdown.Item>
-        <Dropdown.Item onClick={() => console.log("Archive")}>
+        <Dropdown.Item onClick={() => props.archiveList(props.listId)}>
           Archive list...
         </Dropdown.Item>
         <Dropdown.Item onClick={() => console.log("Rename")}>

@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import Card from "../Card/Card";
-import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
 import Editable from "../Editable";
 import ListActions from "./ListActions";
@@ -20,15 +19,15 @@ const ListView = (props) => {
   const listNameInputRef = useRef();
   const actionType =
     props.listDetails.archiving_date === null ? "archive" : "delete";
-  const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
+  // const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
 
-  const onConfirm = (listId) => {
-    if (actionType === "archive") {
-      props.archiveList(listId);
-    } else if (actionType === "delete") {
-      props.deleteList(listId);
-    }
-  };
+  // const onConfirm = (listId) => {
+  //   if (actionType === "archive") {
+  //     props.archiveList(listId);
+  //   } else if (actionType === "delete") {
+  //     props.deleteList(listId);
+  //   }
+  // };
 
   const handleNewCardChange = (event) => {
     const { name, value } = event.target;
@@ -140,7 +139,11 @@ const ListView = (props) => {
             </Editable>
           </div>
           <div className="col-1 ml-0 pl-0">
-            <ListActions showBoardListModal={showBoardListModal} />
+            <ListActions
+              showBoardListModal={showBoardListModal}
+              archiveList={props.archiveList}
+              listId={listDetails.id}
+            />
           </div>
         </div>
         <div className="card-body pl-1 pr-1">
@@ -166,14 +169,6 @@ const ListView = (props) => {
               </div>
             </div>
           </form>
-        </div>
-        <div className="card-footer p-1">
-          <ActionButton
-            id={listDetails.id}
-            confirmMessage={confirmMessage}
-            onConfirm={onConfirm}
-            actionType={actionType}
-          />
         </div>
       </div>
       <BoardList

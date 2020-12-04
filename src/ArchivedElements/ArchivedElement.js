@@ -18,7 +18,7 @@ class ArchivedElement extends React.Component {
     return await Helpers.deleteCard(this.state.token, cardId, listId, boardId);
   };
 
-  restoretList = async (boardId, listId) => {
+  restoreList = async (boardId, listId) => {
     return await Helpers.restoreList(this.state.token, boardId, listId);
   };
 
@@ -29,7 +29,7 @@ class ArchivedElement extends React.Component {
   restore = async () => {
     if (this.props.children.type === ArchivedList) {
       if (
-        await this.restoretList(
+        await this.restoreList(
           this.props.children.props.details.board_id,
           this.props.children.props.details.id
         )
@@ -39,6 +39,29 @@ class ArchivedElement extends React.Component {
     } else {
       if (
         await this.restoreCard(
+          this.props.children.props.details.id,
+          this.props.children.props.details.list_id,
+          this.props.children.props.boardId
+        )
+      ) {
+        this.props.refreshLists();
+      }
+    }
+  };
+
+  delete = async () => {
+    if (this.props.children.type === ArchivedList) {
+      if (
+        await this.deleteList(
+          this.props.children.props.details.board_id,
+          this.props.children.props.details.id
+        )
+      ) {
+        this.props.refreshLists();
+      }
+    } else {
+      if (
+        await this.deleteCard(
           this.props.children.props.details.id,
           this.props.children.props.details.list_id,
           this.props.children.props.boardId
@@ -61,6 +84,9 @@ class ArchivedElement extends React.Component {
         <div className="card-footer p-1">
           <button className="btn btn-primary" onClick={this.restore}>
             restore
+          </button>
+          <button className="btn btn-secondary" onClick={this.delete}>
+            delete
           </button>
         </div>
       </div>
