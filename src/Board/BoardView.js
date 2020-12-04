@@ -80,19 +80,22 @@ class BoardView extends React.Component {
     const lists = [];
     for (let key in listsDetails) {
       const record = listsDetails[key];
-      lists.push(
-        <ListView
-          key={key}
-          listDetails={record}
-          deleteList={this.deleteList}
-          archiveList={this.archiveList}
-          showBoardListModal={this.showBoardListModal}
-          refreshLists={this.refreshLists}
-          refreshArchivedElements={this.refreshArchivedElements}
-        />
-      );
+      if (record.archiving_date == null) {
+        lists.push(
+          <ListView
+            key={key}
+            listDetails={record}
+            deleteList={this.deleteList}
+            archiveList={this.archiveList}
+            showBoardListModal={this.showBoardListModal}
+            refreshLists={this.refreshLists}
+            refreshArchivedElements={this.refreshArchivedElements}
+          />
+        );
+      }
     }
     this.setState({ lists: lists });
+    this.refreshArchivedElements();
   };
 
   refreshArchivedElements = async () => {
