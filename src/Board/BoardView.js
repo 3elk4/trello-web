@@ -2,6 +2,9 @@ import React, { createRef } from "react";
 import ListView from "../List/ListView";
 import * as Helpers from "../Helpers";
 import Editable from "../Editable";
+import ArchivedCard from "../ArchivedElements/ArchivedCard";
+import ArchivedList from "../ArchivedElements/ArchivedList";
+import ArchivedElement from "../ArchivedElements/ArchivedElement";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -10,6 +13,7 @@ class BoardView extends React.Component {
       token: sessionStorage.getItem("authToken"),
       boardId: this.props.match.params.boardId,
       lists: null,
+      showArchived: false,
     };
     this.boardNameInputRef = createRef();
   }
@@ -57,12 +61,14 @@ class BoardView extends React.Component {
   deleteList = async (id) => {
     if (await Helpers.deleteList(this.state.token, this.state.boardId, id)) {
       this.refreshLists();
+      this.refreshArchivedElements();
     }
   };
 
   archiveList = async (id) => {
     if (await Helpers.archiveList(this.state.token, this.state.boardId, id)) {
       this.refreshLists();
+      this.refreshArchivedElements();
     }
   };
 
@@ -74,21 +80,65 @@ class BoardView extends React.Component {
     const lists = [];
     for (let key in listsDetails) {
       const record = listsDetails[key];
-      lists.push(
-        <ListView
-          key={key}
-          listDetails={record}
-          deleteList={this.deleteList}
-          archiveList={this.archiveList}
-        />
-      );
+      if (record.archiving_date == null) {
+        lists.push(
+          <ListView
+            key={key}
+            listDetails={record}
+            deleteList={this.deleteList}
+            archiveList={this.archiveList}
+            showBoardListModal={this.showBoardListModal}
+            refreshLists={this.refreshLists}
+            refreshArchivedElements={this.refreshArchivedElements}
+          />
+        );
+      }
     }
     this.setState({ lists: lists });
+    this.refreshArchivedElements();
+  };
+
+  refreshArchivedElements = async () => {
+    let counter = 0;
+    const archivedListsDetails = await Helpers.getArchivedLists(
+      this.state.token,
+      this.state.boardId
+    );
+    const archivedCardsDetails = await Helpers.getArchivedCards(
+      this.state.token,
+      this.state.boardId
+    );
+    const archivedElements = [];
+    for (let key in archivedListsDetails) {
+      const record = archivedListsDetails[key];
+      archivedElements.push(
+        <ArchivedElement key={counter} refreshLists={this.refreshLists}>
+          <ArchivedList details={record} />
+        </ArchivedElement>
+      );
+      counter++;
+    }
+    for (let key in archivedCardsDetails) {
+      const record = archivedCardsDetails[key];
+      archivedElements.push(
+        <ArchivedElement key={counter} refreshLists={this.refreshLists}>
+          <ArchivedCard details={record} boardId={this.state.boardId} />
+        </ArchivedElement>
+      );
+      counter++;
+    }
+
+    this.setState({ archivedElements: archivedElements });
   };
 
   componentDidMount = () => {
     this.getBoardName();
     this.refreshLists();
+    this.refreshArchivedElements();
+  };
+
+  toggleArchived = () => {
+    this.setState({ showArchived: !this.state.showArchived });
   };
 
   render() {
@@ -138,6 +188,29 @@ class BoardView extends React.Component {
               </form>
             </div>
           </div>
+          <div className="mb-3">
+            <button
+              href="#"
+              onClick={this.toggleArchived}
+              className="btn btn-link p-0"
+            >
+              Archived elements&nbsp;&nbsp;
+              <svg
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                className="bi bi-arrow-down-circle-fill"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"
+                />
+              </svg>
+            </button>
+          </div>
+          {this.state.showArchived ? this.state.archivedElements : null}
         </div>
       </>
     );

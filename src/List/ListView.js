@@ -1,32 +1,33 @@
 import React, { useRef, useState, useEffect } from "react";
 import Card from "../Card/Card";
-import ActionButton from "../ActionButton";
 import * as Helpers from "../Helpers";
 import Editable from "../Editable";
 import ListActions from "./ListActions";
+import BoardList from "../Board/BoardsList";
 
 const ListView = (props) => {
-  const [token, setToken] = useState(sessionStorage.getItem("authToken"));
-  const [listName, setListName] = useState(props.listDetails.name);
-  const [listDetails, setLsitDetails] = useState(props.listDetails);
+  const [token] = useState(sessionStorage.getItem("authToken"));
+  const [listName] = useState(props.listDetails.name);
+  const [listDetails] = useState(props.listDetails);
   const [cards, setCards] = useState();
-  const [newCardData, setNewCardData] = useState();
+  const [newCardData, setNewCardData] = useState({ new_card_name: "" });
   const [newListData, setNewListData] = useState({
     listName: listName,
   });
+  const [isBoardListModalShown, setBoardListModalShown] = useState(false);
 
   const listNameInputRef = useRef();
   const actionType =
     props.listDetails.archiving_date === null ? "archive" : "delete";
-  const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
+  // const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
 
-  const onConfirm = (listId) => {
-    if (actionType === "archive") {
-      props.archiveList(listId);
-    } else if (actionType === "delete") {
-      props.deleteList(listId);
-    }
-  };
+  // const onConfirm = (listId) => {
+  //   if (actionType === "archive") {
+  //     props.archiveList(listId);
+  //   } else if (actionType === "delete") {
+  //     props.deleteList(listId);
+  //   }
+  // };
 
   const handleNewCardChange = (event) => {
     const { name, value } = event.target;
@@ -50,7 +51,17 @@ const ListView = (props) => {
     );
     const cards = [];
     for (let key in cardsDetails) {
-      cards.push(<Card key={key} name={cardsDetails[key].name} />);
+      if (cardsDetails[key].archiving_date === null) {
+        cards.push(
+          <Card
+            key={key}
+            boardId={listDetails.board_id}
+            cardDetails={cardsDetails[key]}
+            refreshCards={refreshCards}
+            refreshArchivedElements={props.refreshArchivedElements}
+          />
+        );
+      }
     }
     setCards(cards);
   };
@@ -63,6 +74,20 @@ const ListView = (props) => {
         listDetails.id,
         newListData.listName
       );
+    }
+  };
+
+  const moveList = async (newBoardId) => {
+    if (
+      await Helpers.moveList(
+        token,
+        listDetails.board_id,
+        listDetails.id,
+        newBoardId
+      )
+    ) {
+      hideBoardListModal();
+      props.refreshLists();
     }
   };
 
@@ -79,6 +104,14 @@ const ListView = (props) => {
     ) {
       refreshCards();
     }
+  };
+
+  const hideBoardListModal = () => {
+    setBoardListModalShown(false);
+  };
+
+  const showBoardListModal = () => {
+    setBoardListModalShown(true);
   };
 
   useEffect(() => {
@@ -106,7 +139,11 @@ const ListView = (props) => {
             </Editable>
           </div>
           <div className="col-1 ml-0 pl-0">
-            <ListActions />
+            <ListActions
+              showBoardListModal={showBoardListModal}
+              archiveList={props.archiveList}
+              listId={listDetails.id}
+            />
           </div>
         </div>
         <div className="card-body pl-1 pr-1">
@@ -133,15 +170,14 @@ const ListView = (props) => {
             </div>
           </form>
         </div>
-        <div className="card-footer p-1">
-          <ActionButton
-            id={listDetails.id}
-            confirmMessage={confirmMessage}
-            onConfirm={onConfirm}
-            actionType={actionType}
-          />
-        </div>
       </div>
+      <BoardList
+        token={token}
+        isShow={isBoardListModalShown}
+        handleClose={hideBoardListModal}
+        boardId={listDetails.board_id}
+        moveList={moveList}
+      />
     </div>
   );
 };

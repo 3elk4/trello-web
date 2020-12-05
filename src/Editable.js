@@ -6,6 +6,7 @@ const Editable = ({
   type,
   placeholder,
   children,
+  originalText,
   ...props
 }) => {
   const [isEditing, setEditing] = useState(false);
@@ -13,6 +14,23 @@ const Editable = ({
   const handleBlur = () => {
     setEditing(false);
     props.onConfirm();
+  };
+
+  const reset = () => {
+    setEditing(false);
+  };
+
+  const handleKeyDown = (event, type) => {
+    const { key } = event;
+    const keys = ["Escape", "Tab"];
+    const enterKey = "Enter";
+    const allKeys = [...keys, enterKey];
+
+    if (keys.indexOf(key) >= 0) {
+      reset();
+    } else if (type !== "textarea" && allKeys.indexOf(key) >= 0) {
+      handleBlur();
+    }
   };
 
   useEffect(() => {
@@ -24,11 +42,16 @@ const Editable = ({
   return (
     <>
       {isEditing ? (
-        <span onBlur={() => handleBlur()}>{children}</span>
+        <div
+          onBlur={() => handleBlur()}
+          onKeyDown={(e) => handleKeyDown(e, type)}
+        >
+          {children}
+        </div>
       ) : (
-        <span style={{ cursor: "pointer" }} onClick={() => setEditing(true)}>
+        <div style={{ cursor: "pointer" }} onClick={() => setEditing(true)}>
           {text || placeholder || "Editable content"}
-        </span>
+        </div>
       )}
     </>
   );
