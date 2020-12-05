@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CardView from "./CardView";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 
 const Card = (props) => {
   const [isShow, setShow] = useState(false);

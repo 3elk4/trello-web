@@ -1,6 +1,6 @@
 import React, { createRef } from "react";
 import ListView from "../List/ListView";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 import Editable from "../Editable";
 import ArchivedCard from "../ArchivedElements/ArchivedCard";
 import ArchivedList from "../ArchivedElements/ArchivedList";

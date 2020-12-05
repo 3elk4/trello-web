@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
-import * as Helpers from "./Helpers";
+import * as Helpers from "../Helpers";
 
 class Register extends React.Component {
   constructor(props) {

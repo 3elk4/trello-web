@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 import BoardListElement from "./BoardListElement";
 
 const BoardList = (props) => {

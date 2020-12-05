@@ -1,6 +1,6 @@
 import React from "react";
 import ArchivedList from "./ArchivedList";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 
 class ArchivedElement extends React.Component {
   constructor(props) {

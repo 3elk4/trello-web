@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Card from "../Card/Card";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 import Editable from "../Editable";
 import ListActions from "./ListActions";
 import BoardList from "../Board/BoardsList";

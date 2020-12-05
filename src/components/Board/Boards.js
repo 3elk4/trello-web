@@ -1,7 +1,7 @@
 import React from "react";
 import BoardCard from "./BoardCard";
 import CreateBoard from "./CreateBoard";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 
 class Boards extends React.Component {
   _isMounted = false;

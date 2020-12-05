@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router";
-import * as Constants from "./Constants";
-import * as Helpers from "./Helpers";
+import * as Constants from "../Constants";
+import * as Helpers from "../Helpers";
 
 class Login extends React.Component {
   constructor(props) {

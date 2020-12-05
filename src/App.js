@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
+import Home from "./components/Home";
+import Login from "./components/Login";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
-import BoardView from "./Board/BoardView";
+import BoardView from "./components/Board/BoardView";
 import home_icon from "./assets/home_icon.png";
-import Register from "./Register";
+import Register from "./components/Register";
 
 class App extends React.Component {
   constructor(props) {
