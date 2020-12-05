@@ -87,7 +87,6 @@ class BoardView extends React.Component {
             listDetails={record}
             deleteList={this.deleteList}
             archiveList={this.archiveList}
-            showBoardListModal={this.showBoardListModal}
             refreshLists={this.refreshLists}
             refreshArchivedElements={this.refreshArchivedElements}
           />
