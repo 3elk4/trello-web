@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Modal } from "react-bootstrap";
-import ActionButton from "../ActionButton";
+import { Button, Modal } from "react-bootstrap";
+import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
 
 const CardView = (props) => {
+  const [showConf, setShowConf] = useState(false);
+
   const [cardDescription, setCardDescription] = useState(
     props.cardDetails.description
   );
@@ -28,17 +30,23 @@ const CardView = (props) => {
     }
   };
 
-  const onConfirm = (cardId) => {
+  const onConfirm = () => {
     if (actionType === "archive") {
-      props.archiveCard(cardId, cardDetails.list_id);
+      props.archiveCard(cardDetails.id, cardDetails.list_id);
     } else {
-      props.deleteCard(cardId, cardDetails.list_id);
+      props.deleteCard(cardDetails.id, cardDetails.list_id);
     }
     props.handleClose();
   };
 
   return (
     <>
+      <ConfirmationModal
+        confirmMessage={confirmMessage}
+        isShow={showConf}
+        handleClose={() => setShowConf(false)}
+        onConfirm={onConfirm}
+      />
       <Modal show={props.isShow} onHide={props.handleClose}>
         <Modal.Header>{cardDetails.name}</Modal.Header>
         <Modal.Body>
@@ -63,12 +71,13 @@ const CardView = (props) => {
           </pre>
         </Modal.Body>
         <Modal.Footer>
-          <ActionButton
-            id={cardDetails.id}
-            confirmMessage={confirmMessage}
-            onConfirm={onConfirm}
-            actionType={actionType}
-          />
+          <Button
+            variant={actionType !== "archive" ? "danger" : "warning"}
+            onClick={() => setShowConf(true)}
+            style={{ textTransform: "capitalize" }}
+          >
+            {actionType}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
