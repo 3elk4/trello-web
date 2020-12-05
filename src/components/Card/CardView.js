@@ -1,87 +1,95 @@
-import React, { useState, useRef } from "react";
+import React, { createRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
 
-const CardView = (props) => {
-  const [showConf, setShowConf] = useState(false);
+class CardView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showConf: false,
+      cardDescription: props.cardDetails.description,
+      cardDetails: props.cardDetails,
+    };
+    this.cardDescriptionRef = createRef();
 
-  const [cardDescription, setCardDescription] = useState(
-    props.cardDetails.description
-  );
-  const [cardDetails] = useState(props.cardDetails);
+    this.actionType =
+      props.cardDetails.archiving_date === null ? "archive" : "delete";
+    this.confirmMessage = `Are you sure you want to ${this.actionType} the "${this.state.cardDetails.name}" card?`;
+  }
 
-  const cardDescriptionRef = useRef();
-
-  const actionType =
-    props.cardDetails.archiving_date === null ? "archive" : "delete";
-  const confirmMessage = `Are you sure you want to ${actionType} the "${cardDetails.name}" card?`;
-
-  const handleChange = (event) => {
+  handleChange = (event) => {
     const { name, value } = event.target;
-    if (name === "cardDescription") {
-      setCardDescription(value);
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  changeCardDescription = () => {
+    if (this.state.cardDescription !== this.state.cardDetails.description) {
+      this.props.changeCardDescription(this.state.cardDescription);
     }
   };
 
-  const changeCardDescription = () => {
-    if (cardDescription !== cardDetails.description) {
-      props.changeCardDescription(cardDescription);
-    }
-  };
-
-  const onConfirm = () => {
-    if (actionType === "archive") {
-      props.archiveCard(cardDetails.id, cardDetails.list_id);
+  onConfirm = () => {
+    if (this.actionType === "archive") {
+      this.props.archiveCard(
+        this.state.cardDetails.id,
+        this.state.cardDetails.list_id
+      );
     } else {
-      props.deleteCard(cardDetails.id, cardDetails.list_id);
+      this.props.deleteCard(
+        this.state.cardDetails.id,
+        this.state.cardDetails.list_id
+      );
     }
-    props.handleClose();
+    this.props.handleClose();
   };
-
-  return (
-    <>
-      <ConfirmationModal
-        confirmMessage={confirmMessage}
-        isShow={showConf}
-        handleClose={() => setShowConf(false)}
-        onConfirm={onConfirm}
-      />
-      <Modal show={props.isShow} onHide={props.handleClose}>
-        <Modal.Header>{cardDetails.name}</Modal.Header>
-        <Modal.Body>
-          <pre>
-            <Editable
-              text={cardDescription}
-              type="textarea"
-              placeholder="Enter card description..."
-              childRef={cardDescriptionRef}
-              originalText={cardDetails.description}
-              onConfirm={changeCardDescription}
+  render() {
+    return (
+      <>
+        <ConfirmationModal
+          confirmMessage={this.confirmMessage}
+          isShow={this.state.showConf}
+          handleClose={() => this.setState({ showConf: false })}
+          onConfirm={this.onConfirm}
+        />
+        <Modal show={this.props.isShow} onHide={this.props.handleClose}>
+          <Modal.Header>{this.state.cardDetails.name}</Modal.Header>
+          <Modal.Body>
+            <pre>
+              <Editable
+                text={this.state.cardDescription}
+                type="textarea"
+                placeholder="Enter card description..."
+                childRef={this.cardDescriptionRef}
+                originalText={this.state.cardDetails.description}
+                onConfirm={this.changeCardDescription}
+              >
+                <textarea
+                  className="form-control"
+                  ref={this.cardDescriptionRef}
+                  type="text"
+                  name="cardDescription"
+                  value={this.state.cardDescription}
+                  onChange={this.handleChange}
+                />
+              </Editable>
+            </pre>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant={this.actionType !== "archive" ? "danger" : "warning"}
+              onClick={() => this.setState({ showConf: true })}
+              style={{ textTransform: "capitalize" }}
             >
-              <textarea
-                className="form-control"
-                ref={cardDescriptionRef}
-                type="text"
-                name="cardDescription"
-                value={cardDescription}
-                onChange={handleChange}
-              />
-            </Editable>
-          </pre>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant={actionType !== "archive" ? "danger" : "warning"}
-            onClick={() => setShowConf(true)}
-            style={{ textTransform: "capitalize" }}
-          >
-            {actionType}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-};
+              {this.actionType}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+}
 
 export default CardView;
