@@ -1,53 +1,41 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { createRef } from "react";
 import Card from "../Card/Card";
 import * as Helpers from "../../Helpers";
 import Editable from "../Editable";
 import ListActions from "./ListActions";
 import BoardList from "../Board/BoardsList";
+import AddCard from "../Card/AddCard";
 
-const ListView = (props) => {
-  const [token] = useState(sessionStorage.getItem("authToken"));
-  const [listName] = useState(props.listDetails.name);
-  const [listDetails] = useState(props.listDetails);
-  const [cards, setCards] = useState();
-  const [newCardData, setNewCardData] = useState({ new_card_name: "" });
-  const [newListData, setNewListData] = useState({
-    listName: listName,
-  });
-  const [isBoardListModalShown, setBoardListModalShown] = useState(false);
+class ListView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: sessionStorage.getItem("authToken"),
+      listName: props.listDetails.name,
+      listDetails: props.listDetails,
+      cards: [],
+      showBoardsListModal: false,
+      listNewName: props.listDetails.name,
+    };
+    this.listNameInputRef = createRef();
+    this.actionType =
+      props.listDetails.archiving_date === null ? "archive" : "delete";
+  }
 
-  const listNameInputRef = useRef();
-  const actionType =
-    props.listDetails.archiving_date === null ? "archive" : "delete";
   // const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
 
-  // const onConfirm = (listId) => {
-  //   if (actionType === "archive") {
-  //     props.archiveList(listId);
-  //   } else if (actionType === "delete") {
-  //     props.deleteList(listId);
-  //   }
-  // };
-
-  const handleNewCardChange = (event) => {
+  handleChange = (event) => {
     const { name, value } = event.target;
-    setNewCardData({
+    this.setState({
       [name]: value,
     });
   };
 
-  const handleListNameChange = (event) => {
-    const { name, value } = event.target;
-    setNewListData({
-      [name]: value,
-    });
-  };
-
-  const refreshCards = async () => {
+  refreshCards = async () => {
     const cardsDetails = await Helpers.getBoardListCards(
-      token,
-      listDetails.board_id,
-      listDetails.id
+      this.state.token,
+      this.state.listDetails.board_id,
+      this.state.listDetails.id
     );
     const cards = [];
     for (let key in cardsDetails) {
@@ -55,131 +43,122 @@ const ListView = (props) => {
         cards.push(
           <Card
             key={key}
-            boardId={listDetails.board_id}
+            boardId={this.state.listDetails.board_id}
             cardDetails={cardsDetails[key]}
-            refreshCards={refreshCards}
-            refreshArchivedElements={props.refreshArchivedElements}
+            refreshCards={this.refreshCards}
+            refreshArchivedElements={this.props.refreshArchivedElements}
           />
         );
       }
     }
-    setCards(cards);
+    this.setState({
+      cards: cards,
+    });
   };
 
-  const changeListName = async () => {
-    if (listName !== newListData.listName) {
+  changeListName = async () => {
+    if (this.state.listNewName !== this.state.listName) {
       await Helpers.changeListName(
-        token,
-        listDetails.board_id,
-        listDetails.id,
-        newListData.listName
+        this.state.token,
+        this.state.listDetails.board_id,
+        this.state.listDetails.id,
+        this.state.listNewName
       );
     }
   };
 
-  const moveList = async (newBoardId) => {
+  moveList = async (newBoardId) => {
     if (
       await Helpers.moveList(
-        token,
-        listDetails.board_id,
-        listDetails.id,
+        this.state.token,
+        this.state.listDetails.board_id,
+        this.state.listDetails.id,
         newBoardId
       )
     ) {
-      hideBoardListModal();
-      props.refreshLists();
+      this.hideBoardListModal();
+      this.props.refreshLists();
     }
   };
 
-  const handleSubmit = async (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
     if (
-      newCardData.new_card_name != null &&
-      newCardData.new_card_name !== "" &&
+      this.state.newCardName != null &&
+      this.state.newCardName !== "" &&
       (await Helpers.createCard(
-        token,
-        listDetails.id,
-        newCardData.new_card_name
+        this.state.token,
+        this.state.listDetails.id,
+        this.state.newCardName
       ))
     ) {
-      refreshCards();
+      this.refreshCards();
     }
   };
 
-  const hideBoardListModal = () => {
-    setBoardListModalShown(false);
+  hideBoardListModal = () => {
+    this.setState({
+      showBoardsListModal: false,
+    });
   };
 
-  const showBoardListModal = () => {
-    setBoardListModalShown(true);
+  showBoardListModal = () => {
+    this.setState({
+      showBoardsListModal: true,
+    });
   };
 
-  useEffect(() => {
-    refreshCards();
-  }, []);
+  componentDidMount = () => {
+    this.refreshCards();
+  };
 
-  return (
-    <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
-      <div className="card bg-secondary text-white rounded-top w-100">
-        <div className="card-header row m-0 d-flex justify-content-between pl-0">
-          <div className="col-10 pr-0 mr-0 pt-1">
-            <Editable
-              text={newListData.listName}
-              type="input"
-              onConfirm={changeListName}
-              childRef={listNameInputRef}
-            >
-              <input
-                ref={listNameInputRef}
-                type="text"
-                name="listName"
-                value={newListData.listName}
-                onChange={handleListNameChange}
+  render() {
+    return (
+      <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
+        <div className="card bg-secondary text-white rounded-top w-100">
+          <div className="card-header row m-0 d-flex justify-content-between pl-0">
+            <div className="col-10 pr-0 mr-0 pt-1">
+              <Editable
+                text={this.state.listNewName}
+                type="input"
+                onConfirm={this.changeListName}
+                childRef={this.listNameInputRef}
+              >
+                <input
+                  ref={this.listNameInputRef}
+                  type="text"
+                  name="listNewName"
+                  value={this.state.listNewName}
+                  onChange={this.handleChange}
+                />
+              </Editable>
+            </div>
+            <div className="col-1 ml-0 pl-0">
+              <ListActions
+                showBoardListModal={this.showBoardListModal}
+                archiveList={this.props.archiveList}
+                listId={this.state.listDetails.id}
               />
-            </Editable>
+            </div>
           </div>
-          <div className="col-1 ml-0 pl-0">
-            <ListActions
-              showBoardListModal={showBoardListModal}
-              archiveList={props.archiveList}
-              listId={listDetails.id}
+          <div className="card-body pl-1 pr-1">
+            {this.state.cards}
+            <AddCard
+              handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
             />
           </div>
         </div>
-        <div className="card-body pl-1 pr-1">
-          {cards}
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="form-row d-flex justify-content-between">
-              <div className="form-group col-9">
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  name="new_card_name"
-                  placeholder="Input card name"
-                  onChange={handleNewCardChange}
-                />
-              </div>
-              <div className="from-group col-2">
-                <button
-                  type="submit"
-                  className="btn btn-sm btn-success float-right"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        <BoardList
+          token={this.state.token}
+          isShow={this.state.showBoardsListModal}
+          handleClose={this.hideBoardListModal}
+          boardId={this.state.listDetails.board_id}
+          moveList={this.moveList}
+        />
       </div>
-      <BoardList
-        token={token}
-        isShow={isBoardListModalShown}
-        handleClose={hideBoardListModal}
-        boardId={listDetails.board_id}
-        moveList={moveList}
-      />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ListView;
