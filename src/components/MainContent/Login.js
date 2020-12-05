@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router";
-import * as Constants from "../Constants";
-import * as Helpers from "../Helpers";
+import * as Constants from "../../Constants";
+import * as Helpers from "../../Helpers";
 
 class Login extends React.Component {
   constructor(props) {
@@ -102,9 +102,12 @@ class Login extends React.Component {
             Log In
           </button>
         </form>
-        <div className="row">
-          If you don't have an account,&nbsp;
-          <a href="/register">register now</a>.
+        <div>
+          If you don't have an account&nbsp;
+          <a className="link" href="/register">
+            register now
+          </a>
+          .
         </div>
       </div>
     );

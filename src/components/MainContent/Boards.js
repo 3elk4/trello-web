@@ -1,6 +1,6 @@
 import React from "react";
-import BoardCard from "./BoardCard";
-import CreateBoard from "./CreateBoard";
+import BoardCard from "../Board/BoardCard";
+import CreateBoard from "../Board/CreateBoard";
 import * as Helpers from "../../Helpers";
 
 class Boards extends React.Component {

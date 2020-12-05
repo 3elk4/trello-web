@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Home from "./components/Home";
-import Login from "./components/Login";
+import Home from "./components/MainContent/Home";
+import Login from "./components/MainContent/Login";
+import Register from "./components/MainContent/Register";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
 import BoardView from "./components/Board/BoardView";
-import Register from "./components/Register";
 import Navbar from "./components/UI/Navbar";
 
 class App extends React.Component {

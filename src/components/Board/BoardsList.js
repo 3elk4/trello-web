@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import * as Helpers from "../../Helpers";
-import BoardListElement from "./BoardListElement";
+import BoardListElement from "./BoardsListElement";
 
 const BoardList = (props) => {
   const [currentBoardId] = useState(props.boardId);
