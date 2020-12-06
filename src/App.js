@@ -20,7 +20,7 @@ class App extends React.Component {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
       this.setState({ isLoggedIn: true });
     } else {
-      this.handleLogout();
+      this.setState({ isLoggedIn: false });
     }
   }
 
@@ -29,9 +29,11 @@ class App extends React.Component {
     this.setState({ isLoggedIn: true });
   };
 
-  handleLogout = () => {
-    sessionStorage.removeItem("authToken");
-    this.setState({ isLoggedIn: false });
+  handleLogout = async () => {
+    if (await Helpers.logoutUser(sessionStorage.getItem("authToken"))) {
+      sessionStorage.removeItem("authToken");
+      this.setState({ isLoggedIn: false });
+    }
   };
 
   render() {
@@ -45,7 +47,7 @@ class App extends React.Component {
               path="/"
               component={() => <Home handleLogout={this.handleLogout} />}
             />
-            <Route exact path={Constants.LOGIN_URL}>
+            <Route exact path={Constants.LOGIN_VIEW_URL}>
               {this.state.isLoggedIn ? (
                 <Redirect to="/" />
               ) : (

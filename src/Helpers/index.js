@@ -11,6 +11,16 @@ export async function isLogged(token) {
   });
 }
 
+export async function logoutUser(token) {
+  const requestOps = {
+    method: "DELETE",
+    headers: { Authorization: token },
+  };
+  return await fetch(Constants.LOGOUT_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
 export async function getUserBoards(token) {
   const requestOps = {
     method: "GET",

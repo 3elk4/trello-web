@@ -5,7 +5,7 @@ import * as Constants from "../../Constants";
 
 const Home = (props) => {
   if (sessionStorage.getItem("authToken") === null) {
-    return <Redirect to={Constants.LOGIN_URL} />;
+    return <Redirect to={Constants.LOGIN_VIEW_URL} />;
   } else {
     return (
       <div className="shadow rounded p-4 bg-dark text-white">
