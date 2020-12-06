@@ -14,6 +14,7 @@ class BoardView extends React.Component {
       boardId: this.props.match.params.boardId,
       lists: null,
       showArchived: false,
+      boardDetails: [],
     };
     this.boardNameInputRef = createRef();
   }
@@ -130,7 +131,16 @@ class BoardView extends React.Component {
     this.setState({ archivedElements: archivedElements });
   };
 
+  getBoardDetails = async () => {
+    const boardDetails = await Helpers.getBoardDetails(
+      this.state.token,
+      this.state.boardId
+    );
+    this.setState({ boardDetails: boardDetails });
+  };
+
   componentDidMount = () => {
+    this.getBoardDetails();
     this.getBoardName();
     this.refreshLists();
     this.refreshArchivedElements();

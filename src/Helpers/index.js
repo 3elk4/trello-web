@@ -423,3 +423,19 @@ export async function getArchivedCards(token, boardId) {
   const dd = await getBoardCards(token, boardId);
   return dd.filter((e) => e.archiving_date != null);
 }
+
+export async function getBoardDetails(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+  const boardDetails = await fetch(
+    `${Constants.GET_BOARD_URL(boardId)}`,
+    requestOps
+  )
+    .then((response) => response.json())
+    .then((data) => JSON.parse(data.board));
+  return boardDetails;
+}
