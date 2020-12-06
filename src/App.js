@@ -34,6 +34,7 @@ class App extends React.Component {
         }
       );
     } else {
+      sessionStorage.removeItem("authToken");
       this.setState({ isLoggedIn: false });
     }
   }
