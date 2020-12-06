@@ -436,10 +436,7 @@ export async function getBoardDetails(token, boardId) {
     requestOps
   )
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      return data.board;
-    });
+    .then((data) => data.board);
   return boardDetails;
 }
 
