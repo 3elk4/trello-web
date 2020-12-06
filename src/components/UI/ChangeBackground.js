@@ -47,6 +47,7 @@ class ChangeBackground extends Component {
               <label htmlFor="backgroundFile">Select file: </label>
               <input
                 type="file"
+                accept="image/*"
                 className="form-control-file"
                 id="backgroundFile"
                 name="backgroundFile"

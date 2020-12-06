@@ -162,7 +162,7 @@ class BoardView extends React.Component {
           handleClose={() => this.setState({ isChangeBackgroundShow: false })}
           boardId={this.state.boardId}
         />
-        <div className="border shadow rounded p-4 bg-dark text-white">
+        <div className="shadow rounded p-4 bg-dark text-white">
           <div className="row d-flex justify-content-between align-items-end">
             <div className="col-md-9 col-sm-12">
               <h2 className="mb-3">
@@ -194,7 +194,7 @@ class BoardView extends React.Component {
           </div>
 
           <div
-            className="row p-2 pt-5"
+            className="row p-2 pt-5 rounded"
             style={{
               backgroundImage: `url(${Constants.API_ROOT}${this.state.boardDetails.background})`,
               backgroundSize: "cover",

@@ -8,7 +8,7 @@ const Home = (props) => {
     return <Redirect to={Constants.LOGIN_URL} />;
   } else {
     return (
-      <div className="border shadow rounded p-4 bg-dark text-white">
+      <div className="shadow rounded p-4 bg-dark text-white">
         <h2 className="mb-5">Your boards:</h2>
         <Boards />
         <button className="btn btn-secondary mt-2" onClick={props.handleLogout}>
