@@ -1,6 +1,6 @@
 import React from "react";
 import BoardCard from "../Board/BoardCard";
-import CreateBoard from "../Board/CreateBoard";
+import BoardForm from "../Board/BoardForm";
 import * as Helpers from "../../Helpers";
 
 class Boards extends React.Component {
@@ -10,6 +10,7 @@ class Boards extends React.Component {
     this.state = {
       token: sessionStorage.getItem("authToken"),
       boards: [],
+      isModalShow: false,
     };
   }
 
@@ -57,9 +58,17 @@ class Boards extends React.Component {
     return (
       <div>
         <div className="row">{this.state.boards}</div>
-        <CreateBoard
+        <button
+          className="btn btn-primary"
+          onClick={() => this.setState({ isModalShow: true })}
+        >
+          Create new board
+        </button>
+        <BoardForm
+          isShow={this.state.isModalShow}
+          handleClose={() => this.setState({ isModalShow: false })}
           handleConfirm={this.createBoard}
-          refreshBoards={this.refreshBoards}
+          formTitle="Create new board"
         />
       </div>
     );
