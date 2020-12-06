@@ -1,6 +1,6 @@
 import React, { createRef } from "react";
 import ListView from "../List/ListView";
-import * as Helpers from "../Helpers";
+import * as Helpers from "../../Helpers";
 import Editable from "../Editable";
 import ArchivedCard from "../ArchivedElements/ArchivedCard";
 import ArchivedList from "../ArchivedElements/ArchivedList";
@@ -14,6 +14,7 @@ class BoardView extends React.Component {
       boardId: this.props.match.params.boardId,
       lists: null,
       showArchived: false,
+      boardDetails: [],
     };
     this.boardNameInputRef = createRef();
   }
@@ -87,7 +88,6 @@ class BoardView extends React.Component {
             listDetails={record}
             deleteList={this.deleteList}
             archiveList={this.archiveList}
-            showBoardListModal={this.showBoardListModal}
             refreshLists={this.refreshLists}
             refreshArchivedElements={this.refreshArchivedElements}
           />
@@ -131,7 +131,16 @@ class BoardView extends React.Component {
     this.setState({ archivedElements: archivedElements });
   };
 
+  getBoardDetails = async () => {
+    const boardDetails = await Helpers.getBoardDetails(
+      this.state.token,
+      this.state.boardId
+    );
+    this.setState({ boardDetails: boardDetails });
+  };
+
   componentDidMount = () => {
+    this.getBoardDetails();
     this.getBoardName();
     this.refreshLists();
     this.refreshArchivedElements();

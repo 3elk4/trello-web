@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
-import * as Helpers from "./Helpers";
+import * as Helpers from "../../Helpers";
 
 class Register extends React.Component {
   constructor(props) {
@@ -37,8 +37,7 @@ class Register extends React.Component {
       this.setState({ error_message: "" });
     } else {
       this.setState({
-        error_message:
-          "Nieprawidłowe dane. Nazwa użytkownika oraz hasło nie może być puste.",
+        error_message: "Incorrect data. Username and password cannot be empty.",
       });
     }
   };

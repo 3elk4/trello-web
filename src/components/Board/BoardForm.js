@@ -9,8 +9,8 @@ class BoardForm extends React.Component {
     super(props);
 
     this.initialState = {
-      boardname: null,
-      is_public: true,
+      boardName: null,
+      isPublic: true,
     };
 
     this.state = this.initialState;
@@ -20,12 +20,9 @@ class BoardForm extends React.Component {
     this.props.handleClose();
   };
 
-  handleRadioChange = (value) => {
-    this.setState({ is_public: value });
-  };
-
   handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(name + ": " + value);
     this.setState({
       [name]: value,
     });
@@ -33,12 +30,13 @@ class BoardForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.state.boardname !== null && this.state.boardname !== "") {
+    if (this.state.boardName !== null && this.state.boardName !== "") {
       let params = {
-        name: this.state.boardname,
-        is_public: this.state.is_public,
+        name: this.state.boardName,
+        is_public: this.state.isPublic,
       };
       this.props.handleConfirm(params);
+      this.setState(this.initialState);
     }
   };
 
@@ -52,26 +50,29 @@ class BoardForm extends React.Component {
         <Modal.Body>
           <form onSubmit={(event) => event.preventDefault()}>
             <div className="form-group">
-              <label htmlFor="boardname">Board name:</label>
+              <label htmlFor="boardName">Board name:</label>
               <input
                 required
                 type="text"
                 className="form-control mb-3"
-                id="boardname"
-                name="boardname"
+                id="boardName"
+                name="boardName"
                 onChange={this.handleChange}
               />
               <label>Board type:</label>
               <br />
               <ToggleButtonGroup
                 type="radio"
-                name="is_public"
+                name="isPublic"
                 defaultValue={true}
-                onChange={this.handleRadioChange}
               >
-                <ToggleButton value={true}>Public</ToggleButton>
+                <ToggleButton value={true} onChange={this.handleChange}>
+                  Public
+                </ToggleButton>
                 <br />
-                <ToggleButton value={false}>Private</ToggleButton>
+                <ToggleButton value={false} onChange={this.handleChange}>
+                  Private
+                </ToggleButton>
               </ToggleButtonGroup>
             </div>
           </form>

@@ -113,7 +113,7 @@ export async function getBoardNameById(token, boardId) {
     requestOps
   )
     .then((response) => response.json())
-    .then((data) => JSON.parse(data.board));
+    .then((data) => data.board);
   return boardDetails.name;
 }
 
@@ -422,4 +422,36 @@ export async function getArchivedLists(token, boardId) {
 export async function getArchivedCards(token, boardId) {
   const dd = await getBoardCards(token, boardId);
   return dd.filter((e) => e.archiving_date != null);
+}
+
+export async function getBoardDetails(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+  const boardDetails = await fetch(
+    `${Constants.GET_BOARD_URL(boardId)}`,
+    requestOps
+  )
+    .then((response) => response.json())
+    .then((data) => data.board);
+  return boardDetails;
+}
+
+export async function addBackgroundToBoard(token, boardId, background) {
+  const formData = new FormData();
+  formData.append("id", boardId);
+  formData.append("background", background);
+  const requestOps = {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: formData,
+  };
+  return await fetch(Constants.EDIT_BOARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
 }

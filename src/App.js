@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
+import Home from "./components/MainContent/Home";
+import Login from "./components/MainContent/Login";
+import Register from "./components/MainContent/Register";
 import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
-import BoardView from "./Board/BoardView";
-import home_icon from "./assets/home_icon.png";
-import Register from "./Register";
+import BoardView from "./components/Board/BoardView";
+import Navbar from "./components/UI/Navbar";
 
 class App extends React.Component {
   constructor(props) {
@@ -37,11 +37,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid mt-5 pt-5">
-        <nav className="navbar navbar-light bg-dark fixed-top">
-          <a className="navbar-brand" href="/">
-            <img src={home_icon} alt="Home page" width="40em" height="40em" />
-          </a>
-        </nav>
+        <Navbar />
         <BrowserRouter>
           <Switch>
             <Route
