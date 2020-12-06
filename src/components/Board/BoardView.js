@@ -5,6 +5,8 @@ import Editable from "../Editable";
 import ArchivedCard from "../ArchivedElements/ArchivedCard";
 import ArchivedList from "../ArchivedElements/ArchivedList";
 import ArchivedElement from "../ArchivedElements/ArchivedElement";
+import * as Constants from "../../Constants";
+import ChangeBackground from "../UI/ChangeBackground";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class BoardView extends React.Component {
       lists: null,
       showArchived: false,
       boardDetails: [],
+      isChangeBackgroundShow: false,
     };
     this.boardNameInputRef = createRef();
   }
@@ -153,25 +156,50 @@ class BoardView extends React.Component {
   render() {
     return (
       <>
-        <div className="border shadow rounded p-4 bg-dark text-white">
-          <h2 className="mb-5">
-            <Editable
-              text={this.state.boardName}
-              type="input"
-              onConfirm={this.changeBoardName}
-              childRef={this.boardNameInputRef}
-            >
-              <input
-                className="w-75"
-                ref={this.boardNameInputRef}
-                type="text"
-                name="boardName"
-                value={this.state.boardName}
-                onChange={this.handleChange}
-              />
-            </Editable>
-          </h2>
-          <div className="row">
+        <ChangeBackground
+          isShow={this.state.isChangeBackgroundShow}
+          title="Change board background"
+          handleClose={() => this.setState({ isChangeBackgroundShow: false })}
+          boardId={this.state.boardId}
+        />
+        <div className="shadow rounded p-4 bg-dark text-white">
+          <div className="row d-flex justify-content-between align-items-end">
+            <div className="col-md-9 col-sm-12">
+              <h2 className="mb-3">
+                <Editable
+                  text={this.state.boardName}
+                  type="input"
+                  onConfirm={this.changeBoardName}
+                  childRef={this.boardNameInputRef}
+                >
+                  <input
+                    className="w-75"
+                    ref={this.boardNameInputRef}
+                    type="text"
+                    name="boardName"
+                    value={this.state.boardName}
+                    onChange={this.handleChange}
+                  />
+                </Editable>
+              </h2>
+            </div>
+            <div className="col-md-2 col-sm-12 pr-0">
+              <button
+                className="btn btn-primary btn-sm float-right mr-0"
+                onClick={() => this.setState({ isChangeBackgroundShow: true })}
+              >
+                Change background
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="row p-2 pt-5 rounded"
+            style={{
+              backgroundImage: `url(${Constants.API_ROOT}${this.state.boardDetails.background})`,
+              backgroundSize: "cover",
+            }}
+          >
             {this.state.lists}
             <div className="col-lg-2 col-md-3 col-sm-12">
               <form className="form" onSubmit={this.handleSubmit}>
