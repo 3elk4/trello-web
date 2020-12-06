@@ -113,7 +113,7 @@ export async function getBoardNameById(token, boardId) {
     requestOps
   )
     .then((response) => response.json())
-    .then((data) => JSON.parse(data.board));
+    .then((data) => data.board);
   return boardDetails.name;
 }
 
@@ -436,6 +436,25 @@ export async function getBoardDetails(token, boardId) {
     requestOps
   )
     .then((response) => response.json())
-    .then((data) => JSON.parse(data.board));
+    .then((data) => {
+      console.log(data);
+      return data.board;
+    });
   return boardDetails;
+}
+
+export async function addBackgroundToBoard(token, boardId, background) {
+  const formData = new FormData();
+  formData.append("id", boardId);
+  formData.append("background", background);
+  const requestOps = {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: formData,
+  };
+  return await fetch(Constants.EDIT_BOARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
 }
