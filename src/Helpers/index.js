@@ -21,6 +21,18 @@ export async function logoutUser(token) {
   );
 }
 
+export async function getCurrentUserInfo(token) {
+  const requestOps = {
+    method: "GET",
+    headers: { Authorization: token },
+  };
+  return await fetch(Constants.CURRENT_USER_URL, requestOps)
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    });
+}
+
 export async function getUserBoards(token) {
   const requestOps = {
     method: "GET",
