@@ -67,6 +67,7 @@ const Card = (props) => {
         cardDetails={props.cardDetails}
         archiveCard={archiveCard}
         deleteCard={deleteCard}
+        boardId={props.boardId}
       />
     </>
   );

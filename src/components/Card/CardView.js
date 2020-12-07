@@ -4,6 +4,9 @@ import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
 import DueDateBadge from "./DueDateBadge";
 import DueDateForm from "./DueDateForm";
+import * as Helpers from "../../Helpers";
+import CommentsView from "../Comments/CommentsView";
+import Comment from "../Comments/Comment";
 
 class CardView extends React.Component {
   constructor(props) {
@@ -12,6 +15,8 @@ class CardView extends React.Component {
       showConf: false,
       cardDescription: props.cardDetails.description,
       cardDetails: props.cardDetails,
+      boardId: props.boardId,
+      userId: null,
     };
     this.cardDescriptionRef = createRef();
 
@@ -54,6 +59,40 @@ class CardView extends React.Component {
 
   removeDueDate = () => {
     this.props.changeCardDueDate(null);
+  };
+
+  refreshComments = async () => {
+    const comments = await Helpers.getCardComments(
+      sessionStorage.getItem("authToken"),
+      this.state.boardId,
+      this.state.cardDetails.list_id,
+      this.state.cardDetails.id
+    ).then((comments) => {
+      return comments.map((comment, index) => (
+        <Comment key={index} text={comment.content} author={comment.username} />
+      ));
+    });
+    this.setState({
+      comments: comments,
+    });
+  };
+
+  addComment = async (comment) => {
+    if (
+      await Helpers.addCardComment(
+        sessionStorage.getItem("authToken"),
+        this.state.boardId,
+        this.state.cardDetails.list_id,
+        this.state.cardDetails.id,
+        comment
+      )
+    ) {
+      this.refreshComments();
+    }
+  };
+
+  componentDidMount = async () => {
+    await this.refreshComments();
   };
 
   render() {
@@ -111,7 +150,12 @@ class CardView extends React.Component {
               ) : null}
             </div>
           </Modal.Body>
-          <Modal.Footer></Modal.Footer>
+          <Modal.Footer>
+            <CommentsView
+              comments={this.state.comments}
+              addComment={this.addComment}
+            />
+          </Modal.Footer>
         </Modal>
       </>
     );
