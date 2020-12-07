@@ -22,8 +22,6 @@ class UserProfile extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(this.props.userData.id);
-    console.log(this.state.username);
     if (
       await Helpers.updateUser(sessionStorage.getItem("authToken"), {
         id: this.props.userData.id,

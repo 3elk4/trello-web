@@ -30,7 +30,6 @@ export async function updateUser(token, userData) {
     },
     body: JSON.stringify(userData),
   };
-  console.log(requestOps);
   return await fetch(Constants.EDIT_USER_URL, requestOps).then(
     (response) => response.ok
   );
