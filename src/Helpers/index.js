@@ -21,6 +21,21 @@ export async function logoutUser(token) {
   );
 }
 
+export async function updateUser(token, userData) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(userData),
+  };
+  console.log(requestOps);
+  return await fetch(Constants.EDIT_USER_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
 export async function getCurrentUserInfo(token) {
   const requestOps = {
     method: "GET",
@@ -28,9 +43,7 @@ export async function getCurrentUserInfo(token) {
   };
   return await fetch(Constants.CURRENT_USER_URL, requestOps)
     .then((response) => response.json())
-    .then((data) => {
-      return data;
-    });
+    .then((data) => data);
 }
 
 export async function getUserBoards(token) {

@@ -7,6 +7,7 @@ export const LOGIN_VIEW_URL = `/login`;
 export const LOGOUT_URL = `${API_ROOT}/logout`;
 export const AUTH_URL = `${API_ROOT}/authenticate`;
 export const CURRENT_USER_URL = `${API_ROOT}/get_current_user`;
+export const EDIT_USER_URL = `${API_ROOT}/edit_user`;
 export const CREATE_BOARD_URL = `${API_ROOT}/create_board`;
 export const EDIT_BOARD_URL = `${API_ROOT}/edit_board`;
 export const DELETE_BOARD_URL = `${API_ROOT}/delete_board`;
