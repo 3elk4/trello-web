@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { Button, Dropdown, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
 import DueDateBadge from "./DueDateBadge";

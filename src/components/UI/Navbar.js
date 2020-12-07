@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router";
 import home_icon from "../../assets/home_icon.png";
 
 const Navbar = (props) => {

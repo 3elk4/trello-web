@@ -1,5 +1,4 @@
 import React from "react";
-import { Toast } from "react-bootstrap";
 import * as Helpers from "../../Helpers";
 import MyToast from "../UI/MyToast";
 
@@ -46,6 +45,7 @@ class UserProfile extends React.Component {
                 height="75px"
                 className="rounded-circle mr-2"
                 src="http://placekitten.com/g/300/300"
+                alt="User avatar"
               />
             </div>
             <div>
