@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import AddComment from "./AddComment";
 
 class CommentsView extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="w-100 d-flex flex-column justify-content-start align-items-start">

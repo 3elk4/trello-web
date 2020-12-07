@@ -11,8 +11,12 @@ class Comment extends Component {
 
   render() {
     return (
-      <div className="d-flex flex-column justify-content-start w-100">
-        <div>{this.state.author}:</div>
+      <div className="d-flex flex-column justify-content-start w-100 mb-3">
+        <div>
+          <em>
+            <strong>{this.state.author}</strong>
+          </em>
+        </div>
         <div className="px-2 py-1 mx-2" style={{ backgroundColor: "silver" }}>
           {this.state.text}
         </div>

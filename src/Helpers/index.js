@@ -524,7 +524,7 @@ export async function getCardComments(token, boardId, listId, cardId) {
     requestOps
   )
     .then((response) => response.json())
-    .then((data) => data.comments.map((comment) => JSON.parse(comment)));
+    .then((data) => data.card_comments);
 }
 
 export async function addCardComment(token, boardId, listId, cardId, comment) {

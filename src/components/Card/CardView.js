@@ -69,7 +69,7 @@ class CardView extends React.Component {
       this.state.cardDetails.id
     ).then((comments) => {
       return comments.map((comment, index) => (
-        <Comment key={index} text={comment.content} author={comment.user_id} />
+        <Comment key={index} text={comment.content} author={comment.username} />
       ));
     });
     this.setState({
