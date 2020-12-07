@@ -2,6 +2,7 @@ import React, { createRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
+import DueDateBadge from "./DueDateBadge";
 
 class CardView extends React.Component {
   constructor(props) {
@@ -55,7 +56,10 @@ class CardView extends React.Component {
           onConfirm={this.onConfirm}
         />
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
-          <Modal.Header>{this.state.cardDetails.name}</Modal.Header>
+          <Modal.Header>
+            <DueDateBadge date={this.state.cardDetails.deadLine} />
+            {this.state.cardDetails.name}
+          </Modal.Header>
           <Modal.Body>
             <pre>
               <Editable
@@ -85,6 +89,14 @@ class CardView extends React.Component {
             >
               {this.actionType}
             </Button>
+            {this.actionType !== "delete" ? (
+              <Button
+                variant="primary"
+                onClick={() => console.log("set due date")}
+              >
+                Due date
+              </Button>
+            ) : null}
           </Modal.Footer>
         </Modal>
       </>
