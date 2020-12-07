@@ -368,6 +368,26 @@ export async function changeCardDescription(
   });
 }
 
+export async function changeDueDate(token, cardId, listId, boardId, date) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+      deadline: date,
+    }),
+  };
+
+  return await fetch(Constants.EDIT_CARD_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
 export async function archiveCard(token, cardId, listId, boardId) {
   const requestOps = {
     method: "POST",

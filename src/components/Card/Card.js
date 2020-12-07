@@ -25,6 +25,18 @@ const Card = (props) => {
     );
   };
 
+  const changeCardDueDate = async (date) => {
+    await Helpers.changeDueDate(
+      token,
+      props.cardDetails.id,
+      props.cardDetails.list_id,
+      props.boardId,
+      date
+    );
+    handleClose();
+    props.refreshCards();
+  };
+
   const archiveCard = async (cardId, listId) => {
     if (await Helpers.archiveCard(token, cardId, listId, props.boardId)) {
       props.refreshCards();
@@ -42,7 +54,7 @@ const Card = (props) => {
   return (
     <>
       <div className="bg-dark p-2 mt-2 mb-1">
-        <DueDateBadge date={props.cardDetails.deadLine} />
+        <DueDateBadge date={props.cardDetails.deadline} />
         <span style={{ cursor: "pointer" }} onClick={handleShow}>
           {props.cardDetails.name}
         </span>
@@ -51,6 +63,7 @@ const Card = (props) => {
         isShow={isShow}
         handleClose={handleClose}
         changeCardDescription={changeCardDescription}
+        changeCardDueDate={changeCardDueDate}
         cardDetails={props.cardDetails}
         archiveCard={archiveCard}
         deleteCard={deleteCard}

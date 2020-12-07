@@ -1,8 +1,9 @@
 import React, { createRef } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Dropdown, Modal } from "react-bootstrap";
 import ConfirmationModal from "../ConfirmationModal";
 import Editable from "../Editable";
 import DueDateBadge from "./DueDateBadge";
+import DueDateForm from "./DueDateForm";
 
 class CardView extends React.Component {
   constructor(props) {
@@ -46,6 +47,15 @@ class CardView extends React.Component {
     }
     this.props.handleClose();
   };
+
+  saveDueDate = (date) => {
+    this.props.changeCardDueDate(date);
+  };
+
+  removeDueDate = () => {
+    this.props.changeCardDueDate(null);
+  };
+
   render() {
     return (
       <>
@@ -57,8 +67,10 @@ class CardView extends React.Component {
         />
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
           <Modal.Header>
-            <DueDateBadge date={this.state.cardDetails.deadLine} />
-            {this.state.cardDetails.name}
+            <div>
+              <DueDateBadge date={this.state.cardDetails.deadline} />
+              {this.state.cardDetails.name}
+            </div>
           </Modal.Header>
           <Modal.Body>
             <pre>
@@ -90,12 +102,11 @@ class CardView extends React.Component {
               {this.actionType}
             </Button>
             {this.actionType !== "delete" ? (
-              <Button
-                variant="primary"
-                onClick={() => console.log("set due date")}
-              >
-                Due date
-              </Button>
+              <DueDateForm
+                saveDate={this.saveDueDate}
+                removeDate={this.removeDueDate}
+                currentDate={this.state.cardDetails.deadline}
+              />
             ) : null}
           </Modal.Footer>
         </Modal>
