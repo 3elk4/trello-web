@@ -30,3 +30,6 @@ export const ARCHIVE_CARD_URL = `${API_ROOT}/archive_card`;
 export const DELETE_CARD_URL = `${API_ROOT}/delete_card`;
 export const RESTORE_CARD_URL = `${API_ROOT}/restore_card`;
 export const REGISTER_USER_URL = `${API_ROOT}/create_user`;
+export const GET_CARD_COMMENTS_URL = (boardId, listId, cardId) =>
+  `${API_ROOT}/get_card_comments/${boardId}/${listId}/${cardId}`;
+export const ADD_CARD_COMMENT_URL = `${API_ROOT}/create_comment`;

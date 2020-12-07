@@ -505,7 +505,44 @@ export async function addBackgroundToBoard(token, boardId, background) {
     },
     body: formData,
   };
+
   return await fetch(Constants.EDIT_BOARD_URL, requestOps).then((response) => {
     return response.ok;
   });
+}
+
+export async function getCardComments(token, boardId, listId, cardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return await fetch(
+    Constants.GET_CARD_COMMENTS_URL(boardId, listId, cardId),
+    requestOps
+  )
+    .then((response) => response.json())
+    .then((data) => data.comments.map((comment) => JSON.parse(comment)));
+}
+
+export async function addCardComment(token, boardId, listId, cardId, comment) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      list_id: listId,
+      card_id: cardId,
+      content: comment,
+    }),
+  };
+
+  return await fetch(Constants.ADD_CARD_COMMENT_URL, requestOps).then(
+    (response) => response.ok
+  );
 }
