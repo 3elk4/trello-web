@@ -27,6 +27,7 @@ class App extends React.Component {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
       Helpers.getCurrentUserInfo(sessionStorage.getItem("authToken")).then(
         (userData) => {
+          sessionStorage.setItem("username", userData.username);
           this.setState({
             isLoggedIn: true,
             userData: userData,
