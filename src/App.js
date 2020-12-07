@@ -7,39 +7,57 @@ import * as Constants from "./Constants";
 import * as Helpers from "./Helpers";
 import BoardView from "./components/Board/BoardView";
 import Navbar from "./components/UI/Navbar";
+import UserProfile from "./components/MainContent/UserProfile";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: false,
+      username: "",
+      userData: [],
     };
   }
 
+  getUserData = async (token) => {
+    return await Helpers.getCurrentUserInfo(token);
+  };
+
   async componentDidMount() {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
-      this.setState({ isLoggedIn: true });
+      Helpers.getCurrentUserInfo(sessionStorage.getItem("authToken")).then(
+        (userData) => {
+          sessionStorage.setItem("username", userData.username);
+          this.setState({
+            isLoggedIn: true,
+            userData: userData,
+          });
+        }
+      );
     } else {
+      sessionStorage.removeItem("authToken");
       this.setState({ isLoggedIn: false });
     }
   }
 
-  handleLogin = (data) => {
+  handleLogin = (data, username) => {
     sessionStorage.setItem("authToken", data.token);
-    this.setState({ isLoggedIn: true });
+    sessionStorage.setItem("username", username);
+    this.setState({ isLoggedIn: true, username: username });
   };
 
   handleLogout = async () => {
     if (await Helpers.logoutUser(sessionStorage.getItem("authToken"))) {
       sessionStorage.removeItem("authToken");
-      this.setState({ isLoggedIn: false });
+      sessionStorage.removeItem("username");
+      this.setState({ isLoggedIn: false, username: "" });
     }
   };
 
   render() {
     return (
       <div className="container-fluid mt-5 pt-5">
-        <Navbar />
+        <Navbar isLogged={this.state.isLoggedIn} />
         <BrowserRouter>
           <Switch>
             <Route
@@ -56,6 +74,11 @@ class App extends React.Component {
             </Route>
             <Route exact path="/register" component={() => <Register />} />
             <Route exact path="/board/:boardId" component={BoardView} />
+            <Route
+              exact
+              path="/user"
+              component={() => <UserProfile userData={this.state.userData} />}
+            />
           </Switch>
         </BrowserRouter>
       </div>

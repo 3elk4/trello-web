@@ -45,7 +45,7 @@ class Register extends React.Component {
   render() {
     const { username, password, password_confirm } = this.state;
     return (
-      <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+      <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
         {this.registered ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4">Register page</h3>

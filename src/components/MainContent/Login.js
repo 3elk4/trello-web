@@ -37,7 +37,7 @@ class Login extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {
-          this.props.handleLogin(data);
+          this.props.handleLogin(data, username);
         } else {
           this.setState({
             errors: data.errors,
@@ -70,7 +70,7 @@ class Login extends React.Component {
   render() {
     const { username, password } = this.state;
     return (
-      <div className="d-flex flex-wrap justify-content-center align-content-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+      <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4">Login page</h3>
