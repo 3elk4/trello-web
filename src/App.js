@@ -19,10 +19,6 @@ class App extends React.Component {
     };
   }
 
-  getUserData = async (token) => {
-    return await Helpers.getCurrentUserInfo(token);
-  };
-
   async componentDidMount() {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
       Helpers.getCurrentUserInfo(sessionStorage.getItem("authToken")).then(
