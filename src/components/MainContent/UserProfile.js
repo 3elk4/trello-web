@@ -20,6 +20,7 @@ class UserProfile extends React.Component {
     });
   };
 
+  // update also avatar in the future
   handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -32,8 +33,6 @@ class UserProfile extends React.Component {
     } else {
       this.setState({ showFail: true });
     }
-
-    //TODO: figure out why backend doesn't update user
   };
 
   render() {
