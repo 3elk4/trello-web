@@ -4,8 +4,10 @@ import { Dropdown } from "react-bootstrap";
 class DueDateForm extends React.Component {
   constructor(props) {
     super(props);
+    const dueDate =
+      props.currentDate != null ? new Date(props.currentDate) : new Date();
     this.state = {
-      dueDate: new Date(props.currentDate).toISOString().split("T")[0],
+      dueDate: dueDate.toISOString().split("T")[0],
     };
   }
 
