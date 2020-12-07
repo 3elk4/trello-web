@@ -72,7 +72,7 @@ class App extends React.Component {
                 <Login handleLogin={this.handleLogin} />
               )}
             </Route>
-            <Route exact path="/register" component={() => <Register />} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/board/:boardId" component={BoardView} />
             <Route
               exact

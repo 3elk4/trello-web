@@ -49,7 +49,11 @@ const Editable = ({
           {children}
         </div>
       ) : (
-        <div style={{ cursor: "pointer" }} onClick={() => setEditing(true)}>
+        <div
+          className="p-1"
+          style={{ cursor: "pointer" }}
+          onClick={() => setEditing(true)}
+        >
           {text || placeholder || "Editable content"}
         </div>
       )}

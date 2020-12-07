@@ -173,7 +173,7 @@ class BoardView extends React.Component {
                   childRef={this.boardNameInputRef}
                 >
                   <input
-                    className="w-75"
+                    className="form-control form-control-lg w-50"
                     ref={this.boardNameInputRef}
                     type="text"
                     name="boardName"
@@ -203,7 +203,7 @@ class BoardView extends React.Component {
             {this.state.lists}
             <div className="col-lg-2 col-md-3 col-sm-12">
               <form className="form" onSubmit={this.handleSubmit}>
-                <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary">
+                <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary rounded">
                   <div className="form-group col-9 m-0 p-0">
                     <input
                       type="text"

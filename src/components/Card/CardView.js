@@ -74,41 +74,44 @@ class CardView extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <pre>
-              <Editable
-                text={this.state.cardDescription}
-                type="textarea"
-                placeholder="Enter card description..."
-                childRef={this.cardDescriptionRef}
-                originalText={this.state.cardDetails.description}
-                onConfirm={this.changeCardDescription}
-              >
-                <textarea
-                  className="form-control"
-                  ref={this.cardDescriptionRef}
-                  type="text"
-                  name="cardDescription"
-                  value={this.state.cardDescription}
-                  onChange={this.handleChange}
-                />
-              </Editable>
+              <div style={{ backgroundColor: "#f0f0f0" }}>
+                <Editable
+                  text={this.state.cardDescription}
+                  type="textarea"
+                  placeholder="Enter card description..."
+                  childRef={this.cardDescriptionRef}
+                  originalText={this.state.cardDetails.description}
+                  onConfirm={this.changeCardDescription}
+                >
+                  <textarea
+                    className="form-control"
+                    ref={this.cardDescriptionRef}
+                    type="text"
+                    name="cardDescription"
+                    value={this.state.cardDescription}
+                    onChange={this.handleChange}
+                  />
+                </Editable>
+              </div>
             </pre>
+            <div className="d-flex flex-row justify-content-end">
+              <Button
+                variant={this.actionType !== "archive" ? "danger" : "warning"}
+                onClick={() => this.setState({ showConf: true })}
+                style={{ textTransform: "capitalize" }}
+              >
+                {this.actionType}
+              </Button>
+              {this.actionType !== "delete" ? (
+                <DueDateForm
+                  saveDate={this.saveDueDate}
+                  removeDate={this.removeDueDate}
+                  currentDate={this.state.cardDetails.deadline}
+                />
+              ) : null}
+            </div>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant={this.actionType !== "archive" ? "danger" : "warning"}
-              onClick={() => this.setState({ showConf: true })}
-              style={{ textTransform: "capitalize" }}
-            >
-              {this.actionType}
-            </Button>
-            {this.actionType !== "delete" ? (
-              <DueDateForm
-                saveDate={this.saveDueDate}
-                removeDate={this.removeDueDate}
-                currentDate={this.state.cardDetails.deadline}
-              />
-            ) : null}
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       </>
     );

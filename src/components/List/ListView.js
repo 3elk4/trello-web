@@ -125,6 +125,7 @@ class ListView extends React.Component {
                 childRef={this.listNameInputRef}
               >
                 <input
+                  className="form-control p-2"
                   ref={this.listNameInputRef}
                   type="text"
                   name="listNewName"
