@@ -7,6 +7,7 @@ import ArchivedList from "../ArchivedElements/ArchivedList";
 import ArchivedElement from "../ArchivedElements/ArchivedElement";
 import * as Constants from "../../Constants";
 import ChangeBackground from "../UI/ChangeBackground";
+import { Droppable } from "react-beautiful-dnd";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -200,29 +201,31 @@ class BoardView extends React.Component {
               backgroundSize: "cover",
             }}
           >
-            {this.state.lists}
-            <div className="col-lg-2 col-md-3 col-sm-12">
-              <form className="form" onSubmit={this.handleSubmit}>
-                <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary rounded">
-                  <div className="form-group col-9 m-0 p-0">
-                    <input
-                      type="text"
-                      className="form-control form-control-sm"
-                      name="new_list_name"
-                      placeholder="Input list name"
-                      onChange={this.handleChange}
-                    />
+            <div className="d-inline-flex flex-row overflow-auto">
+              <div className="d-flex">{this.state.lists}</div>
+              <div style={{ minWidth: "18em" }}>
+                <form className="form" onSubmit={this.handleSubmit}>
+                  <div className="form-row d-flex justify-content-between p-0 m-0 bg-secondary rounded">
+                    <div className="form-group col-9 m-0 p-0">
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        name="new_list_name"
+                        placeholder="Input list name"
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                    <div className="form-group col-2 m-0 p-0">
+                      <button
+                        type="submit"
+                        className="btn btn-sm btn-success float-right"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                  <div className="form-group col-2 m-0 p-0">
-                    <button
-                      type="submit"
-                      className="btn btn-sm btn-success float-right"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
           <div className="mb-3">

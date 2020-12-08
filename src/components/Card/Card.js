@@ -56,7 +56,7 @@ const Card = (props) => {
 
   return (
     <>
-      <div className="bg-dark p-2 mt-2 mb-1">
+      <div className="bg-dark p-2 mt-2 mb-1 rounded">
         <DueDateBadge date={props.cardDetails.deadline} />
         <Labels labels={props.labels} />
         <span style={{ cursor: "pointer" }} onClick={handleShow}>
