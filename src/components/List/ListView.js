@@ -124,7 +124,7 @@ class ListView extends React.Component {
       <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
         <div className="card bg-secondary text-white rounded-top w-100">
           <div className="card-header row m-0 d-flex justify-content-between pl-0">
-            <div className="col-10 pr-0 mr-0 pt-1">
+            <div className="d-inline-flex px-2">
               <Editable
                 text={this.state.listNewName}
                 type="input"

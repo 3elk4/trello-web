@@ -164,7 +164,7 @@ class BoardView extends React.Component {
         />
         <div className="shadow rounded p-4 bg-dark text-white">
           <div className="row d-flex justify-content-between align-items-end">
-            <div className="col-md-9 col-sm-12">
+            <div className="d-inline-flex">
               <h2 className="mb-3">
                 <Editable
                   text={this.state.boardName}
@@ -173,7 +173,7 @@ class BoardView extends React.Component {
                   childRef={this.boardNameInputRef}
                 >
                   <input
-                    className="form-control form-control-lg w-50"
+                    className="form-control form-control-lg"
                     ref={this.boardNameInputRef}
                     type="text"
                     name="boardName"
