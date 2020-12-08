@@ -27,15 +27,17 @@ const Card = (props) => {
   };
 
   const changeCardDueDate = async (date) => {
-    await Helpers.changeDueDate(
-      token,
-      props.cardDetails.id,
-      props.cardDetails.list_id,
-      props.boardId,
-      date
-    );
-    handleClose();
-    props.refreshCards();
+    if (
+      await Helpers.changeDueDate(
+        token,
+        props.cardDetails.id,
+        props.cardDetails.list_id,
+        props.boardId,
+        date
+      )
+    ) {
+      props.refreshCards();
+    }
   };
 
   const archiveCard = async (cardId, listId) => {
@@ -71,6 +73,7 @@ const Card = (props) => {
         deleteCard={deleteCard}
         boardId={props.boardId}
         labels={props.labels}
+        refresh={props.refreshCards}
       />
     </>
   );

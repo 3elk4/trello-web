@@ -8,6 +8,7 @@ import * as Helpers from "../../Helpers";
 import CommentsView from "../Comments/CommentsView";
 import Comment from "../Comments/Comment";
 import Labels from "./Labels";
+import LabelsDropdown from "./LabelsDropdown";
 
 class CardView extends React.Component {
   constructor(props) {
@@ -92,8 +93,36 @@ class CardView extends React.Component {
     }
   };
 
+  assignLabel = async (labelId) => {
+    if (
+      await Helpers.assignLabel(
+        sessionStorage.getItem("authToken"),
+        this.state.cardDetails.id,
+        labelId
+      )
+    ) {
+      this.props.refresh();
+    }
+  };
+
+  unassignLabel = async (labelId) => {
+    if (
+      await Helpers.unassignLabel(
+        sessionStorage.getItem("authToken"),
+        this.state.cardDetails.id,
+        labelId
+      )
+    ) {
+      this.props.refresh();
+    }
+  };
+
   componentDidMount = async () => {
     await this.refreshComments();
+    const labels = await Helpers.getAllLabels(
+      sessionStorage.getItem("authToken")
+    );
+    this.setState({ allLabels: labels });
   };
 
   render() {
@@ -108,10 +137,16 @@ class CardView extends React.Component {
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
           <Modal.Header>
             <div>
-              <DueDateBadge date={this.state.cardDetails.deadline} />
+              <DueDateBadge date={this.props.cardDetails.deadline} />
               <Labels labels={this.props.labels} />
               {this.state.cardDetails.name}
             </div>
+            <LabelsDropdown
+              actualCardLabels={this.props.labels}
+              labels={this.state.allLabels}
+              assignLabel={this.assignLabel}
+              unassignLabel={this.unassignLabel}
+            />
           </Modal.Header>
           <Modal.Body>
             <pre>

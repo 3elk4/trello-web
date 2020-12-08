@@ -5,7 +5,7 @@ import React from "react";
 const DueDateBadge = (props) => {
   if (props.date != null) {
     const currDate = new Date();
-    const badgeType = new Date(props.date) < currDate ? "danger" : "info";
+    const badgeType = new Date(props.date) < currDate ? "danger" : "success";
 
     const options = {
       month: "short",

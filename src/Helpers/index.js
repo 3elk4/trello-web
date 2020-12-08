@@ -551,7 +551,6 @@ export async function getCardLabels(token, boardId, listId, cardId) {
   const requestOps = {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
       Authorization: token,
     },
   };
@@ -562,4 +561,53 @@ export async function getCardLabels(token, boardId, listId, cardId) {
   )
     .then((response) => response.json())
     .then((data) => data.labels.map((label) => JSON.parse(label)));
+}
+
+export async function getAllLabels(token) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  return await fetch(Constants.GET_ALL_LABELS_URL, requestOps)
+    .then((response) => response.json())
+    .then((data) => data.labels.map((label) => JSON.parse(label)));
+}
+
+export async function assignLabel(token, cardId, labelId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      card_id: cardId,
+      label_id: labelId,
+    }),
+  };
+
+  return await fetch(Constants.ASSIGN_LABEL_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
+export async function unassignLabel(token, cardId, labelId) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      card_id: cardId,
+      label_id: labelId,
+    }),
+  };
+
+  return await fetch(Constants.UNASSIGN_LABEL_URL, requestOps).then(
+    (response) => response.ok
+  );
 }
