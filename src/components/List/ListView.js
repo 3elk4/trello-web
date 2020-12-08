@@ -39,6 +39,12 @@ class ListView extends React.Component {
     );
     const cards = [];
     for (let key in cardsDetails) {
+      const labels = await Helpers.getCardLabels(
+        this.state.token,
+        this.state.listDetails.board_id,
+        this.state.listDetails.id,
+        cardsDetails[key].id
+      );
       if (cardsDetails[key].archiving_date === null) {
         cards.push(
           <Card
@@ -47,6 +53,7 @@ class ListView extends React.Component {
             cardDetails={cardsDetails[key]}
             refreshCards={this.refreshCards}
             refreshArchivedElements={this.props.refreshArchivedElements}
+            labels={labels}
           />
         );
       }

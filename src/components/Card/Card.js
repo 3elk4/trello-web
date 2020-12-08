@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CardView from "./CardView";
 import * as Helpers from "../../Helpers";
 import DueDateBadge from "./DueDateBadge";
+import Labels from "./Labels";
 
 const Card = (props) => {
   const [isShow, setShow] = useState(false);
@@ -55,6 +56,7 @@ const Card = (props) => {
     <>
       <div className="bg-dark p-2 mt-2 mb-1">
         <DueDateBadge date={props.cardDetails.deadline} />
+        <Labels labels={props.labels} />
         <span style={{ cursor: "pointer" }} onClick={handleShow}>
           {props.cardDetails.name}
         </span>
@@ -68,6 +70,7 @@ const Card = (props) => {
         archiveCard={archiveCard}
         deleteCard={deleteCard}
         boardId={props.boardId}
+        labels={props.labels}
       />
     </>
   );

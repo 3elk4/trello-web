@@ -546,3 +546,20 @@ export async function addCardComment(token, boardId, listId, cardId, comment) {
     (response) => response.ok
   );
 }
+
+export async function getCardLabels(token, boardId, listId, cardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+
+  return await fetch(
+    Constants.GET_CARD_LABELS_URL(boardId, listId, cardId),
+    requestOps
+  )
+    .then((response) => response.json())
+    .then((data) => data.labels.map((label) => JSON.parse(label)));
+}

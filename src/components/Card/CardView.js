@@ -7,6 +7,7 @@ import DueDateForm from "./DueDateForm";
 import * as Helpers from "../../Helpers";
 import CommentsView from "../Comments/CommentsView";
 import Comment from "../Comments/Comment";
+import Labels from "./Labels";
 
 class CardView extends React.Component {
   constructor(props) {
@@ -108,6 +109,7 @@ class CardView extends React.Component {
           <Modal.Header>
             <div>
               <DueDateBadge date={this.state.cardDetails.deadline} />
+              <Labels labels={this.props.labels} />
               {this.state.cardDetails.name}
             </div>
           </Modal.Header>
