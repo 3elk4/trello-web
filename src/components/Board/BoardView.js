@@ -198,6 +198,9 @@ class BoardView extends React.Component {
             style={{
               backgroundImage: `url(${Constants.API_ROOT}${this.state.boardDetails.background})`,
               backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              minHeight: "700px",
             }}
           >
             <div className="d-inline-flex flex-row overflow-auto">

@@ -121,7 +121,7 @@ class ListView extends React.Component {
 
   render() {
     return (
-      <div className="pl-1 pr-1 mb-4 d-flex" style={{ minWidth: "18em" }}>
+      <div className="pl-1 pr-1 mb-4" style={{ minWidth: "18em" }}>
         <div className="card bg-secondary text-white rounded-top w-100">
           <div className="card-header row m-0 d-flex justify-content-between pl-0">
             <div className="d-inline-flex px-2">
