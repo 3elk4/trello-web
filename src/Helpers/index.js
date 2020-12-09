@@ -611,3 +611,31 @@ export async function unassignLabel(token, cardId, labelId) {
     (response) => response.ok
   );
 }
+
+export async function setDeadline(token, boardId, listId, cardId, state) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+      is_deadline_met: state,
+    }),
+  };
+
+  return await fetch(Constants.EDIT_CARD_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
+// export async function meetCardDeadline(token, boardId, listId, cardId) {
+//   return await setDeadline(token, boardId, listId, cardId, true);
+// }
+
+// export async function cancelCardDeadlineMeet(token, boardId, listId, cardId) {
+//   return await setDeadline(token, boardId, listId, cardId, false);
+// }

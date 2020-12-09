@@ -19,6 +19,8 @@ class CardView extends React.Component {
       cardDetails: props.cardDetails,
       boardId: props.boardId,
       userId: null,
+      allLabels: [],
+      dueDateCheckbox: this.props.cardDetails.is_deadline_met,
     };
     this.cardDescriptionRef = createRef();
 
@@ -117,6 +119,23 @@ class CardView extends React.Component {
     }
   };
 
+  handleDueDateChange = async () => {
+    if (
+      await Helpers.setDeadline(
+        sessionStorage.getItem("authToken"),
+        this.state.boardId,
+        this.state.cardDetails.list_id,
+        this.state.cardDetails.id,
+        !this.state.dueDateCheckbox
+      )
+    ) {
+      this.setState({
+        dueDateCheckbox: !this.state.dueDateCheckbox,
+      });
+    }
+    this.props.refresh();
+  };
+
   componentDidMount = async () => {
     await this.refreshComments();
     const labels = await Helpers.getAllLabels(
@@ -137,7 +156,19 @@ class CardView extends React.Component {
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
           <Modal.Header>
             <div>
-              <DueDateBadge date={this.props.cardDetails.deadline} />
+              <div className="d-flex flex-row align-items-center form-group ml-3 mb-0">
+                <input
+                  type="checkbox"
+                  className="form-check-input position-static mr-1"
+                  name="dueDateCheckbox"
+                  checked={this.state.dueDateCheckbox}
+                  onChange={this.handleDueDateChange}
+                />
+                <DueDateBadge
+                  date={this.props.cardDetails.deadline}
+                  metDeadline={this.props.cardDetails.is_deadline_met}
+                />
+              </div>
               <Labels labels={this.props.labels} />
               {this.state.cardDetails.name}
             </div>

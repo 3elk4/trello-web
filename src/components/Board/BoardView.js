@@ -7,7 +7,6 @@ import ArchivedList from "../ArchivedElements/ArchivedList";
 import ArchivedElement from "../ArchivedElements/ArchivedElement";
 import * as Constants from "../../Constants";
 import ChangeBackground from "../UI/ChangeBackground";
-import { Droppable } from "react-beautiful-dnd";
 
 class BoardView extends React.Component {
   constructor(props) {
