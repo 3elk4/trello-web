@@ -39,6 +39,12 @@ class ListView extends React.Component {
     );
     const cards = [];
     for (let key in cardsDetails) {
+      const labels = await Helpers.getCardLabels(
+        this.state.token,
+        this.state.listDetails.board_id,
+        this.state.listDetails.id,
+        cardsDetails[key].id
+      );
       if (cardsDetails[key].archiving_date === null) {
         cards.push(
           <Card
@@ -47,6 +53,7 @@ class ListView extends React.Component {
             cardDetails={cardsDetails[key]}
             refreshCards={this.refreshCards}
             refreshArchivedElements={this.props.refreshArchivedElements}
+            labels={labels}
           />
         );
       }
@@ -114,10 +121,10 @@ class ListView extends React.Component {
 
   render() {
     return (
-      <div className="col-lg-2 col-md-3 cols-sm-12 pl-1 pr-1 mb-4 d-flex">
+      <div className="pl-1 pr-1 mb-4" style={{ minWidth: "18em" }}>
         <div className="card bg-secondary text-white rounded-top w-100">
           <div className="card-header row m-0 d-flex justify-content-between pl-0">
-            <div className="col-10 pr-0 mr-0 pt-1">
+            <div className="d-inline-flex px-2">
               <Editable
                 text={this.state.listNewName}
                 type="input"

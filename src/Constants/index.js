@@ -33,3 +33,8 @@ export const REGISTER_USER_URL = `${API_ROOT}/create_user`;
 export const GET_CARD_COMMENTS_URL = (boardId, listId, cardId) =>
   `${API_ROOT}/get_card_comments/${boardId}/${listId}/${cardId}`;
 export const ADD_CARD_COMMENT_URL = `${API_ROOT}/create_comment`;
+export const GET_CARD_LABELS_URL = (boardId, listId, cardId) =>
+  `${API_ROOT}/get_card_labels/${boardId}/${listId}/${cardId}`;
+export const GET_ALL_LABELS_URL = `${API_ROOT}/get_labels`;
+export const ASSIGN_LABEL_URL = `${API_ROOT}/assign_label`;
+export const UNASSIGN_LABEL_URL = `${API_ROOT}/unassign_label`;
