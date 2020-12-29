@@ -44,6 +44,7 @@ const Card = (props) => {
     if (await Helpers.archiveCard(token, cardId, listId, props.boardId)) {
       props.refreshCards();
       props.refreshArchivedElements();
+      //TODO: Add activity information about card archivizartion
     }
   };
 
@@ -51,20 +52,23 @@ const Card = (props) => {
     if (await Helpers.deleteCard(token, cardId, listId, props.boardId)) {
       props.refreshCards();
       props.refreshArchivedElements();
+      //TODO: Add activity information about card deletion, check if necessary
     }
   };
 
   return (
     <>
-      <div className="bg-dark p-2 mt-2 mb-1 rounded">
+      <div
+        className="bg-dark p-2 mt-2 mb-1 rounded"
+        style={{ cursor: "pointer" }}
+        onClick={handleShow}
+      >
         <DueDateBadge
           date={props.cardDetails.deadline}
           metDeadline={props.cardDetails.is_deadline_met}
         />
         <Labels labels={props.labels} />
-        <span style={{ cursor: "pointer" }} onClick={handleShow}>
-          {props.cardDetails.name}
-        </span>
+        <span>{props.cardDetails.name}</span>
       </div>
       <CardView
         isShow={isShow}

@@ -31,6 +31,7 @@ class ChangeBackground extends Component {
       ) {
         this.props.handleClose();
         window.location.reload();
+        //TODO: Add activity information about background change
       }
     }
   };

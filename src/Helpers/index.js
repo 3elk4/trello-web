@@ -632,6 +632,23 @@ export async function setDeadline(token, boardId, listId, cardId, state) {
   );
 }
 
+export async function reorderLists(token, newPositions) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      positions: newPositions,
+    }),
+  };
+
+  return await fetch(Constants.REORDER_LISTS_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
 // export async function meetCardDeadline(token, boardId, listId, cardId) {
 //   return await setDeadline(token, boardId, listId, cardId, true);
 // }

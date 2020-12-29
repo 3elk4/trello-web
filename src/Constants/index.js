@@ -38,3 +38,4 @@ export const GET_CARD_LABELS_URL = (boardId, listId, cardId) =>
 export const GET_ALL_LABELS_URL = `${API_ROOT}/get_labels`;
 export const ASSIGN_LABEL_URL = `${API_ROOT}/assign_label`;
 export const UNASSIGN_LABEL_URL = `${API_ROOT}/unassign_label`;
+export const REORDER_LISTS_URL = `${API_ROOT}/reorder_lists`;

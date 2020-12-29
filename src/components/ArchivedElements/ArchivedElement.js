@@ -35,6 +35,7 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
+        //TODO: Add activity information about list restoration
       }
     } else {
       if (
@@ -45,6 +46,7 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
+        //TODO: Add activity information about card restoration
       }
     }
   };
@@ -58,6 +60,7 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
+        //TODO: Add activity information about list deletion
       }
     } else {
       if (
@@ -68,10 +71,10 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
+        //TODO: Add activity information about card deletion
       }
     }
   };
-  // TODO: add button for deleting archived element, figure how to refresh data when element restored
   render() {
     return (
       <div className="card mb-1 p-0 bg-secondary col-sm-12 col-md-3 col-lg-2 text-center">

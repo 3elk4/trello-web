@@ -65,12 +65,16 @@ class ListView extends React.Component {
 
   changeListName = async () => {
     if (this.state.listNewName !== this.state.listName) {
-      await Helpers.changeListName(
-        this.state.token,
-        this.state.listDetails.board_id,
-        this.state.listDetails.id,
-        this.state.listNewName
-      );
+      if (
+        await Helpers.changeListName(
+          this.state.token,
+          this.state.listDetails.board_id,
+          this.state.listDetails.id,
+          this.state.listNewName
+        )
+      ) {
+        //TODO: Add activity information about list name change
+      }
     }
   };
 
@@ -85,6 +89,7 @@ class ListView extends React.Component {
     ) {
       this.hideBoardListModal();
       this.props.refreshLists();
+      //TODO: Add activity information about moving list
     }
   };
 
@@ -100,6 +105,7 @@ class ListView extends React.Component {
       ))
     ) {
       this.refreshCards();
+      //TODO: Add activity information about new card
     }
   };
 
