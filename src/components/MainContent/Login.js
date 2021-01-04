@@ -7,7 +7,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: "",
       errors: "",
     };
@@ -22,9 +22,9 @@ class Login extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     let user = {
-      username: username,
+      email: email,
       password: password,
     };
     let requestOps = {
@@ -37,7 +37,7 @@ class Login extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {
-          this.props.handleLogin(data, username);
+          this.props.handleLogin(data, email);
         } else {
           this.setState({
             errors: data.errors,
@@ -68,7 +68,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     return (
       <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
@@ -77,10 +77,10 @@ class Login extends React.Component {
           <div className="form-group">
             <input
               className="form-control"
-              placeholder="Username"
-              type="text"
-              name="username"
-              value={username}
+              placeholder="E-mail"
+              type="email"
+              name="email"
+              value={email}
               onChange={this.handleChange}
             />
           </div>

@@ -39,3 +39,6 @@ export const GET_ALL_LABELS_URL = `${API_ROOT}/get_labels`;
 export const ASSIGN_LABEL_URL = `${API_ROOT}/assign_label`;
 export const UNASSIGN_LABEL_URL = `${API_ROOT}/unassign_label`;
 export const REORDER_LISTS_URL = `${API_ROOT}/reorder_lists`;
+export const ADD_NEW_ACTIVITY_URL = `${API_ROOT}/create_history_entry`;
+export const GET_BOARD_ACTIVITY_URL = (boardId) =>
+  `${API_ROOT}/get_history_entries/${boardId}`;

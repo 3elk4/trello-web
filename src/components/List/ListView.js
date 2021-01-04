@@ -54,6 +54,7 @@ class ListView extends React.Component {
             refreshCards={this.refreshCards}
             refreshArchivedElements={this.props.refreshArchivedElements}
             labels={labels}
+            refreshActivity={this.props.refreshActivity}
           />
         );
       }
@@ -73,7 +74,15 @@ class ListView extends React.Component {
           this.state.listNewName
         )
       ) {
-        //TODO: Add activity information about list name change
+        Helpers.newActivity(
+          this.state.token,
+          this.state.listDetails.board_id,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> changed list <b>${
+            this.state.listName
+          }</b> name to <b>${this.state.listNewName}</b>.`
+        );
+        this.props.refreshActivity();
       }
     }
   };
@@ -89,7 +98,15 @@ class ListView extends React.Component {
     ) {
       this.hideBoardListModal();
       this.props.refreshLists();
-      //TODO: Add activity information about moving list
+      Helpers.newActivity(
+        this.state.token,
+        this.state.listDetails.board_id,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> moved list <b>${
+          this.state.listName
+        }</b> to another board.`
+      );
+      this.props.refreshActivity();
     }
   };
 
@@ -105,7 +122,15 @@ class ListView extends React.Component {
       ))
     ) {
       this.refreshCards();
-      //TODO: Add activity information about new card
+      Helpers.newActivity(
+        this.state.token,
+        this.state.listDetails.board_id,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> created <b>${
+          this.state.newCardName
+        }</b> card.`
+      );
+      this.props.refreshActivity();
     }
   };
 

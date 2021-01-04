@@ -649,6 +649,37 @@ export async function reorderLists(token, newPositions) {
   );
 }
 
+export async function newActivity(token, boardId, userId, description) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      board_id: boardId,
+      user_id: userId,
+      description: description,
+      entry_date: new Date(),
+    }),
+  };
+  return await fetch(Constants.ADD_NEW_ACTIVITY_URL, requestOps).then(
+    (response) => response.ok
+  );
+}
+
+export async function getBoardActivity(token, boardId) {
+  const requestOps = {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  };
+  return await fetch(Constants.GET_BOARD_ACTIVITY_URL(boardId), requestOps)
+    .then((response) => response.json())
+    .then((data) => data.history_entries);
+}
+
 // export async function meetCardDeadline(token, boardId, listId, cardId) {
 //   return await setDeadline(token, boardId, listId, cardId, true);
 // }

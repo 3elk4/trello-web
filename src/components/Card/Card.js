@@ -42,9 +42,17 @@ const Card = (props) => {
 
   const archiveCard = async (cardId, listId) => {
     if (await Helpers.archiveCard(token, cardId, listId, props.boardId)) {
+      Helpers.newActivity(
+        token,
+        props.boardId,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> archived <b>${
+          props.cardDetails.name
+        }</b> card.`
+      );
+      props.refreshActivity();
       props.refreshCards();
       props.refreshArchivedElements();
-      //TODO: Add activity information about card archivizartion
     }
   };
 

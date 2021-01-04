@@ -8,6 +8,8 @@ import ArchivedElement from "../ArchivedElements/ArchivedElement";
 import * as Constants from "../../Constants";
 import ChangeBackground from "../UI/ChangeBackground";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import ActivityView from "../UI/ActivityView";
+import SingleActivity from "../UI/SingleActivity";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class BoardView extends React.Component {
       boardDetails: [],
       isChangeBackgroundShow: false,
       showActivity: false,
+      activity: [],
     };
     this.boardNameInputRef = createRef();
   }
@@ -35,9 +38,18 @@ class BoardView extends React.Component {
         this.state.boardId,
         newListName
       ))
-    )
+    ) {
       this.refreshLists();
-    //TODO: Add new activity about creating new list
+      Helpers.newActivity(
+        this.state.token,
+        this.state.boardId,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem(
+          "username"
+        )}</b> created <b>${newListName}</b> list.`
+      );
+      this.refreshActivity();
+    }
   };
 
   handleChange = (event) => {
@@ -64,7 +76,15 @@ class BoardView extends React.Component {
           this.state.boardName
         )
       ) {
-        //TODO: Add new activity about board name change
+        Helpers.newActivity(
+          this.state.token,
+          this.state.boardId,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> changed board <b>${
+            this.state.currBoardName
+          }</b> name to <b>${this.state.boardName}</b>.`
+        );
+        this.refreshActivity();
       }
     }
   };
@@ -79,9 +99,17 @@ class BoardView extends React.Component {
 
   archiveList = async (id) => {
     if (await Helpers.archiveList(this.state.token, this.state.boardId, id)) {
+      Helpers.newActivity(
+        this.state.token,
+        this.state.boardId,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> archived <b>${
+          this.state.lists.find((list) => list.details.id === id).details.name
+        }</b> list.`
+      );
+      this.refreshActivity();
       this.refreshLists();
       this.refreshArchivedElements();
-      //TODO: Add new activity about list archivization
     }
   };
 
@@ -118,7 +146,11 @@ class BoardView extends React.Component {
     for (let key in archivedListsDetails) {
       const record = archivedListsDetails[key];
       archivedElements.push(
-        <ArchivedElement key={counter} refreshLists={this.refreshLists}>
+        <ArchivedElement
+          key={counter}
+          refreshLists={this.refreshLists}
+          refreshActivity={this.refreshActivity}
+        >
           <ArchivedList details={record} />
         </ArchivedElement>
       );
@@ -127,7 +159,11 @@ class BoardView extends React.Component {
     for (let key in archivedCardsDetails) {
       const record = archivedCardsDetails[key];
       archivedElements.push(
-        <ArchivedElement key={counter} refreshLists={this.refreshLists}>
+        <ArchivedElement
+          key={counter}
+          refreshLists={this.refreshLists}
+          refreshActivity={this.refreshActivity}
+        >
           <ArchivedCard details={record} boardId={this.state.boardId} />
         </ArchivedElement>
       );
@@ -135,6 +171,27 @@ class BoardView extends React.Component {
     }
 
     this.setState({ archivedElements: archivedElements });
+  };
+
+  refreshActivity = async () => {
+    const activity = await Helpers.getBoardActivity(
+      this.state.token,
+      this.state.boardId
+    );
+
+    const activity_list = [];
+    for (let key in activity) {
+      activity_list.push(
+        <SingleActivity
+          key={key}
+          date={activity[key].entry_date}
+          description={activity[key].description}
+        />
+      );
+    }
+    this.setState({
+      activity: activity_list,
+    });
   };
 
   getBoardDetails = async () => {
@@ -150,6 +207,7 @@ class BoardView extends React.Component {
     this.getBoardName();
     this.refreshLists();
     this.refreshArchivedElements();
+    this.refreshActivity();
   };
 
   toggleArchived = () => {
@@ -197,12 +255,13 @@ class BoardView extends React.Component {
           handleClose={() => this.setState({ isChangeBackgroundShow: false })}
           boardId={this.state.boardId}
         />
+
         <div className="d-flex flex-row">
           <div
             className="shadow rounded p-4 bg-dark text-white mr-0"
             style={{ width: this.state.showActivity ? "85%" : "100%" }}
           >
-            <div className="row d-flex justify-content-between align-items-end">
+            <div className="row d-flex justify-content-between align-items-center">
               <div className="d-inline-flex">
                 <h2 className="mb-3">
                   <Editable
@@ -222,14 +281,24 @@ class BoardView extends React.Component {
                   </Editable>
                 </h2>
               </div>
-              <div className="col-md-2 col-sm-12 pr-0">
+              <div>
                 <button
-                  className="btn btn-primary btn-sm float-right mr-0"
+                  className="btn btn-primary btn-sm mx-1"
                   onClick={() =>
                     this.setState({ isChangeBackgroundShow: true })
                   }
                 >
                   Change background
+                </button>
+                <button
+                  className="btn btn-primary btn-sm mx-1"
+                  onClick={() =>
+                    this.setState({
+                      showActivity: !this.state.showActivity,
+                    })
+                  }
+                >
+                  Show board activity
                 </button>
               </div>
             </div>
@@ -274,6 +343,7 @@ class BoardView extends React.Component {
                                   refreshArchivedElements={
                                     this.refreshArchivedElements
                                   }
+                                  refreshActivity={this.refreshActivity}
                                 />
                               </div>
                             )}
@@ -330,31 +400,14 @@ class BoardView extends React.Component {
                   />
                 </svg>
               </button>
-              <button
-                className="btn btn-link p-0 ml-4"
-                onClick={() =>
-                  this.setState({
-                    showActivity: !this.state.showActivity,
-                  })
-                }
-              >
-                Activity
-              </button>
             </div>
             {this.state.showArchived ? this.state.archivedElements : null}
           </div>
-          <div
-            className="bg-light border-left shadow"
-            style={{
-              position: "fixed",
-              zIndex: 9999999,
-              top: "66px",
-              right: 0,
-              height: "100%",
-              width: "15%",
-              display: this.state.showActivity ? "block" : "none",
-            }}
-          ></div>
+
+          <ActivityView
+            activity={this.state.activity}
+            showActivity={this.state.showActivity}
+          />
         </div>
       </>
     );

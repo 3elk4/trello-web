@@ -35,7 +35,15 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
-        //TODO: Add activity information about list restoration
+        Helpers.newActivity(
+          sessionStorage.getItem("authToken"),
+          this.props.children.props.details.board_id,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> restored <b>${
+            this.props.children.props.details.name
+          }</b> list.`
+        );
+        this.props.refreshActivity();
       }
     } else {
       if (
@@ -46,7 +54,15 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
-        //TODO: Add activity information about card restoration
+        Helpers.newActivity(
+          sessionStorage.getItem("authToken"),
+          this.props.children.props.boardId,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> restored <b>${
+            this.props.children.props.details.name
+          }</b> card.`
+        );
+        this.props.refreshActivity();
       }
     }
   };
@@ -60,7 +76,15 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
-        //TODO: Add activity information about list deletion
+        Helpers.newActivity(
+          sessionStorage.getItem("authToken"),
+          this.props.children.props.details.board_id,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> deleted <b>${
+            this.props.children.props.details.name
+          }</b> list.`
+        );
+        this.props.refreshActivity();
       }
     } else {
       if (
@@ -71,7 +95,15 @@ class ArchivedElement extends React.Component {
         )
       ) {
         this.props.refreshLists();
-        //TODO: Add activity information about card deletion
+        Helpers.newActivity(
+          sessionStorage.getItem("authToken"),
+          this.props.children.props.boardId,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> deleted <b>${
+            this.props.children.props.details.name
+          }</b> card.`
+        );
+        this.props.refreshActivity();
       }
     }
   };

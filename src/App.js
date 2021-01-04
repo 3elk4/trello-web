@@ -42,14 +42,14 @@ class App extends React.Component {
 
   handleLogin = (data, username) => {
     sessionStorage.setItem("authToken", data.token);
-    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("user_id", this.state.userData.id);
     this.setState({ isLoggedIn: true, username: username });
   };
 
   handleLogout = async () => {
     if (await Helpers.logoutUser(sessionStorage.getItem("authToken"))) {
       sessionStorage.removeItem("authToken");
-      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("user_id");
       this.setState({ isLoggedIn: false, username: "" });
     }
   };

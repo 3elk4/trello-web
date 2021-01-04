@@ -7,9 +7,12 @@ class UserProfile extends React.Component {
     super(props);
     this.state = {
       username: props.userData.username,
+      email: props.userData.email,
+      userDescription: props.userData.description,
       showSuccess: false,
       showFail: false,
     };
+    console.log(this.props.userData);
   }
 
   handleChange = (event) => {
@@ -26,6 +29,7 @@ class UserProfile extends React.Component {
       await Helpers.updateUser(sessionStorage.getItem("authToken"), {
         id: this.props.userData.id,
         username: this.state.username,
+        description: this.state.userDescription,
       })
     ) {
       this.setState({ showSuccess: true });
@@ -54,6 +58,17 @@ class UserProfile extends React.Component {
           </div>
           <form className="w-75 mb-3" onSubmit={this.handleSubmit}>
             <div className="form-group">
+              <label htmlFor="email">E-mail</label>
+              <input
+                type="text"
+                className="form-control"
+                id="email"
+                name="email"
+                value={this.state.email}
+                disabled
+              />
+            </div>
+            <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
                 type="text"
@@ -72,8 +87,8 @@ class UserProfile extends React.Component {
                 name="userDescription"
                 rows="3"
                 onChange={this.handleChange}
-                disabled
-                placeholder="Not implemented yet."
+                placeholder="No description provided."
+                value={this.state.userDescription}
               ></textarea>
             </div>
             <div className="text-center">
