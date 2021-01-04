@@ -21,7 +21,12 @@ class LabelsDropdown extends React.Component {
       </Dropdown.Item>
     ));
     return (
-      <DropdownButton as={ButtonGroup} size="sm" title="Pick label">
+      <DropdownButton
+        as={ButtonGroup}
+        variant="secondary"
+        size="sm"
+        title="Pick label"
+      >
         {menuItems}
       </DropdownButton>
     );

@@ -208,6 +208,7 @@ class CardView extends React.Component {
                 variant={this.actionType !== "archive" ? "danger" : "warning"}
                 onClick={() => this.setState({ showConf: true })}
                 style={{ textTransform: "capitalize" }}
+                size="sm"
               >
                 {this.actionType}
               </Button>

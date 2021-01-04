@@ -11,6 +11,12 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import ActivityView from "../UI/ActivityView";
 import SingleActivity from "../UI/SingleActivity";
 import { Redirect } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowAltCircleDown,
+  faArrowAltCircleUp,
+} from "@fortawesome/free-regular-svg-icons";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
 class BoardView extends React.Component {
   constructor(props) {
@@ -24,6 +30,7 @@ class BoardView extends React.Component {
       isChangeBackgroundShow: false,
       showActivity: false,
       activity: [],
+      showArchivedLists: true,
     };
     this.boardNameInputRef = createRef();
   }
@@ -143,10 +150,10 @@ class BoardView extends React.Component {
       this.state.token,
       this.state.boardId
     );
-    const archivedElements = [];
+    const archivedLists = [];
     for (let key in archivedListsDetails) {
       const record = archivedListsDetails[key];
-      archivedElements.push(
+      archivedLists.push(
         <ArchivedElement
           key={counter}
           refreshLists={this.refreshLists}
@@ -157,9 +164,11 @@ class BoardView extends React.Component {
       );
       counter++;
     }
+    const archivedCards = [];
+
     for (let key in archivedCardsDetails) {
       const record = archivedCardsDetails[key];
-      archivedElements.push(
+      archivedCards.push(
         <ArchivedElement
           key={counter}
           refreshLists={this.refreshLists}
@@ -171,7 +180,10 @@ class BoardView extends React.Component {
       counter++;
     }
 
-    this.setState({ archivedElements: archivedElements });
+    this.setState({
+      archivedLists: archivedLists,
+      archivedCards: archivedCards,
+    });
   };
 
   refreshActivity = async () => {
@@ -290,7 +302,7 @@ class BoardView extends React.Component {
                 </div>
                 <div>
                   <button
-                    className="btn btn-primary btn-sm mx-1"
+                    className="btn btn-secondary btn-sm mx-1"
                     onClick={() =>
                       this.setState({ isChangeBackgroundShow: true })
                     }
@@ -298,7 +310,7 @@ class BoardView extends React.Component {
                     Change background
                   </button>
                   <button
-                    className="btn btn-primary btn-sm mx-1"
+                    className="btn btn-secondary btn-sm mx-1"
                     onClick={() =>
                       this.setState({
                         showActivity: !this.state.showActivity,
@@ -376,7 +388,7 @@ class BoardView extends React.Component {
                         <div className="form-group col-2 m-0 p-0">
                           <button
                             type="submit"
-                            className="btn btn-sm btn-success float-right"
+                            className="btn btn-sm btn-info float-right"
                           >
                             +
                           </button>
@@ -388,27 +400,38 @@ class BoardView extends React.Component {
               </div>
               <div className="mb-3">
                 <button
-                  href="#"
                   onClick={this.toggleArchived}
-                  className="btn btn-link p-0"
+                  className="btn btn-secondary"
                 >
-                  Archived elements&nbsp;&nbsp;
-                  <svg
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 16 16"
-                    className="bi bi-arrow-down-circle-fill"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"
-                    />
-                  </svg>
+                  Archived elements{" "}
+                  {!this.state.showArchived ? (
+                    <FontAwesomeIcon icon={faAngleDown} />
+                  ) : (
+                    <FontAwesomeIcon icon={faAngleUp} />
+                  )}
                 </button>
               </div>
-              {this.state.showArchived ? this.state.archivedElements : null}
+              <div
+                style={{ display: this.state.showArchived ? "block" : "none" }}
+              >
+                <button
+                  className="btn btn-info btn-sm"
+                  onClick={() =>
+                    this.setState({
+                      showArchivedLists: !this.state.showArchivedLists,
+                    })
+                  }
+                >
+                  {this.state.showArchivedLists
+                    ? "Show archived cards"
+                    : "Show archived lists"}
+                </button>
+                <div className="d-flex flex-wrap">
+                  {this.state.showArchivedLists
+                    ? this.state.archivedLists
+                    : this.state.archivedCards}
+                </div>
+              </div>
             </div>
 
             <ActivityView

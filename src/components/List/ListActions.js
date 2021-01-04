@@ -5,7 +5,7 @@ const ListActions = (props) => {
     <>
       <DropdownButton
         title=""
-        variant="primary"
+        variant="dark"
         id="list_actions_dropdown"
         size="sm"
       >

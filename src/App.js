@@ -28,6 +28,7 @@ class App extends React.Component {
       Helpers.getCurrentUserInfo(sessionStorage.getItem("authToken")).then(
         (userData) => {
           sessionStorage.setItem("username", userData.username);
+          sessionStorage.setItem("user_id", userData.id);
           this.setState({
             isLoggedIn: true,
             userData: userData,
@@ -36,6 +37,7 @@ class App extends React.Component {
       );
     } else {
       sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("user_id");
       this.setState({ isLoggedIn: false });
     }
   }

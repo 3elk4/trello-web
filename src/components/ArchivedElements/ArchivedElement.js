@@ -1,14 +1,22 @@
 import React from "react";
 import ArchivedList from "./ArchivedList";
 import * as Helpers from "../../Helpers";
+import ArchivedCard from "./ArchivedCard";
+import ArchivedCardView from "../Card/ArchivedCardView";
 
 class ArchivedElement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       token: sessionStorage.getItem("authToken"),
+      isShow: false,
+      labels: [],
     };
   }
+
+  handleClose = () => {
+    this.setState({ isShow: false });
+  };
 
   deleteList = async (boardId, listId) => {
     return await Helpers.deleteList(this.state.token, boardId, listId);
@@ -107,22 +115,48 @@ class ArchivedElement extends React.Component {
       }
     }
   };
+
+  componentDidMount = async () => {
+    if (this.props.children.type === ArchivedCard) {
+      const labels = await Helpers.getCardLabels(
+        this.state.token,
+        this.props.children.props.boardId,
+        this.props.children.props.details.list_id,
+        this.props.children.props.details.id
+      );
+
+      this.setState({ labels: labels });
+    }
+  };
+
   render() {
     return (
-      <div className="card mb-1 p-0 bg-secondary col-sm-12 col-md-3 col-lg-2 text-center">
-        <div className="card-header p-1">
-          {this.props.children.type === ArchivedList ? "List" : "Card"}
-        </div>
-        <div className="card-body p-1">
-          {this.props.children.props.details.name}
-        </div>
-        <div className="card-footer p-1">
-          <button className="btn btn-primary" onClick={this.restore}>
-            restore
-          </button>
-          <button className="btn btn-secondary" onClick={this.delete}>
-            delete
-          </button>
+      <div className="p-2">
+        {this.props.children.type === ArchivedCard ? (
+          <ArchivedCardView
+            isShow={this.state.isShow}
+            handleClose={this.handleClose}
+            cardDetails={this.props.children.props.details}
+            labels={this.state.labels}
+          />
+        ) : null}
+
+        <div className="bg-secondary p-2 rounded d-flex align-items-center ">
+          <div
+            className="mx-2"
+            onClick={() => this.setState({ isShow: true })}
+            style={{ cursor: "pointer" }}
+          >
+            {this.props.children.props.details.name}
+          </div>
+          <div className="mx-2">
+            <button className="btn btn-info btn-sm m-1" onClick={this.restore}>
+              restore
+            </button>
+            <button className="btn btn-danger btn-sm m-1" onClick={this.delete}>
+              delete
+            </button>
+          </div>
         </div>
       </div>
     );
