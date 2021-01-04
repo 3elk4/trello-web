@@ -11,9 +11,6 @@ const Home = (props) => {
       <div className="shadow rounded p-4 bg-dark text-white">
         <h2 className="mb-5">Your boards:</h2>
         <Boards />
-        <button className="btn btn-secondary mt-2" onClick={props.handleLogout}>
-          Log Out
-        </button>
       </div>
     );
   }

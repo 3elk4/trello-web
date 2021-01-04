@@ -9,13 +9,23 @@ const Navbar = (props) => {
       </a>
       <div className="navbar-right">
         {props.isLogged ? (
-          <span>
-            Welcome,{" "}
-            <a href="/user" style={{ color: "silver" }}>
-              {sessionStorage.getItem("username")}
-            </a>
-            !
-          </span>
+          <div className="d-inline-flex align-items-center">
+            <div>
+              Welcome,{" "}
+              <a href="/user" style={{ color: "silver" }}>
+                {sessionStorage.getItem("username")}
+              </a>
+              !
+            </div>
+            <div className="ml-3">
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={props.handleLogout}
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
         ) : null}
       </div>
     </nav>

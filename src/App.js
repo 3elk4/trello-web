@@ -57,7 +57,10 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid mt-5 pt-5">
-        <Navbar isLogged={this.state.isLoggedIn} />
+        <Navbar
+          isLogged={this.state.isLoggedIn}
+          handleLogout={this.handleLogout}
+        />
         <BrowserRouter>
           <Switch>
             <Route

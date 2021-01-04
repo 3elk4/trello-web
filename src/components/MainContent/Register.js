@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router";
 import * as Helpers from "../../Helpers";
+import * as Constants from "../../Constants";
 
 class Register extends React.Component {
   constructor(props) {
@@ -44,52 +45,56 @@ class Register extends React.Component {
 
   render() {
     const { username, password, password_confirm } = this.state;
-    return (
-      <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
-        {this.registered ? <Redirect to="/" /> : null}
-        <form onSubmit={this.handleSubmit}>
-          <h3 className="mb-4">Register page</h3>
-          <div className="form-group">
-            <input
-              className="form-control"
-              placeholder="Username"
-              type="text"
-              name="username"
-              value={username}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              className="form-control"
-              placeholder="Password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              className="form-control"
-              placeholder="Re-type Password"
-              type="password"
-              name="password_confirm"
-              value={password_confirm}
-              onChange={this.handleChange}
-            />
-          </div>
-          <button
-            className="btn btn-success"
-            placeholder="Submit"
-            type="submit"
-          >
-            Sign up
-          </button>
-        </form>
-        <div className="row text-danger p-3">{this.state.error_message}</div>
-      </div>
-    );
+    if (sessionStorage.getItem("authToken") === null) {
+      return <Redirect to={Constants.LOGIN_VIEW_URL} />;
+    } else {
+      return (
+        <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+          {this.registered ? <Redirect to="/" /> : null}
+          <form onSubmit={this.handleSubmit}>
+            <h3 className="mb-4">Register page</h3>
+            <div className="form-group">
+              <input
+                className="form-control"
+                placeholder="Username"
+                type="text"
+                name="username"
+                value={username}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                className="form-control"
+                placeholder="Password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                className="form-control"
+                placeholder="Re-type Password"
+                type="password"
+                name="password_confirm"
+                value={password_confirm}
+                onChange={this.handleChange}
+              />
+            </div>
+            <button
+              className="btn btn-success"
+              placeholder="Submit"
+              type="submit"
+            >
+              Sign up
+            </button>
+          </form>
+          <div className="row text-danger p-3">{this.state.error_message}</div>
+        </div>
+      );
+    }
   }
 }
 
