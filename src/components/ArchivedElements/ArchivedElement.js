@@ -50,8 +50,7 @@ class ArchivedElement extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> restored <b>${
             this.props.children.props.details.name
           }</b> list.`
-        );
-        this.props.refreshActivity();
+        ).then(() => this.props.refreshActivity());
       }
     } else {
       if (
@@ -69,8 +68,7 @@ class ArchivedElement extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> restored <b>${
             this.props.children.props.details.name
           }</b> card.`
-        );
-        this.props.refreshActivity();
+        ).then(() => this.props.refreshActivity());
       }
     }
   };
@@ -91,8 +89,7 @@ class ArchivedElement extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> deleted <b>${
             this.props.children.props.details.name
           }</b> list.`
-        );
-        this.props.refreshActivity();
+        ).then(() => this.props.refreshActivity());
       }
     } else {
       if (
@@ -110,8 +107,7 @@ class ArchivedElement extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> deleted <b>${
             this.props.children.props.details.name
           }</b> card.`
-        );
-        this.props.refreshActivity();
+        ).then(() => this.props.refreshActivity());
       }
     }
   };

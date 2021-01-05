@@ -49,10 +49,11 @@ const Card = (props) => {
         `User <b>${sessionStorage.getItem("username")}</b> archived <b>${
           props.cardDetails.name
         }</b> card.`
-      );
-      props.refreshActivity();
-      props.refreshCards();
-      props.refreshArchivedElements();
+      ).then(() => {
+        props.refreshActivity();
+        props.refreshCards();
+        props.refreshArchivedElements();
+      });
     }
   };
 

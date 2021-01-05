@@ -55,8 +55,7 @@ class BoardView extends React.Component {
         `User <b>${sessionStorage.getItem(
           "username"
         )}</b> created <b>${newListName}</b> list.`
-      );
-      this.refreshActivity();
+      ).then(() => this.refreshActivity());
     }
   };
 
@@ -91,8 +90,7 @@ class BoardView extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> changed board <b>${
             this.state.currBoardName
           }</b> name to <b>${this.state.boardName}</b>.`
-        );
-        this.refreshActivity();
+        ).then(() => this.refreshActivity());
       }
     }
   };
@@ -114,10 +112,11 @@ class BoardView extends React.Component {
         `User <b>${sessionStorage.getItem("username")}</b> archived <b>${
           this.state.lists.find((list) => list.details.id === id).details.name
         }</b> list.`
-      );
-      this.refreshActivity();
-      this.refreshLists();
-      this.refreshArchivedElements();
+      ).then(() => {
+        this.refreshActivity();
+        this.refreshLists();
+        this.refreshArchivedElements();
+      });
     }
   };
 

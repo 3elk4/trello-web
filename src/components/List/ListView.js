@@ -81,8 +81,7 @@ class ListView extends React.Component {
           `User <b>${sessionStorage.getItem("username")}</b> changed list <b>${
             this.state.listName
           }</b> name to <b>${this.state.listNewName}</b>.`
-        );
-        this.props.refreshActivity();
+        ).then(() => this.props.refreshActivity());
       }
     }
   };
@@ -105,8 +104,7 @@ class ListView extends React.Component {
         `User <b>${sessionStorage.getItem("username")}</b> moved list <b>${
           this.state.listName
         }</b> to another board.`
-      );
-      this.props.refreshActivity();
+      ).then(() => this.props.refreshActivity());
     }
   };
 
@@ -129,8 +127,7 @@ class ListView extends React.Component {
         `User <b>${sessionStorage.getItem("username")}</b> created <b>${
           this.state.newCardName
         }</b> card.`
-      );
-      this.props.refreshActivity();
+      ).then(() => this.props.refreshActivity());
     }
   };
 
