@@ -449,13 +449,14 @@ export async function restoreCard(token, cardId, listId, boardId) {
   );
 }
 
-export async function createUser(userName, password) {
+export async function createUser(email, userName, password) {
   const requestOps = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      email: email,
       username: userName,
       password: password,
     }),

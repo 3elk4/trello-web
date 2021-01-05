@@ -9,7 +9,7 @@ class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
-      errors: "",
+      errors: {},
     };
   }
 
@@ -37,21 +37,23 @@ class Login extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {
-          this.props.handleLogin(data, email);
+          this.props.handleLogin(data.token);
         } else {
-          this.setState({
-            errors: data.errors,
-          });
+          this.setState({ errors: data.error });
         }
       });
   };
 
   handleErrors = () => {
     return (
-      <div>
-        <ul>
-          {this.state.errors.map((error) => {
-            return <li key={error}>{error}</li>;
+      <div className="text-danger">
+        <ul className="list-group list-group-flush bg-dark">
+          {Object.keys(this.state.errors).map((key, index) => {
+            return (
+              <li className="list-group-item bg-dark pt-0" key={key}>
+                {this.state.errors[key]}
+              </li>
+            );
           })}
         </ul>
       </div>
@@ -73,7 +75,7 @@ class Login extends React.Component {
       <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
-          <h3 className="mb-4">Login page</h3>
+          <h3 className="mb-4 mt-3">Login page</h3>
           <div className="form-group">
             <input
               className="form-control"
@@ -94,15 +96,12 @@ class Login extends React.Component {
               onChange={this.handleChange}
             />
           </div>
-          <button
-            className="btn btn-success"
-            placeholder="Submit"
-            type="submit"
-          >
+          <div>{this.handleErrors()}</div>
+          <button className="btn btn-info" placeholder="Submit" type="submit">
             Log In
           </button>
         </form>
-        <div>
+        <div className="mt-2 mb-4 px-2">
           If you don't have an account&nbsp;
           <a className="link" href="/register">
             register now
