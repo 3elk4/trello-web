@@ -42,7 +42,6 @@ class App extends React.Component {
 
   handleLogin = async (token) => {
     const userData = await this.getUserData(token);
-    console.log(userData);
     sessionStorage.setItem("authToken", token);
     sessionStorage.setItem("user_id", userData.id);
     sessionStorage.setItem("username", userData.username);

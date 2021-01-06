@@ -63,7 +63,6 @@ class Register extends React.Component {
         });
       }
     } else {
-      console.log("error");
       this.setState({
         error_message:
           "Incorrect data. Email, username and password cannot be empty.",

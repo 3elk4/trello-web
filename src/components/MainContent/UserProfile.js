@@ -14,7 +14,6 @@ class UserProfile extends React.Component {
       showSuccess: false,
       showFail: false,
     };
-    console.log(this.props.userData);
   }
 
   handleChange = (event) => {
