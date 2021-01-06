@@ -26,6 +26,20 @@ const Card = (props) => {
     );
   };
 
+  const changeCardName = async (newName) => {
+    if (
+      await Helpers.changeCardName(
+        token,
+        props.cardDetails.id,
+        props.cardDetails.list_id,
+        props.boardId,
+        newName
+      )
+    ) {
+      props.refreshCards();
+    }
+  };
+
   const changeCardDueDate = async (date) => {
     if (
       await Helpers.changeDueDate(
@@ -83,6 +97,7 @@ const Card = (props) => {
         isShow={isShow}
         handleClose={handleClose}
         changeCardDescription={changeCardDescription}
+        changeCardName={changeCardName}
         changeCardDueDate={changeCardDueDate}
         cardDetails={props.cardDetails}
         archiveCard={archiveCard}

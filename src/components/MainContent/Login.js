@@ -72,7 +72,7 @@ class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (
-      <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+      <div className="d-flex flex-wrap justify-content-center align-items-center mx-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white mt-sm-0 mt-5">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
           <h3 className="mb-4 mt-3">Login page</h3>

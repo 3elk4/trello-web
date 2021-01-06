@@ -5,10 +5,15 @@ import home_image from "../../assets/welcome_image.png";
 export default class WelcomePage extends React.Component {
   render() {
     return (
-      <div className="shadow rounded p-4 bg-dark text-white text-center container">
+      <div className="shadow rounded p-4 bg-dark text-white text-center container mt-sm-0 mt-5">
         <div className="row">
           <div className="col">
-            <img src={home_image} className="img-fluid" width="250px" />
+            <img
+              src={home_image}
+              className="img-fluid"
+              width="250px"
+              alt="Application logo"
+            />
           </div>
         </div>
         <div className="row mt-3">
@@ -25,7 +30,7 @@ export default class WelcomePage extends React.Component {
             </h4>
           </div>
           <div className="d-flex col-md-6 col-sm-12 align-items-center">
-            <img src={welcome_image_1} className="img-fluid" />
+            <img src={welcome_image_1} className="img-fluid" alt="Welcome" />
           </div>
         </div>
       </div>

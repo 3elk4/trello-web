@@ -16,6 +16,7 @@ class CardView extends React.Component {
     this.state = {
       showConf: false,
       cardDescription: props.cardDetails.description,
+      cardName: props.cardDetails.name,
       cardDetails: props.cardDetails,
       boardId: props.boardId,
       userId: null,
@@ -23,6 +24,7 @@ class CardView extends React.Component {
       dueDateCheckbox: this.props.cardDetails.is_deadline_met,
     };
     this.cardDescriptionRef = createRef();
+    this.cardNameRef = createRef();
 
     this.actionType =
       props.cardDetails.archiving_date === null ? "archive" : "delete";
@@ -39,6 +41,12 @@ class CardView extends React.Component {
   changeCardDescription = () => {
     if (this.state.cardDescription !== this.state.cardDetails.description) {
       this.props.changeCardDescription(this.state.cardDescription);
+    }
+  };
+
+  changeCardName = () => {
+    if (this.state.cardName !== this.state.cardDetails.name) {
+      this.props.changeCardName(this.state.cardName);
     }
   };
 
@@ -154,34 +162,55 @@ class CardView extends React.Component {
           onConfirm={this.onConfirm}
         />
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
-          <Modal.Header>
-            <div>
-              {this.props.cardDetails.deadline ? (
-                <div className="d-flex flex-row align-items-center form-group ml-3 mb-0">
-                  <input
-                    type="checkbox"
-                    className="form-check-input position-static mr-1"
-                    name="dueDateCheckbox"
-                    checked={this.state.dueDateCheckbox}
-                    onChange={this.handleDueDateChange}
-                  />
-                  <DueDateBadge
-                    date={this.props.cardDetails.deadline}
-                    metDeadline={this.props.cardDetails.is_deadline_met}
-                  />
-                </div>
-              ) : null}
-              <Labels labels={this.props.labels} />
-              {this.state.cardDetails.name}
-            </div>
-            <LabelsDropdown
-              actualCardLabels={this.props.labels}
-              labels={this.state.allLabels}
-              assignLabel={this.assignLabel}
-              unassignLabel={this.unassignLabel}
-            />
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <Editable
+                text={this.state.cardName}
+                type="input"
+                onConfirm={this.changeCardName}
+                childRef={this.cardNameRef}
+              >
+                <input
+                  className="form-control p-2"
+                  ref={this.cardNameRef}
+                  type="text"
+                  name="cardName"
+                  value={this.state.cardName}
+                  onChange={this.handleChange}
+                />
+              </Editable>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            <div className="d-flex flex-row justify-content-between mb-5">
+              <div>
+                {this.props.cardDetails.deadline ? (
+                  <div className="d-flex flex-row align-items-center form-group ml-3 mb-0">
+                    <input
+                      type="checkbox"
+                      className="form-check-input position-static mr-1"
+                      name="dueDateCheckbox"
+                      checked={this.state.dueDateCheckbox}
+                      onChange={this.handleDueDateChange}
+                    />
+                    <DueDateBadge
+                      date={this.props.cardDetails.deadline}
+                      metDeadline={this.props.cardDetails.is_deadline_met}
+                    />
+                  </div>
+                ) : null}
+                <Labels labels={this.props.labels} />
+              </div>
+              <div>
+                <LabelsDropdown
+                  actualCardLabels={this.props.labels}
+                  labels={this.state.allLabels}
+                  assignLabel={this.assignLabel}
+                  unassignLabel={this.unassignLabel}
+                />
+              </div>
+            </div>
+            <b>Description</b>
             <pre>
               <div style={{ backgroundColor: "#f0f0f0" }}>
                 <Editable

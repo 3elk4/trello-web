@@ -60,7 +60,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid mt-5 pt-5">
+      <div className="container-fluid mt-5 pt-5 mb-1">
         <Navbar
           isLogged={this.state.isLoggedIn}
           handleLogout={this.handleLogout}

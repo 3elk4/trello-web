@@ -46,7 +46,7 @@ class UserProfile extends React.Component {
     } else {
       return (
         <>
-          <div className="d-flex flex-column align-items-center m-auto col-sm-12 col-md-6 col-lg-4 p-1 pt-3 shadow-lg rounded bg-dark text-white">
+          <div className="d-flex flex-column align-items-center m-auto col-sm-12 col-md-6 col-lg-4 p-1 pt-3 shadow-lg rounded bg-dark text-white mt-sm-0 mt-5">
             <div className="row align-items-center mb-3">
               <div>
                 <img

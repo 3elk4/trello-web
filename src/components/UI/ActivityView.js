@@ -1,27 +1,32 @@
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export class ActivityView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div
-        className="border-left border-dark text-white px-2"
+        className="border shadow border-dark text-white px-2 ml-1 h-100"
         style={{
-          background: "#6C757D",
           position: "fixed",
-          zIndex: 9999999,
-          top: "66px",
-          right: 0,
-          height: "90%",
-          width: "15%",
+          right: "0px",
+          top: "0px",
+          background: "#6C757D",
           display: this.props.showActivity ? "block" : "none",
+          overflowY: "auto",
+          minWidth: "200px",
+          zIndex: 99999,
           overflow: "auto",
-          boxShadow: "-8px -5px 10px -8px black",
         }}
       >
+        <div className="text-right w-100">
+          <button
+            className="btn btn-secondary p-1"
+            onClick={() => this.props.handleClose()}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
         {this.props.activity}
       </div>
     );

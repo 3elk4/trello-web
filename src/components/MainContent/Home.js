@@ -1,8 +1,6 @@
 import React from "react";
 import Boards from "../MainContent/Boards";
 import WelcomePage from "../MainContent/WelcomePage";
-import { Redirect } from "react-router-dom";
-import * as Constants from "../../Constants";
 
 const Home = (props) => {
   if (sessionStorage.getItem("authToken") === null) {
@@ -10,7 +8,7 @@ const Home = (props) => {
     return <WelcomePage />;
   } else {
     return (
-      <div className="shadow rounded p-4 bg-dark text-white">
+      <div className="shadow rounded p-4 mt-sm-0 mt-5 bg-dark text-white">
         <h2 className="mb-5">Your boards:</h2>
         <Boards />
       </div>

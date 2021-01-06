@@ -1,7 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router";
 import * as Helpers from "../../Helpers";
-import * as Constants from "../../Constants";
 import MyToast from "../UI/MyToast";
 
 class Register extends React.Component {
@@ -84,7 +82,7 @@ class Register extends React.Component {
           bgColor="#8BC34A"
           message="User registered succesfully."
         />
-        <div className="d-flex flex-column justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+        <div className="d-flex flex-column justify-content-center align-items-center mx-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white mt-sm-0 mt-5">
           <form onSubmit={this.handleSubmit}>
             <h3 className="mb-4 mt-3">Register page</h3>
             <div className="form-group">

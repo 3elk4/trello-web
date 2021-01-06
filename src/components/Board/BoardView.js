@@ -12,10 +12,6 @@ import ActivityView from "../UI/ActivityView";
 import SingleActivity from "../UI/SingleActivity";
 import { Redirect } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowAltCircleDown,
-  faArrowAltCircleUp,
-} from "@fortawesome/free-regular-svg-icons";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
 class BoardView extends React.Component {
@@ -274,11 +270,8 @@ class BoardView extends React.Component {
             boardId={this.state.boardId}
           />
 
-          <div className="d-flex flex-row">
-            <div
-              className="shadow rounded p-4 bg-dark text-white mr-0"
-              style={{ width: this.state.showActivity ? "85%" : "100%" }}
-            >
+          <div className="d-flex flex-row mt-sm-0 mt-5">
+            <div className="shadow rounded p-4 bg-dark text-white mr-0 flex-grow-1 overflow-hidden">
               <div className="row d-flex justify-content-between align-items-center">
                 <div className="d-inline-flex">
                   <h2 className="mb-3">
@@ -436,6 +429,11 @@ class BoardView extends React.Component {
             <ActivityView
               activity={this.state.activity}
               showActivity={this.state.showActivity}
+              handleClose={() =>
+                this.setState({
+                  showActivity: !this.state.showActivity,
+                })
+              }
             />
           </div>
         </>

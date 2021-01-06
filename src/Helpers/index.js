@@ -362,6 +362,22 @@ export async function changeCardDescription(
       description: newDescription,
     }),
   };
+}
+
+export async function changeCardName(token, cardId, listId, boardId, newName) {
+  const requestOps = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      id: cardId,
+      list_id: listId,
+      board_id: boardId,
+      name: newName,
+    }),
+  };
 
   return await fetch(Constants.EDIT_CARD_URL, requestOps).then((response) => {
     return response.ok;

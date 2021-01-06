@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import CommentsView from "../Comments/CommentsView";
 import DueDateBadge from "./DueDateBadge";
 import Labels from "./Labels";
 
@@ -9,7 +8,7 @@ export default class ArchivedCardView extends React.Component {
     return (
       <>
         <Modal show={this.props.isShow} onHide={this.props.handleClose}>
-          <Modal.Header>
+          <Modal.Header closeButton>
             <div>
               {this.props.cardDetails.deadline ? (
                 <div className="mb-0">
