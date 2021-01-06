@@ -15,6 +15,7 @@ export class ActivityView extends React.Component {
           display: this.props.showActivity ? "block" : "none",
           overflowY: "auto",
           minWidth: "200px",
+          maxWidth: "300px",
           zIndex: 99999,
           overflow: "auto",
         }}

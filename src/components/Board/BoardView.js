@@ -271,8 +271,8 @@ class BoardView extends React.Component {
           />
 
           <div className="d-flex flex-row mt-sm-0 mt-5">
-            <div className="shadow rounded p-4 bg-dark text-white mr-0 flex-grow-1 overflow-hidden">
-              <div className="row d-flex justify-content-between align-items-center">
+            <div className="shadow rounded p-2 bg-dark text-white mr-0 flex-grow-1 overflow-hidden">
+              <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
                 <div className="d-inline-flex">
                   <h2 className="mb-3">
                     <Editable
@@ -315,7 +315,7 @@ class BoardView extends React.Component {
               </div>
 
               <div
-                className="row p-2 pt-5 rounded"
+                className="py-2 px-0 pt-5 rounded overflow-auto"
                 style={{
                   backgroundImage: `url(${Constants.API_ROOT}${this.state.boardDetails.background})`,
                   backgroundSize: "cover",
@@ -324,7 +324,7 @@ class BoardView extends React.Component {
                   minHeight: "700px",
                 }}
               >
-                <div className="d-inline-flex flex-row overflow-auto">
+                <div className="d-inline-flex flex-row w-100">
                   <DragDropContext onDragEnd={this.onDragEnd}>
                     <Droppable droppableId="droppable-1" direction="horizontal">
                       {(provided, snapshot) => (
@@ -390,10 +390,10 @@ class BoardView extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="mb-3">
+              <div className="mb-3 mt-2">
                 <button
                   onClick={this.toggleArchived}
-                  className="btn btn-secondary"
+                  className="btn btn-secondary mx-0"
                 >
                   Archived elements{" "}
                   {!this.state.showArchived ? (

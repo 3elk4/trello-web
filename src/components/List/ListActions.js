@@ -15,9 +15,6 @@ const ListActions = (props) => {
         <Dropdown.Item onClick={() => props.archiveList(props.listId)}>
           Archive list...
         </Dropdown.Item>
-        <Dropdown.Item onClick={() => console.log("Rename")}>
-          Rename list...
-        </Dropdown.Item>
       </DropdownButton>
     </>
   );
