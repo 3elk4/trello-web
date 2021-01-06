@@ -24,7 +24,6 @@ class UserProfile extends React.Component {
     });
   };
 
-  // update also avatar in the future
   handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -35,6 +34,7 @@ class UserProfile extends React.Component {
       })
     ) {
       this.setState({ showSuccess: true });
+      sessionStorage.setItem("username", this.state.username);
     } else {
       this.setState({ showFail: true });
     }
