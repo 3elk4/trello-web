@@ -127,7 +127,7 @@ class ArchivedElement extends React.Component {
 
   render() {
     return (
-      <div className="p-2">
+      <div className="p-1 col-xl-2 col-lg-2 col-md-3 col-sm-4 col-12">
         {this.props.children.type === ArchivedCard ? (
           <ArchivedCardView
             isShow={this.state.isShow}
@@ -137,7 +137,7 @@ class ArchivedElement extends React.Component {
           />
         ) : null}
 
-        <div className="bg-secondary p-2 rounded d-flex align-items-center ">
+        <div className="bg-secondary p-2 rounded d-flex flex-column align-items-center ">
           <div
             className="mx-2"
             onClick={() => this.setState({ isShow: true })}
@@ -145,7 +145,7 @@ class ArchivedElement extends React.Component {
           >
             {this.props.children.props.details.name}
           </div>
-          <div className="mx-2">
+          <div className="mx-1 d-flex justify-content-center">
             <button className="btn btn-info btn-sm m-1" onClick={this.restore}>
               restore
             </button>

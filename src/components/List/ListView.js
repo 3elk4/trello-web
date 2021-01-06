@@ -151,7 +151,10 @@ class ListView extends React.Component {
         className="pl-1 pr-1 mb-4"
         style={{ minWidth: "18em", maxWidth: "18em" }}
       >
-        <div className="card bg-secondary text-white rounded-top w-100">
+        <div
+          className="card bg-secondary text-white rounded-top w-100"
+          style={{ maxHeight: "640px" }}
+        >
           <div className="card-header row m-0 d-flex justify-content-between pl-0">
             <div className="d-inline-flex px-2">
               <Editable
@@ -178,13 +181,19 @@ class ListView extends React.Component {
               />
             </div>
           </div>
-          <div className="card-body pl-1 pr-1">
+          <div
+            className="card-body p-1"
+            style={{
+              overflowX: "hidden",
+              overflowY: "auto",
+            }}
+          >
             {this.state.cards}
-            <AddCard
-              handleSubmit={this.handleSubmit}
-              handleChange={this.handleChange}
-            />
           </div>
+          <AddCard
+            handleSubmit={this.handleSubmit}
+            handleChange={this.handleChange}
+          />
         </div>
         <BoardList
           token={this.state.token}
