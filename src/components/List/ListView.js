@@ -22,8 +22,6 @@ class ListView extends React.Component {
       props.listDetails.archiving_date === null ? "archive" : "delete";
   }
 
-  // const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
-
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
@@ -54,6 +52,7 @@ class ListView extends React.Component {
             refreshCards={this.refreshCards}
             refreshArchivedElements={this.props.refreshArchivedElements}
             labels={labels}
+            refreshActivity={this.props.refreshActivity}
           />
         );
       }
@@ -65,12 +64,23 @@ class ListView extends React.Component {
 
   changeListName = async () => {
     if (this.state.listNewName !== this.state.listName) {
-      await Helpers.changeListName(
-        this.state.token,
-        this.state.listDetails.board_id,
-        this.state.listDetails.id,
-        this.state.listNewName
-      );
+      if (
+        await Helpers.changeListName(
+          this.state.token,
+          this.state.listDetails.board_id,
+          this.state.listDetails.id,
+          this.state.listNewName
+        )
+      ) {
+        Helpers.newActivity(
+          this.state.token,
+          this.state.listDetails.board_id,
+          sessionStorage.getItem("user_id"),
+          `User <b>${sessionStorage.getItem("username")}</b> changed list <b>${
+            this.state.listName
+          }</b> name to <b>${this.state.listNewName}</b>.`
+        ).then(() => this.props.refreshActivity());
+      }
     }
   };
 
@@ -85,6 +95,14 @@ class ListView extends React.Component {
     ) {
       this.hideBoardListModal();
       this.props.refreshLists();
+      Helpers.newActivity(
+        this.state.token,
+        this.state.listDetails.board_id,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> moved list <b>${
+          this.state.listName
+        }</b> to another board.`
+      ).then(() => this.props.refreshActivity());
     }
   };
 
@@ -100,6 +118,14 @@ class ListView extends React.Component {
       ))
     ) {
       this.refreshCards();
+      Helpers.newActivity(
+        this.state.token,
+        this.state.listDetails.board_id,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> created <b>${
+          this.state.newCardName
+        }</b> card.`
+      ).then(() => this.props.refreshActivity());
     }
   };
 
@@ -121,7 +147,10 @@ class ListView extends React.Component {
 
   render() {
     return (
-      <div className="pl-1 pr-1 mb-4" style={{ minWidth: "18em" }}>
+      <div
+        className="pl-1 pr-1 mb-4"
+        style={{ minWidth: "18em", maxWidth: "18em" }}
+      >
         <div className="card bg-secondary text-white rounded-top w-100">
           <div className="card-header row m-0 d-flex justify-content-between pl-0">
             <div className="d-inline-flex px-2">

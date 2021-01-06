@@ -7,9 +7,9 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: "",
-      errors: "",
+      errors: {},
     };
   }
 
@@ -22,9 +22,9 @@ class Login extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     let user = {
-      username: username,
+      email: email,
       password: password,
     };
     let requestOps = {
@@ -37,21 +37,23 @@ class Login extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data.token) {
-          this.props.handleLogin(data, username);
+          this.props.handleLogin(data.token);
         } else {
-          this.setState({
-            errors: data.errors,
-          });
+          this.setState({ errors: data.error });
         }
       });
   };
 
   handleErrors = () => {
     return (
-      <div>
-        <ul>
-          {this.state.errors.map((error) => {
-            return <li key={error}>{error}</li>;
+      <div className="text-danger">
+        <ul className="list-group list-group-flush bg-dark">
+          {Object.keys(this.state.errors).map((key, index) => {
+            return (
+              <li className="list-group-item bg-dark pt-0" key={key}>
+                {this.state.errors[key]}
+              </li>
+            );
           })}
         </ul>
       </div>
@@ -68,19 +70,19 @@ class Login extends React.Component {
   }
 
   render() {
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     return (
-      <div className="d-flex flex-wrap justify-content-center align-items-center m-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white">
+      <div className="d-flex flex-wrap justify-content-center align-items-center mx-auto text-center col-sm-3 p-1 shadow-lg rounded bg-dark text-white mt-sm-0 mt-5">
         {this.state.isLoggedIn ? <Redirect to="/" /> : null}
         <form onSubmit={this.handleSubmit}>
-          <h3 className="mb-4">Login page</h3>
+          <h3 className="mb-4 mt-3">Login page</h3>
           <div className="form-group">
             <input
               className="form-control"
-              placeholder="Username"
-              type="text"
-              name="username"
-              value={username}
+              placeholder="E-mail"
+              type="email"
+              name="email"
+              value={email}
               onChange={this.handleChange}
             />
           </div>
@@ -94,15 +96,12 @@ class Login extends React.Component {
               onChange={this.handleChange}
             />
           </div>
-          <button
-            className="btn btn-success"
-            placeholder="Submit"
-            type="submit"
-          >
+          <div>{this.handleErrors()}</div>
+          <button className="btn btn-info" placeholder="Submit" type="submit">
             Log In
           </button>
         </form>
-        <div>
+        <div className="mt-2 mb-4 px-2">
           If you don't have an account&nbsp;
           <a className="link" href="/register">
             register now

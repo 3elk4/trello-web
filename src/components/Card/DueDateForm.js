@@ -32,7 +32,9 @@ class DueDateForm extends React.Component {
   render() {
     return (
       <Dropdown>
-        <Dropdown.Toggle variant="primary">Due date</Dropdown.Toggle>
+        <Dropdown.Toggle variant="secondary" size="sm">
+          Due date
+        </Dropdown.Toggle>
         <Dropdown.Menu>
           <div className="px-3 py-2">
             <p className="p-0 m-0">Due date picker</p>

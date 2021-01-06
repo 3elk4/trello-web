@@ -15,7 +15,7 @@ const MyToast = (props) => {
         backgroundColor: props.bgColor,
         textAlign: "center",
       }}
-      delay={2000}
+      delay={3000}
       autohide
     >
       <Toast.Body className="pr-5 pl-5">{props.message}</Toast.Body>

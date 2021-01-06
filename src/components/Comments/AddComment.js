@@ -35,7 +35,7 @@ class AddComment extends Component {
           />
         </div>
         <div className="from-group">
-          <button type="submit" className="btn btn-sm btn-success float-right">
+          <button type="submit" className="btn btn-sm btn-info float-right">
             Add
           </button>
         </div>

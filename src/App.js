@@ -14,7 +14,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      username: "",
       userData: [],
     };
   }
@@ -25,39 +24,46 @@ class App extends React.Component {
 
   async componentDidMount() {
     if (await Helpers.isLogged(sessionStorage.getItem("authToken"))) {
-      Helpers.getCurrentUserInfo(sessionStorage.getItem("authToken")).then(
-        (userData) => {
-          sessionStorage.setItem("username", userData.username);
-          this.setState({
-            isLoggedIn: true,
-            userData: userData,
-          });
-        }
-      );
+      await Helpers.getCurrentUserInfo(
+        sessionStorage.getItem("authToken")
+      ).then((userData) => {
+        this.setState({
+          isLoggedIn: true,
+          userData: userData,
+        });
+      });
     } else {
       sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("user_id");
+      sessionStorage.removeItem("username");
       this.setState({ isLoggedIn: false });
     }
   }
 
-  handleLogin = (data, username) => {
-    sessionStorage.setItem("authToken", data.token);
-    sessionStorage.setItem("username", username);
-    this.setState({ isLoggedIn: true, username: username });
+  handleLogin = async (token) => {
+    const userData = await this.getUserData(token);
+    sessionStorage.setItem("authToken", token);
+    sessionStorage.setItem("user_id", userData.id);
+    sessionStorage.setItem("username", userData.username);
+    this.setState({ isLoggedIn: true, userData: userData });
   };
 
   handleLogout = async () => {
     if (await Helpers.logoutUser(sessionStorage.getItem("authToken"))) {
       sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("user_id");
       sessionStorage.removeItem("username");
-      this.setState({ isLoggedIn: false, username: "" });
+      this.setState({ isLoggedIn: false });
     }
   };
 
   render() {
     return (
-      <div className="container-fluid mt-5 pt-5">
-        <Navbar isLogged={this.state.isLoggedIn} />
+      <div className="container-fluid mt-5 pt-5 mb-1">
+        <Navbar
+          isLogged={this.state.isLoggedIn}
+          handleLogout={this.handleLogout}
+        />
         <BrowserRouter>
           <Switch>
             <Route

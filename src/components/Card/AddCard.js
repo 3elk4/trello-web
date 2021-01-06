@@ -14,7 +14,7 @@ const AddCard = (props) => {
           />
         </div>
         <div className="from-group col-2">
-          <button type="submit" className="btn btn-sm btn-success float-right">
+          <button type="submit" className="btn btn-sm btn-info float-right">
             +
           </button>
         </div>

@@ -26,6 +26,20 @@ const Card = (props) => {
     );
   };
 
+  const changeCardName = async (newName) => {
+    if (
+      await Helpers.changeCardName(
+        token,
+        props.cardDetails.id,
+        props.cardDetails.list_id,
+        props.boardId,
+        newName
+      )
+    ) {
+      props.refreshCards();
+    }
+  };
+
   const changeCardDueDate = async (date) => {
     if (
       await Helpers.changeDueDate(
@@ -42,8 +56,18 @@ const Card = (props) => {
 
   const archiveCard = async (cardId, listId) => {
     if (await Helpers.archiveCard(token, cardId, listId, props.boardId)) {
-      props.refreshCards();
-      props.refreshArchivedElements();
+      Helpers.newActivity(
+        token,
+        props.boardId,
+        sessionStorage.getItem("user_id"),
+        `User <b>${sessionStorage.getItem("username")}</b> archived <b>${
+          props.cardDetails.name
+        }</b> card.`
+      ).then(() => {
+        props.refreshActivity();
+        props.refreshCards();
+        props.refreshArchivedElements();
+      });
     }
   };
 
@@ -51,25 +75,29 @@ const Card = (props) => {
     if (await Helpers.deleteCard(token, cardId, listId, props.boardId)) {
       props.refreshCards();
       props.refreshArchivedElements();
+      //TODO: check if necessary
     }
   };
 
   return (
     <>
-      <div className="bg-dark p-2 mt-2 mb-1 rounded">
+      <div
+        className="bg-dark p-2 mt-2 mb-1 rounded"
+        style={{ cursor: "pointer" }}
+        onClick={handleShow}
+      >
         <DueDateBadge
           date={props.cardDetails.deadline}
           metDeadline={props.cardDetails.is_deadline_met}
         />
         <Labels labels={props.labels} />
-        <span style={{ cursor: "pointer" }} onClick={handleShow}>
-          {props.cardDetails.name}
-        </span>
+        <span>{props.cardDetails.name}</span>
       </div>
       <CardView
         isShow={isShow}
         handleClose={handleClose}
         changeCardDescription={changeCardDescription}
+        changeCardName={changeCardName}
         changeCardDueDate={changeCardDueDate}
         cardDetails={props.cardDetails}
         archiveCard={archiveCard}
