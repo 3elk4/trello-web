@@ -22,8 +22,6 @@ class ListView extends React.Component {
       props.listDetails.archiving_date === null ? "archive" : "delete";
   }
 
-  // const confirmMessage = `Are you sure you want to ${actionType} the "${listName}" list?`;
-
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({

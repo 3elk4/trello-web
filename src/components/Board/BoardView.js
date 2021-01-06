@@ -95,7 +95,7 @@ class BoardView extends React.Component {
     if (await Helpers.deleteList(this.state.token, this.state.boardId, id)) {
       this.refreshLists();
       this.refreshArchivedElements();
-      //TODO: Add new activity about list deletion, check if this function is necessary
+      //TODO: check if this function is necessary
     }
   };
 

@@ -696,11 +696,3 @@ export async function getBoardActivity(token, boardId) {
     .then((response) => response.json())
     .then((data) => data.history_entries);
 }
-
-// export async function meetCardDeadline(token, boardId, listId, cardId) {
-//   return await setDeadline(token, boardId, listId, cardId, true);
-// }
-
-// export async function cancelCardDeadlineMeet(token, boardId, listId, cardId) {
-//   return await setDeadline(token, boardId, listId, cardId, false);
-// }

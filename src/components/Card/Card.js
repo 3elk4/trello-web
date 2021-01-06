@@ -75,7 +75,7 @@ const Card = (props) => {
     if (await Helpers.deleteCard(token, cardId, listId, props.boardId)) {
       props.refreshCards();
       props.refreshArchivedElements();
-      //TODO: Add activity information about card deletion, check if necessary
+      //TODO: check if necessary
     }
   };
 

@@ -4,7 +4,6 @@ import WelcomePage from "../MainContent/WelcomePage";
 
 const Home = (props) => {
   if (sessionStorage.getItem("authToken") === null) {
-    // return <Redirect to={Constants.LOGIN_VIEW_URL} />;
     return <WelcomePage />;
   } else {
     return (
