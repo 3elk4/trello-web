@@ -362,6 +362,10 @@ export async function changeCardDescription(
       description: newDescription,
     }),
   };
+
+  return await fetch(Constants.EDIT_CARD_URL, requestOps).then((response) => {
+    return response.ok;
+  });
 }
 
 export async function changeCardName(token, cardId, listId, boardId, newName) {
